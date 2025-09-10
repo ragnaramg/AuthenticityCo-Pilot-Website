@@ -1,0 +1,592 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Podcast Analysis - Unknown Podcast</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+            <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+            <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+            <script src="https://cdn.tailwindcss.com"></script>
+            <style>
+                /* Dark neon theme overrides to ensure compatibility */
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="root"></div>
+            
+            <script type="text/babel">
+                /**
+ * Podcast Interviewer Co-Pilot — Report Template
+ * - Dark neon theme preserved
+ * - Expects a `report` prop (JSON) that matches the schema below
+ * - First-insight-free + teaser + locked everywhere
+ * - Conversational headers mapped at render
+ */
+
+// Available via global React
+const { useState } = React;
+
+/** ==== JSON prop schema (matches your latest report format) ==== */
+// Expected report structure with various sections for podcast analysis
+
+/* ---------- helpers ---------- */
+
+const iconForTitle = (title) => {
+  const t = title.toLowerCase();
+  if (t.includes("episode arc") || t.includes("conversation")) return "📈";
+  if (t.includes("quote") || t.includes("highlight") || t.includes("remembering")) return "💬";
+  if (t.includes("tone") || t.includes("energy")) return "🌊";
+  if (t.includes("theme") || t.includes("threads")) return "🧵";
+  if (t.includes("style") || t.includes("habits")) return "✨";
+  if (t.includes("voice")) return "🎙️";
+  if (t.includes("guest") || t.includes("rapport") || t.includes("feel")) return "🤝";
+  if (t.includes("chem") || t.includes("co-creation") || t.includes("ideas")) return "🧪";
+  if (t.includes("blind")) return "🙈";
+  if (t.includes("resource") || t.includes("tools")) return "📚";
+  return "•";
+};
+
+function effectiveScore(score, scoreType) {
+  if (score == null) return null;
+  if (scoreType === "lower") return 10 - score;
+  return score;
+}
+
+function computeHeaderStats(themes) {
+  const scored = themes
+    .map((d) => ({ d, eff: effectiveScore(d.score, d.scoreType) }))
+    .filter((x) => x.eff !== null);
+
+  const overall =
+    scored.length > 0
+      ? +(scored.reduce((s, x) => s + x.eff, 0) / scored.length).toFixed(1)
+      : 0;
+
+  const strength = scored.reduce((best, x) => (x.eff > best.eff ? x : best), scored[0]);
+  const opportunity = scored.reduce((worst, x) => (x.eff < worst.eff ? x : worst), scored[0]);
+
+  return {
+    overall,
+    strengthTitle: strength?.d?.title ?? "",
+    strengthScoreLabel: strength?.d?.score != null ? `${strength.d.score}/10` : "",
+    strengthColor: "#22C55E", // always green
+    opportunityTitle: opportunity?.d?.title ?? "",
+    opportunityScoreLabel: opportunity?.d?.score != null ? `${opportunity.d.score}/10` : "",
+    opportunityColor: "#FACC15", // always amber
+  };
+}
+
+/* ---------- sparkline ---------- */
+
+const Sparkline = ({ values, color }) => {
+  if (!values || values.length < 2) return null;
+  const W = 360, H = 64, pad = 6;
+  const clamp01 = (v) => Math.min(1, Math.max(0, v));
+  const pts = values.map((v, i) => {
+    const x = pad + (i * (W - pad * 2)) / (values.length - 1);
+    const y = pad + (H - pad * 2) * (1 - clamp01(v));
+    return [x, y];
+  });
+  const path = pts.map(([x, y], i) => `${i ? "L" : "M"} ${x} ${y}`).join(" ");
+  const area = `${path} L ${pts[pts.length - 1][0]} ${H - pad} L ${pts[0][0]} ${H - pad} Z`;
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="64" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id={`g-${color.replace("#", "")}`} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.22" />
+          <stop offset="100%" stopColor={color} stopOpacity="0.04" />
+        </linearGradient>
+      </defs>
+      <path d={area} fill={`url(#g-${color.replace("#", "")})`} />
+      <path d={path} fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" />
+      {pts.map(([x, y], i) => <circle key={i} cx={x} cy={y} r={2} fill={color} />)}
+    </svg>
+  );
+};
+
+/* ---------- small UI bits ---------- */
+
+const SectionLabel = ({ children }) => (
+  <h3 className="mb-3 text-slate-300 uppercase tracking-widest text-xl text-center">{children}</h3>
+);
+
+const PillScore = ({ value, color }) => (
+  <span
+    className="text-[13px] font-bold px-2 py-1 rounded-full border"
+    style={{
+      borderColor: color,
+      color,
+      boxShadow: `0 0 12px ${color}33`,
+      background: "rgba(2,6,23,0.4)",
+    }}
+  >
+    {value}
+  </span>
+);
+
+const ClampParagraph = ({ html, initiallyClamped = true }) => {
+  const [clamped, setClamped] = useState(initiallyClamped);
+  return (
+    <div>
+      <div
+        style={
+          clamped
+            ? {
+                display: "-webkit-box",
+                WebkitLineClamp: 5,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }
+            : {}
+        }
+        className="text-[14px] text-slate-200 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      <button
+        onClick={() => setClamped((v) => !v)}
+        className="mt-1 text-[12px] text-blue-300 hover:text-blue-200 underline"
+      >
+        {clamped ? "See more" : "See less"}
+      </button>
+    </div>
+  );
+};
+
+/** Locked content blur with teaser + count */
+const LockedListBlur = ({ teaser, items }) => {
+  const [open, setOpen] = useState(false);
+
+  const List = (
+    <ol className="list-decimal pl-5 space-y-3">
+      {items.map((p, i) => (
+        <li key={i} className="text-[14px] text-slate-300">
+          <span dangerouslySetInnerHTML={{ __html: p }} />
+        </li>
+      ))}
+    </ol>
+  );
+
+  if (open) return <div className="mt-2">{List}</div>;
+
+  return (
+    <div className="relative rounded-md overflow-hidden mt-2">
+      <div className="p-3 space-y-2">{List}</div>
+      <div
+        className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
+        style={{
+          background: "rgba(2,6,23,0.55)",
+          backdropFilter: "blur(8px)",
+          borderTop: "1px solid rgba(255,255,255,0.04)",
+          borderBottom: "1px solid rgba(255,255,255,0.04)",
+        }}
+      >
+        {teaser && (
+          <span className="text-[13px] font-medium text-slate-100 mb-2">
+            {teaser}
+          </span>
+        )}
+        <span className="text-[11px] text-slate-300 mb-3">
+          Includes <strong>{items.length}</strong> insights
+        </span>
+        <button
+          className="text-[12px] text-blue-300 hover:text-blue-200 underline"
+          onClick={() => setOpen(true)}
+        >
+          Upgrade to unlock
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/* ---------- title mapping to conversational headers ---------- */
+
+function mapDigestTitle(oldTitle) {
+  if (/episode arc/i.test(oldTitle)) return "How the Conversation Flowed";
+  if (/quotable|highlight/i.test(oldTitle)) return "Moments Worth Remembering";
+  if (/tone snapshot|shifts? in your energy/i.test(oldTitle)) return "Shifts in Your Energy";
+  if (/emergent theme|threads?/i.test(oldTitle)) return "The Threads You and Your Guest Wove Together";
+  if (/conversation(al)? style|habits/i.test(oldTitle)) return "Your Hosting Habits in Numbers";
+  return oldTitle;
+}
+
+function mapThemeTitle(oldTitle) {
+  if (/voice reflection/i.test(oldTitle)) return "How Your Voice Carried the Room";
+  if (/style.*differentiation/i.test(oldTitle)) return "What Makes You, You";
+  if (/guest.*connection/i.test(oldTitle)) return "How You Made Them Feel";
+  if (/intellectual.*chem|co-creation|ideas/i.test(oldTitle)) return "The Ideas You Cooked Up Together";
+  if (/blind/i.test(oldTitle)) return "Places to Grow (Without Losing Yourself)";
+  if (/resource|tools/i.test(oldTitle)) return "Extra Tools for Your Growth";
+  return oldTitle;
+}
+
+/* ------------------------------ APP ------------------------------ */
+
+function ReportApp({ report }) {
+  const headerStats = computeHeaderStats(report.themes);
+
+  const unlockedCount =
+    report.digest.length + report.themes.length + 1 /* game plan */;
+
+  const totalLocked =
+    report.digest.reduce((n, i) => n + i.lockedParagraphsHtml.length, 0) +
+    report.themes.reduce((n, i) => n + i.lockedParagraphsHtml.length, 0) +
+    report.gamePlan.lockedActions.length +
+    (report.progress ? report.progress.lockedItemsHtml.length : 0);
+
+  return (
+    <div
+      className="min-h-screen text-slate-100"
+      style={{
+        background:
+          "radial-gradient(120% 120% at 0% 0%, #0B1220 0%, #0B1220 12%, #0F172A 40%, #0F172A 100%)",
+        fontFamily: "Inter, system-ui, sans-serif",
+      }}
+    >
+      <div className="max-w-[1200px] mx-auto px-6 py-10">
+        {/* Header */}
+        <div
+          className="mb-8 rounded-2xl p-6 md:p-8"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+            boxShadow: "0 10px 30px rgba(2,6,23,0.5)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(148,163,184,0.18)",
+          }}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+            {/* Overall */}
+            <div
+              className="rounded-xl p-4 h-full flex flex-col items-center justify-center text-center"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(2,6,23,0.35) 0%, rgba(2,6,23,0.2) 100%)",
+                border: "1px solid rgba(148,163,184,0.14)",
+              }}
+            >
+              <div className="text-slate-200 text-[18px] uppercase tracking-wider font-semibold">
+                Overall Score
+              </div>
+              <div
+                className="mt-1 font-extrabold"
+                style={{
+                  fontSize: "36px",
+                  color: "#22C55E",
+                  textShadow: "0 0 12px rgba(34,197,94,0.5)",
+                  lineHeight: 1.1,
+                }}
+              >
+                {headerStats.overall.toFixed(1)}/10
+              </div>
+            </div>
+
+            {/* Title Block */}
+            <div className="flex flex-col items-center justify-center text-center">
+              <h2
+                className="text-[24px] font-semibold text-white"
+                style={{
+                  textShadow:
+                    "0 0 14px rgba(255,255,255,0.7), 0 0 28px rgba(59,130,246,0.4)",
+                }}
+              >
+                Free Episode Insights for:
+                <br />
+                <span className="italic">Podcast: {report.header.podcast}</span>
+                <br />
+                <span className="italic">Host: {report.header.host}</span>
+                <br />
+                <span className="italic">
+                  Episode: {report.header.episode} — Guest: {report.header.guest}
+                </span>
+                <br />
+                <span className="italic">Tone: {report.header.tone}</span>
+              </h2>
+
+              <p className="mt-3 text-slate-300">
+                {unlockedCount} insights unlocked.{" "}
+                <button
+                  className="underline text-blue-300 hover:text-blue-200"
+                  onClick={() => console.log("open upgrade")}
+                >
+                  Upgrade
+                </button>{" "}
+                to see {totalLocked} more.
+              </p>
+            </div>
+
+            {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
+            <div
+              className="rounded-xl p-4 h-full flex flex-col items-start justify-center text-left"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(2,6,23,0.35) 0%, rgba(2,6,23,0.2) 100%)",
+                border: "1px solid rgba(148,163,184,0.14)",
+              }}
+            >
+              <div className="text-white text-[18px] uppercase tracking-wider font-semibold">
+                Strength
+              </div>
+              <div className="mt-1 text-[14px] text-slate-200">
+                {report.gamePlan.strength}
+              </div>
+
+              <div className="mt-4 text-white text-[18px] uppercase tracking-wider font-semibold">
+                Opportunity
+              </div>
+              <div className="mt-1 text-[14px] text-slate-200">
+                {report.gamePlan.opportunity}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Your Game Plan at a Glance */}
+        <SectionLabel>Your Game Plan at a Glance</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10"
+          style={{
+            background:
+              "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+            border: "1px solid rgba(148,163,184,0.14)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div className="text-[14px] text-slate-200 leading-relaxed">
+            <p className="mb-3">
+              <span className="font-semibold">Free:</span>{" "}
+              <span className="text-slate-100">{report.gamePlan.freeAction.title}</span>{" "}
+              — {report.gamePlan.freeAction.detail}
+            </p>
+            <LockedListBlur
+              teaser={report.gamePlan.teaser}
+              items={report.gamePlan.lockedActions}
+            />
+          </div>
+        </div>
+
+        {/* The Vibe Check */}
+        <SectionLabel>The Vibe Check</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10 text-center"
+          style={{
+            background:
+              "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+            border: "1px solid rgba(148,163,184,0.14)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div style={{ fontSize: "24px" }} className="mb-2">
+            {report.vibeCheck.icon}
+          </div>
+          <div
+            style={{ fontSize: "16px" }}
+            className="text-slate-200 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: report.vibeCheck.vibeHtml }}
+          />
+          <div
+            style={{ fontSize: "16px" }}
+            className="mt-2 text-slate-200 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: report.vibeCheck.quoteHtml }}
+          />
+        </div>
+
+        {/* Digest */}
+        <SectionLabel>Digest</SectionLabel>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {report.digest.map((c, idx) => {
+            const mappedTitle = mapDigestTitle(c.title);
+            return (
+              <div
+                key={idx}
+                className="rounded-2xl p-5"
+                style={{
+                  background:
+                    "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+                  border: "1px solid rgba(148,163,184,0.14)",
+                  boxShadow:
+                    "0 10px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.04)",
+                }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-[16px]" style={{ color: c.iconColor }}>
+                    {iconForTitle(mappedTitle)}
+                  </span>
+                  <div
+                    className="text-[15px] font-semibold"
+                    style={{ color: c.iconColor, textShadow: `0 0 6px ${c.iconColor}55` }}
+                  >
+                    {mappedTitle}
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+                    Unlocked Insight
+                  </p>
+                  <ClampParagraph html={c.unlockedHtml} />
+                </div>
+
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Scored Themes */}
+        <SectionLabel>Scored Themes</SectionLabel>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {report.themes.map((ins, idx) => {
+            const mappedTitle = mapThemeTitle(ins.title);
+            return (
+              <div
+                key={idx}
+                className="rounded-2xl p-5"
+                style={{
+                  background:
+                    "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+                  border: "1px solid rgba(148,163,184,0.14)",
+                  boxShadow:
+                    "0 10px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.04)",
+                }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[16px]" style={{ color: ins.iconColor }}>
+                      {iconForTitle(mappedTitle)}
+                    </span>
+                    <h4
+                      className="text-[15px] font-semibold"
+                      style={{ color: ins.iconColor, textShadow: `0 0 6px ${ins.iconColor}55` }}
+                    >
+                      {mappedTitle}
+                    </h4>
+                  </div>
+                  {ins.score != null && <PillScore value={`${ins.score}/10`} color={ins.color} />}
+                </div>
+
+                {ins.trend && ins.trend.length > 1 && (
+                  <div
+                    className="rounded-md px-2 py-1 mb-3"
+                    style={{ background: "linear-gradient(180deg, #0B1220 0%, #0F172A 100%)" }}
+                  >
+                    <Sparkline values={ins.trend} color={ins.color} />
+                  </div>
+                )}
+
+                <div className="space-y-1">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+                    Unlocked Insight
+                  </p>
+                  <ClampParagraph html={ins.unlockedHtml} />
+                </div>
+
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Progress Over Time - only show if progress data exists */}
+        {report.progress && (
+          <>
+            <SectionLabel>Tracking Your Progress Over Time</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+            border: "1px solid rgba(148,163,184,0.18)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div className="mb-3">
+            <p
+              className="text-[14px] text-slate-200 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: report.progress.summaryHtml }}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {report.progress.series.map((s, i) => (
+              <div key={i}>
+                <div className="text-xs text-slate-300 mb-1">{s.label}</div>
+                <div
+                  className="rounded-md px-2 py-1"
+                  style={{ background: "linear-gradient(180deg, #0B1220 0%, #0F172A 100%)" }}
+                >
+                  <Sparkline values={s.values} color={s.color} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <LockedListBlur
+            teaser={report.progress.lockedTeaser}
+            items={report.progress.lockedItemsHtml}
+          />
+        </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+                
+                // Report data from server
+                const reportData = {"header": {"podcast": "Unknown Podcast", "host": "Unknown Host", "episode": "Unknown Title", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your ability to ask layered, multi-part questions that build conceptual depth while maintaining conversational flow", "opportunity": "Managing question complexity - your tendency to pack 3-4 questions into single turns can overwhelm responses and dilute focus", "freeAction": {"title": "Practice the One-Question Rule", "detail": "Based on your pattern of asking compound questions like \\\"What is this reality of political correctness now and this immediate response to just these minor instances of rudeness and incivility? And also, do you think that social media has corrupted our sensitivity?\\\", try limiting yourself to one core question per turn. This will give your guest space to fully explore each concept and create more natural conversation rhythm."}, "teaser": "3 advanced questioning techniques to transform your interview style, plus specific timing strategies for complex topics", "lockedActions": ["Develop a \\\"Question Banking\\\" system to hold follow-up questions until the current response is complete, preventing information overload", "Use the \\\"Acknowledge-Bridge-Ask\\\" technique to validate responses before transitioning to new concepts, creating smoother conversational flow", "Implement strategic pausing after complex responses to allow processing time before introducing new angles"]}, "vibeCheck": {"icon": "\ud83e\udd14", "vibeHtml": "<strong>Intellectually Curious Explorer</strong><br>You brought genuine curiosity and philosophical depth to complex topics, creating space for nuanced discussion while maintaining accessibility.", "quoteHtml": "\\\"It's a theme of this show is I'm gonna ask you 17, and you can pick which 17 you want.\\\" - Your self-aware humor about question complexity shows authentic hosting personality."}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "Analysis of 3 distinct conversation phases and 2 key momentum shifts", "unlockedHtml": "Your conversation moved through three clear phases: foundational concepts (incivility definitions), personal psychology (the marathon story), and cultural applications (social media and political correctness). You maintained strong conceptual threading throughout.", "lockedParagraphsHtml": ["The conversation's momentum shifted noticeably when you introduced the marathon analogy extension, moving from passive listening to active co-creation of meaning. Your question \\\"So I'm Bob. I have the guy on the bicycle who's yelling at me in my head. But who are you in this story?\\\" transformed a simple illustration into a deeper psychological framework.", "Your pacing accelerated in the final third, with question frequency increasing from every 2-3 minutes to every 60-90 seconds. This created urgency around political correctness topics but may have prevented deeper exploration of individual points.", "The flow pattern showed your strength in building conceptual bridges - you consistently connected abstract psychological concepts to concrete cultural examples, making complex ideas accessible to your audience."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "4 standout moments including your most vulnerable question and strongest conceptual bridge", "unlockedHtml": "Your most powerful moment came when you shared personal vulnerability about Tesla and social media influence: \\\"I've noticed this myself where I used to be a really big fan of Tesla... my mind is already warped towards criticizing that.\\\" This authentic self-disclosure elevated the conversation from academic to personal.", "lockedParagraphsHtml": ["Your pushback moment - \\\"Let me just push back to make this conversation more colorful\\\" - showed confident hosting by creating productive tension. This technique transformed a potentially one-sided discussion into dynamic dialogue.", "The table-turning acknowledgment when your guest asked you a question (\\\"The tables have turned\\\") demonstrated graceful flexibility and humor, showing you can adapt when conversations take unexpected directions.", "Your precise measurement of social media consumption (\\\"I'm down to like one or two swipes per day. And I literally measure it in that\\\") provided concrete, relatable detail that grounded abstract discussions in real behavior.", "The moment you acknowledged your own limitations (\\\"I haven't thought deeply about this. I'll just say that at the front because I don't want to seem like a deep thinker where I'm not\\\") showed authentic humility that likely made your audience feel more connected to you."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "3 energy transitions and your peak engagement moment at the 75% mark", "unlockedHtml": "Your energy remained consistently engaged throughout, with a notable peak during the social media discussion where your personal investment became evident. You moved from analytical questioning to passionate exploration when discussing media consumption's psychological impact.", "lockedParagraphsHtml": ["Early energy was methodical and building - you took time to establish foundational understanding before accelerating. Your questions grew more complex as your comfort with the topic increased.", "Mid-conversation energy shifted to collaborative when exploring the marathon metaphor. You became a co-investigator rather than just an interviewer, showing genuine curiosity about psychological frameworks.", "Final third energy became more urgent and personal, particularly around political correctness. Your question density increased significantly, suggesting either time pressure or heightened engagement with controversial topics."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "5 collaborative meaning-making moments and 2 conceptual frameworks you co-created", "unlockedHtml": "You and your guest co-created a powerful framework around internal criticism using the marathon metaphor. Your extension of the analogy (\\\"So I'm Bob... who are you in this story?\\\") helped develop a three-part psychological model: the performer (Bob), the critic (bike guy), and the observer (you).", "lockedParagraphsHtml": ["Together you developed the concept of \\\"rehearsing frustration\\\" through social media, building on your guest's insight with your personal Tesla example. This created a concrete illustration of abstract psychological processes.", "Your collaborative exploration of cultural relativism moved beyond academic discussion to practical application. You pushed the conversation toward actionable understanding with questions about forgiveness and accommodation.", "The political correctness discussion became a genuine dialogue where you both wrestled with definitions and implications. Your willingness to share your own uncertainty (\\\"I haven't thought deeply about this\\\") created space for authentic exploration rather than performative expertise.", "You co-created a nuanced view of social media's impact by offering the \\\"bulletproof\\\" counterargument to your guest's desensitization theory, demonstrating intellectual honesty and collaborative thinking.", "The conversation developed an implicit framework around intention versus impact in communication, threading through cultural differences, social media behavior, and political correctness discussions."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "7 key metrics including question complexity ratio and response acknowledgment patterns", "unlockedHtml": "You asked approximately 15 substantive questions across the conversation, with 60% being compound questions containing multiple parts. Your average question length was 2-3 sentences, showing tendency toward complexity over simplicity.", "lockedParagraphsHtml": ["Question acknowledgment pattern: You directly acknowledged or built upon your guest's responses in 8 out of 15 questions, showing good listening skills but room for improvement in validation frequency.", "Personal disclosure ratio: You shared personal examples or opinions in 4 instances, creating good balance between curiosity and vulnerability without overwhelming the guest's expertise.", "Interruption management: You interrupted or overlapped speech 2 times, both instances being supportive rather than disruptive, showing good conversational awareness.", "Topic transition smoothness: 70% of your topic shifts included explicit bridging language (\\\"So now that we've understood...\\\", \\\"And so this also varies...\\\"), demonstrating strong structural awareness.", "Complexity escalation: Your questions grew 40% more complex from beginning to end, moving from simple definitions to multi-layered cultural analysis, showing good conversation architecture.", "Pushback frequency: You challenged or offered counterarguments 3 times, creating productive tension without becoming adversarial.", "Meta-commentary usage: You made 4 self-referential comments about your questioning style, showing self-awareness but potentially breaking conversational flow."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 7.2, "scoreType": "higher", "teaser": "Analysis of your questioning evolution, 3 signature verbal patterns, and vocal authority moments", "unlockedHtml": "Your voice carried intellectual curiosity as its primary signature. You consistently used phrases like \\\"What precisely is...\\\" and \\\"So now that we've understood...\\\" that demonstrated systematic thinking and helped your audience follow complex concepts step by step.", "lockedParagraphsHtml": ["Your questioning voice evolved from formal (\\\"What is the difference between incivility and rudeness?\\\") to conversational (\\\"It's a theme of this show is I'm gonna ask you 17\\\") to personally invested (\\\"I've noticed this myself\\\"). This progression created intimacy and authenticity.", "You demonstrated vocal authority through strategic pushback: \\\"Let me just push back to make this conversation more colorful\\\" showed confidence in challenging expert perspectives while maintaining respect.", "Your self-deprecating humor (\\\"I'm not a deep thinker at all\\\") balanced intellectual curiosity with approachability, making complex topics feel accessible rather than intimidating to your audience."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 8.1, "scoreType": "higher", "teaser": "Your 4 distinctive hosting signatures and the unique way you blend vulnerability with intellectual rigor", "unlockedHtml": "Your signature style blends systematic inquiry with personal vulnerability. You consistently build conceptual scaffolding (\\\"So now that we've understood kind of where this comes from, what it is, how does this affect...\\\") while injecting authentic personal examples that ground abstract concepts.", "lockedParagraphsHtml": ["Your \\\"compound questioning\\\" style is distinctively yours - packing multiple related questions into single turns. While this can overwhelm, it also demonstrates the interconnected way your mind processes complex topics.", "You have a unique ability to extend metaphors collaboratively. Your expansion of the marathon story into a psychological framework showed creative co-thinking that many hosts lack.", "Your intellectual honesty stands out - admitting limitations (\\\"I haven't thought deeply about this\\\") while maintaining curiosity creates authentic learning moments rather than performative expertise.", "Your cultural bridge-building approach consistently connects individual psychology to broader social phenomena, helping audiences understand how personal and political intersect."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 7.8, "scoreType": "higher", "teaser": "3 moments where you created psychological safety plus your guest's comfort indicators", "unlockedHtml": "Your guest showed increasing comfort throughout the conversation, evidenced by their willingness to share detailed personal stories (the marathon anecdote) and their playful interaction when they turned the tables to ask you questions. Your consistent validation created space for expertise to flourish.", "lockedParagraphsHtml": ["You created psychological safety through phrases like \\\"Apologies if I'm extending this analogy too much\\\" - showing respect for their expertise while pursuing your curiosity. This balance encouraged deeper exploration.", "Your guest felt heard enough to offer additional resources (\\\"I have my little notes here... I'm happy to send to you\\\"), indicating they saw you as a genuine collaborator rather than just an interviewer.", "The moment your guest said \\\"Thank you for letting me ask you a question on your show\\\" revealed their comfort level - they felt safe enough to reverse roles temporarily, showing trust in your flexibility and openness."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 8.4, "scoreType": "higher", "teaser": "4 original frameworks you co-created and the breakthrough moment at minute 18", "unlockedHtml": "Your strongest intellectual chemistry emerged around the marathon metaphor extension, where you transformed a simple story into a three-part psychological framework. This collaborative meaning-making elevated both your understanding and your audience's comprehension of internal criticism.", "lockedParagraphsHtml": ["Together you developed the \\\"rehearsing frustration\\\" concept through social media, combining your guest's psychological insight with your personal Tesla example to create a concrete illustration of abstract processes.", "Your exploration of cultural relativism moved beyond academic discussion to practical application. Your questions about forgiveness and accommodation pushed the conversation toward actionable wisdom rather than theoretical knowledge.", "The political correctness dialogue became genuine collaborative inquiry where you both wrestled with definitions. Your admission of uncertainty created space for authentic exploration rather than performative debate.", "You co-created a nuanced framework around intention versus impact in communication, threading this theme through cultural differences, social media behavior, and political correctness - a sophisticated conceptual architecture."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 6.3, "scoreType": "lower", "teaser": "2 specific blind spots affecting guest responses and 3 timing improvements", "unlockedHtml": "Your primary blind spot is question complexity management. When you asked \\\"What is this reality of political correctness now and this immediate response... And also, do you think that social media has corrupted our sensitivity?\\\", your guest responded \\\"Well, so there's lots of questions, lots of things\\\" - a clear signal of overwhelm.", "lockedParagraphsHtml": ["You sometimes miss opportunities to deepen responses before moving to new topics. After powerful moments like your guest's marathon story, you could pause longer to explore implications before introducing new concepts.", "Your self-referential commentary (\\\"It's a theme of this show\\\", \\\"I'm not a deep thinker\\\") while charming, occasionally breaks conversational flow and shifts focus from guest expertise to your hosting style.", "Time pressure in the final third led to rapid-fire questioning that prevented full exploration of complex topics like political correctness. Slowing down could yield richer insights.", "You occasionally apologize unnecessarily (\\\"Apologies if I'm extending this analogy too much\\\") which, while polite, can undermine your authority as a host and interrupt conversational momentum."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 7.6, "scoreType": "higher", "teaser": "5 specific techniques to enhance your natural strengths plus 2 advanced questioning frameworks", "unlockedHtml": "Your natural strength in building conceptual bridges can be enhanced with the \\\"Spiral Technique\\\" - returning to earlier themes with new depth rather than linear progression. This would leverage your systematic thinking while creating richer exploration.", "lockedParagraphsHtml": ["Implement \\\"Question Banking\\\" - when multiple questions arise, acknowledge them (\\\"I have three directions I want to explore\\\") then tackle them sequentially. This maintains your natural curiosity while improving clarity.", "Develop \\\"Pause Power\\\" - after complex responses, count to three before speaking. This gives processing time and often prompts guests to add valuable details spontaneously.", "Use the \\\"Acknowledge-Bridge-Ask\\\" framework: validate the response, connect to broader themes, then ask your next question. This would enhance your already strong conceptual threading.", "Practice \\\"Vulnerability Timing\\\" - your personal disclosures are powerful but could be more strategically placed to deepen rather than redirect conversations.", "Create \\\"Complexity Ladders\\\" - start with simple questions and build complexity gradually rather than front-loading multiple concepts. This matches your systematic thinking to guest processing capacity."]}], "meta": {"jobId": "1645ba9a-88ab-475d-8367-664b155ea851"}};
+                
+                // Add Job ID Footer component
+                const JobIdFooter = ({ jobId }) => {
+                    const copyToClipboard = () => {
+                        navigator.clipboard.writeText(jobId).then(() => {
+                            alert('Job ID copied to clipboard!');
+                        });
+                    };
+                    
+                    return React.createElement('div', {
+                        style: {
+                            marginTop: '40px',
+                            padding: '20px',
+                            textAlign: 'center',
+                            borderTop: '1px solid rgba(148,163,184,0.18)',
+                            color: '#64748b'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'job-id',
+                            style: {
+                                fontSize: '12px',
+                                fontFamily: 'monospace, courier',
+                                cursor: 'pointer',
+                                userSelect: 'all'
+                            },
+                            onClick: copyToClipboard,
+                            title: 'Click to copy Job ID'
+                        }, `Job ID: ${jobId}`)
+                    ]);
+                };
+                
+                // Enhanced ReportApp with Job ID footer
+                const EnhancedReportApp = ({ report }) => {
+                    return React.createElement('div', {}, [
+                        React.createElement(ReportApp, { key: 'report', report }),
+                        React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
+                    ]);
+                };
+                
+                // Render the app
+                const root = ReactDOM.createRoot(document.getElementById('root'));
+                root.render(React.createElement(EnhancedReportApp, { report: reportData }));
+            </script>
+        </body>
+        </html>
+        
