@@ -4,303 +4,169 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuthenticityCo-Pilot - Podcast Analysis Reports</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
-            line-height: 1.6; 
-            max-width: 1200px; 
-            margin: 0 auto; 
-            padding: 20px; 
-            background-color: #f8f9fa; 
-        }
-        .container { 
-            background: white; 
-            padding: 40px; 
-            border-radius: 10px; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
-        }
-        h1 { 
-            color: #2c3e50; 
-            border-bottom: 3px solid #3498db; 
-            padding-bottom: 10px; 
-        }
-        h2 { 
-            color: #34495e; 
-            margin-top: 40px; 
-            border-left: 4px solid #3498db; 
-            padding-left: 15px; 
+            background: linear-gradient(180deg, #020617 0%, #0f172a 50%, #1e293b 100%);
+            min-height: 100vh;
         }
         .hero-section {
-            text-align: center;
-            margin: 40px 0;
-            padding: 40px;
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            border-radius: 12px;
-            position: relative;
-            overflow: hidden;
-        }
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyIi8+PC9nPjwvZz48L3N2Zz4=') repeat;
-            opacity: 0.3;
-        }
-        .hero-section > * {
-            position: relative;
-            z-index: 1;
-        }
-        .hero-title {
-            font-size: 3em;
-            margin-bottom: 10px;
-            font-weight: 700;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .hero-subtitle {
-            font-size: 1.2em;
-            opacity: 0.9;
-            margin-bottom: 30px;
-        }
-        .cta-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-        .cta-primary, .cta-secondary {
-            display: inline-block;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .cta-primary {
-            background: white;
-            color: #3498db;
-            box-shadow: 0 4px 15px rgba(255,255,255,0.3);
-        }
-        .cta-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255,255,255,0.4);
-        }
-        .cta-secondary {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-        .cta-secondary:hover {
-            background: rgba(255,255,255,0.3);
-            border-color: rgba(255,255,255,0.5);
-            transform: translateY(-2px);
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin: 40px 0;
-        }
-        .stat-card {
-            background: linear-gradient(135deg, #3498db, #2980b9);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease;
-        }
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-            transition: transform 0.6s ease;
-        }
-        .stat-card:hover::before {
-            transform: scale(1.1);
-        }
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 1;
-        }
-        .stat-label {
-            font-size: 1.1em;
-            opacity: 0.9;
-            position: relative;
-            z-index: 1;
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin: 30px 0;
+            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.12) 0%, rgba(2,6,23,0) 55%), 
+                       linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(15,23,42,0.95) 100%);
+            border: 1px solid rgba(148,163,184,0.18);
+            box-shadow: 0 10px 24px rgba(2,6,23,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
         }
         .feature-card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            border: 1px solid #e9ecef;
-            transition: all 0.3s ease;
-            position: relative;
+            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), 
+                       linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
+            border: 1px solid rgba(148,163,184,0.14);
+            box-shadow: 0 10px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.04);
         }
-        .feature-card:hover {
-            border-color: #3498db;
-            box-shadow: 0 8px 25px rgba(52,152,219,0.1);
-            transform: translateY(-3px);
+        .stat-card {
+            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.12) 0%, rgba(2,6,23,0) 55%), 
+                       linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(15,23,42,0.95) 100%);
+            border: 1px solid rgba(148,163,184,0.18);
+            box-shadow: 0 10px 24px rgba(2,6,23,0.5);
         }
-        .feature-icon {
-            font-size: 2em;
-            margin-bottom: 15px;
-            color: #3498db;
+        .neon-glow {
+            box-shadow: 0 0 12px rgba(59,130,246,0.4);
         }
-        .feature-title {
-            color: #2c3e50;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .description {
-            background: #ecf0f1;
-            padding: 25px;
-            border-left: 4px solid #3498db;
-            margin: 30px 0;
-            border-radius: 0 8px 8px 0;
-        }
-        .footer {
-            margin-top: 60px;
-            padding: 40px 0;
+        .section-label {
+            color: #cbd5e1;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             text-align: center;
-            background: #2c3e50;
-            color: white;
-            border-radius: 10px;
-            position: relative;
-        }
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #3498db, #2980b9, #3498db);
-            background-size: 200% 100%;
-            animation: gradient 3s ease infinite;
-        }
-        @keyframes gradient {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        .footer-content {
-            position: relative;
-            z-index: 1;
+            margin-bottom: 1.5rem;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="hero-section">
-            <h1 class="hero-title">🎯 AuthenticityCo-Pilot</h1>
-            <p class="hero-subtitle">Advanced AI-Powered Podcast Coaching Analysis</p>
-            <p>Transforming conversations through evidence-based insights and authenticity measurement</p>
+<body class="text-slate-200">
+    <div class="max-w-6xl mx-auto px-6 py-8">
+        <!-- Hero Section -->
+        <div class="hero-section rounded-2xl p-8 mb-12 text-center">
+            <div class="mb-6">
+                <span class="text-6xl mb-4 block">🎯</span>
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 tracking-tight">
+                    AuthenticityCo-Pilot
+                </h1>
+                <p class="text-xl text-slate-300 mb-6">
+                    Advanced AI-Powered Podcast Coaching Analysis
+                </p>
+                <p class="text-slate-400 max-w-2xl mx-auto">
+                    Transforming conversations through evidence-based insights and authenticity measurement
+                </p>
+            </div>
             
-            <div class="cta-buttons">
-                <a href="reports/" class="cta-primary">
+            <div class="flex flex-wrap gap-4 justify-center mt-8">
+                <a href="reports/" 
+                   class="inline-flex items-center gap-2 px-6 py-3 bg-blue-500 text-white rounded-lg font-medium neon-glow hover:bg-blue-400 transition-all duration-300">
                     📂 Browse All Reports
                 </a>
-                <a href="sample-report.html" class="cta-secondary">
+                <a href="sample-report.html" 
+                   class="inline-flex items-center gap-2 px-6 py-3 border border-slate-600 text-slate-300 rounded-lg font-medium hover:border-slate-500 hover:text-slate-200 transition-all duration-300">
                     📝 View Sample Report
                 </a>
             </div>
         </div>
         
-        <div class="description">
-            <p><strong>AuthenticityCo-Pilot</strong> is an advanced podcast analysis system that evaluates host performance, authenticity, and coaching effectiveness through AI-powered assessment. Our system provides detailed, evidence-based insights to help podcast hosts improve their facilitation skills and create more authentic conversations.</p>
+        <!-- About Section -->
+        <div class="feature-card rounded-2xl p-6 mb-10">
+            <p class="text-slate-200 leading-relaxed">
+                <strong class="text-white">AuthenticityCo-Pilot</strong> is an advanced podcast analysis system that evaluates host performance, authenticity, and coaching effectiveness through AI-powered assessment. Our system provides detailed, evidence-based insights to help podcast hosts improve their facilitation skills and create more authentic conversations.
+            </p>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">23+</div>
-                <div class="stat-label">Analysis Reports</div>
+        <!-- Stats -->
+        <h3 class="section-label">Analytics Overview</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="stat-card rounded-2xl p-6 text-center">
+                <div class="text-3xl font-bold text-white mb-2">23+</div>
+                <div class="text-slate-300 uppercase tracking-wide text-sm">Analysis Reports</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number">6</div>
-                <div class="stat-label">Podcast Channels</div>
+            <div class="stat-card rounded-2xl p-6 text-center">
+                <div class="text-3xl font-bold text-white mb-2">6</div>
+                <div class="text-slate-300 uppercase tracking-wide text-sm">Podcast Channels</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number">98%</div>
-                <div class="stat-label">Quote Accuracy</div>
-            </div>
-        </div>
-
-        <h2>🔍 What We Analyze</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🎭</div>
-                <h3 class="feature-title">Host Mission Alignment</h3>
-                <p>Evaluate how well the host facilitates authentic conversations and stays true to their coaching mission</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📈</div>
-                <h3 class="feature-title">Content Quality Assessment</h3>
-                <p>Measure conversation depth, evidence quality, and coaching value delivered to the audience</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">💬</div>
-                <h3 class="feature-title">Quote Attribution</h3>
-                <p>Ensure accurate speaker identification and context for transparent, trustworthy reporting</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon">📊</div>
-                <h3 class="feature-title">Longitudinal Tracking</h3>
-                <p>Track performance trends over time to identify growth patterns and development opportunities</p>
+            <div class="stat-card rounded-2xl p-6 text-center">
+                <div class="text-3xl font-bold text-white mb-2">98%</div>
+                <div class="text-slate-300 uppercase tracking-wide text-sm">Quote Accuracy</div>
             </div>
         </div>
 
-        <h2>🛠 Technical Features</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">🤖</div>
-                <h3 class="feature-title">Multi-Provider AI Analysis</h3>
-                <p>Powered by GPT-5 and Claude Sonnet 4 for comprehensive, unbiased assessment</p>
+        <!-- Analysis Features -->
+        <h3 class="section-label">What We Analyze</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="feature-card rounded-2xl p-6">
+                <div class="text-2xl mb-4 text-green-400">🎭</div>
+                <h4 class="text-white font-semibold mb-3">Host Mission Alignment</h4>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Evaluate how well the host facilitates authentic conversations and stays true to their coaching mission
+                </p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">🎙️</div>
-                <h3 class="feature-title">Real-Time Transcription</h3>
-                <p>High-accuracy speech-to-text via AssemblyAI for reliable conversation analysis</p>
+            <div class="feature-card rounded-2xl p-6">
+                <div class="text-2xl mb-4 text-blue-400">📈</div>
+                <h4 class="text-white font-semibold mb-3">Content Quality Assessment</h4>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Measure conversation depth, evidence quality, and coaching value delivered to the audience
+                </p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">🔍</div>
-                <h3 class="feature-title">Advanced Quality Control</h3>
-                <p>Sophisticated validation systems ensure reliable, consistent analytical insights</p>
+            <div class="feature-card rounded-2xl p-6">
+                <div class="text-2xl mb-4 text-purple-400">💬</div>
+                <h4 class="text-white font-semibold mb-3">Quote Attribution</h4>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Ensure accurate speaker identification and context for transparent, trustworthy reporting
+                </p>
             </div>
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
-                <h3 class="feature-title">TDD-Driven Development</h3>
-                <p>Test-driven approach ensures system reliability and accurate measurement</p>
+            <div class="feature-card rounded-2xl p-6">
+                <div class="text-2xl mb-4 text-amber-400">📊</div>
+                <h4 class="text-white font-semibold mb-3">Longitudinal Tracking</h4>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Track performance trends over time to identify growth patterns and development opportunities
+                </p>
             </div>
         </div>
 
-        <div class="footer">
-            <div class="footer-content">
-                <p><strong>AuthenticityCo-Pilot</strong> • Built with authenticity-first principles</p>
-                <p>Evidence-based coaching insights for transformational conversations</p>
+        <!-- Technical Features -->
+        <h3 class="section-label">Technical Features</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="feature-card rounded-2xl p-6">
+                <div class="text-2xl mb-4 text-cyan-400">🤖</div>
+                <h4 class="text-white font-semibold mb-3">Multi-Provider AI Analysis</h4>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Powered by GPT-5 and Claude Sonnet 4 for comprehensive, unbiased assessment
+                </p>
             </div>
+            <div class="feature-card rounded-2xl p-6">
+                <div class="text-2xl mb-4 text-red-400">🎙️</div>
+                <h4 class="text-white font-semibold mb-3">Real-Time Transcription</h4>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    High-accuracy speech-to-text via AssemblyAI for reliable conversation analysis
+                </p>
+            </div>
+            <div class="feature-card rounded-2xl p-6">
+                <div class="text-2xl mb-4 text-emerald-400">🔍</div>
+                <h4 class="text-white font-semibold mb-3">Advanced Quality Control</h4>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Sophisticated validation systems ensure reliable, consistent analytical insights
+                </p>
+            </div>
+            <div class="feature-card rounded-2xl p-6">
+                <div class="text-2xl mb-4 text-yellow-400">⚡</div>
+                <h4 class="text-white font-semibold mb-3">TDD-Driven Development</h4>
+                <p class="text-slate-300 text-sm leading-relaxed">
+                    Test-driven approach ensures system reliability and accurate measurement
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="feature-card rounded-2xl p-8 text-center">
+            <p class="text-white font-semibold mb-2">AuthenticityCo-Pilot</p>
+            <p class="text-slate-400 text-sm">
+                Built with authenticity-first principles • Evidence-based coaching insights for transformational conversations
+            </p>
         </div>
     </div>
 </body>
