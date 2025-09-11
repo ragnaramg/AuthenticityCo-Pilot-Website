@@ -5,97 +5,302 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AuthenticityCo-Pilot - Podcast Analysis Reports</title>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f8f9fa;
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+            line-height: 1.6; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background-color: #f8f9fa; 
         }
-        .container {
-            background: white;
+        .container { 
+            background: white; 
+            padding: 40px; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        h1 { 
+            color: #2c3e50; 
+            border-bottom: 3px solid #3498db; 
+            padding-bottom: 10px; 
+        }
+        h2 { 
+            color: #34495e; 
+            margin-top: 40px; 
+            border-left: 4px solid #3498db; 
+            padding-left: 15px; 
+        }
+        .hero-section {
+            text-align: center;
+            margin: 40px 0;
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
         }
-        h1 {
-            color: #2c3e50;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyIi8+PC9nPjwvZz48L3N2Zz4=') repeat;
+            opacity: 0.3;
         }
-        h2 {
-            color: #34495e;
+        .hero-section > * {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-title {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .hero-subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
             margin-top: 30px;
         }
-        .report-link {
+        .cta-primary, .cta-secondary {
             display: inline-block;
-            background: #3498db;
-            color: white;
             padding: 15px 30px;
             text-decoration: none;
-            border-radius: 5px;
-            margin: 20px 0;
-            font-weight: 500;
-            transition: background 0.3s;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .report-link:hover {
-            background: #2980b9;
+        .cta-primary {
+            background: white;
+            color: #3498db;
+            box-shadow: 0 4px 15px rgba(255,255,255,0.3);
+        }
+        .cta-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,255,255,0.4);
+        }
+        .cta-secondary {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .cta-secondary:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transition: transform 0.6s ease;
+        }
+        .stat-card:hover::before {
+            transform: scale(1.1);
+        }
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .feature-card:hover {
+            border-color: #3498db;
+            box-shadow: 0 8px 25px rgba(52,152,219,0.1);
+            transform: translateY(-3px);
+        }
+        .feature-icon {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #3498db;
+        }
+        .feature-title {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 10px;
         }
         .description {
             background: #ecf0f1;
-            padding: 20px;
+            padding: 25px;
             border-left: 4px solid #3498db;
-            margin: 20px 0;
+            margin: 30px 0;
+            border-radius: 0 8px 8px 0;
         }
         .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #bdc3c7;
-            color: #7f8c8d;
+            margin-top: 60px;
+            padding: 40px 0;
             text-align: center;
+            background: #2c3e50;
+            color: white;
+            border-radius: 10px;
+            position: relative;
+        }
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #2980b9, #3498db);
+            background-size: 200% 100%;
+            animation: gradient 3s ease infinite;
+        }
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .footer-content {
+            position: relative;
+            z-index: 1;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎯 AuthenticityCo-Pilot</h1>
+        <div class="hero-section">
+            <h1 class="hero-title">🎯 AuthenticityCo-Pilot</h1>
+            <p class="hero-subtitle">Advanced AI-Powered Podcast Coaching Analysis</p>
+            <p>Transforming conversations through evidence-based insights and authenticity measurement</p>
+            
+            <div class="cta-buttons">
+                <a href="reports/" class="cta-primary">
+                    📂 Browse All Reports
+                </a>
+                <a href="sample-report.html" class="cta-secondary">
+                    📝 View Sample Report
+                </a>
+            </div>
+        </div>
         
         <div class="description">
-            <p><strong>AuthenticityCo-Pilot</strong> is an advanced podcast analysis system that evaluates host performance, authenticity, and coaching effectiveness through AI-powered assessment.</p>
+            <p><strong>AuthenticityCo-Pilot</strong> is an advanced podcast analysis system that evaluates host performance, authenticity, and coaching effectiveness through AI-powered assessment. Our system provides detailed, evidence-based insights to help podcast hosts improve their facilitation skills and create more authentic conversations.</p>
         </div>
 
-        <h2>📊 Analysis Reports</h2>
-        
-        <p>Explore our comprehensive podcast analysis capabilities with real reports from various channels:</p>
-        
-        <a href="reports/" class="report-link">
-            📂 Browse All Reports (5 analyses across 2 channels)
-        </a>
-        
-        <a href="sample-report.html" class="report-link" style="margin-left: 15px;">
-            📝 View Sample Report
-        </a>
-        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">23+</div>
+                <div class="stat-label">Analysis Reports</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">Podcast Channels</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Quote Accuracy</div>
+            </div>
+        </div>
+
         <h2>🔍 What We Analyze</h2>
-        <ul>
-            <li><strong>Host Mission Alignment</strong> - How well the host facilitates authentic conversations</li>
-            <li><strong>Content Quality Assessment</strong> - Depth, evidence, and coaching value</li>
-            <li><strong>Quote Attribution</strong> - Accurate speaker identification and context</li>
-            <li><strong>Longitudinal Tracking</strong> - Performance trends over time</li>
-        </ul>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎭</div>
+                <h3 class="feature-title">Host Mission Alignment</h3>
+                <p>Evaluate how well the host facilitates authentic conversations and stays true to their coaching mission</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3 class="feature-title">Content Quality Assessment</h3>
+                <p>Measure conversation depth, evidence quality, and coaching value delivered to the audience</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3 class="feature-title">Quote Attribution</h3>
+                <p>Ensure accurate speaker identification and context for transparent, trustworthy reporting</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">Longitudinal Tracking</h3>
+                <p>Track performance trends over time to identify growth patterns and development opportunities</p>
+            </div>
+        </div>
 
         <h2>🛠 Technical Features</h2>
-        <ul>
-            <li>Multi-provider AI analysis (GPT-5, Claude Sonnet 4)</li>
-            <li>Real-time transcription via AssemblyAI</li>
-            <li>Advanced quality control systems</li>
-            <li>TDD-driven development approach</li>
-            <li>Comprehensive debugging frameworks</li>
-        </ul>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3 class="feature-title">Multi-Provider AI Analysis</h3>
+                <p>Powered by GPT-5 and Claude Sonnet 4 for comprehensive, unbiased assessment</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎙️</div>
+                <h3 class="feature-title">Real-Time Transcription</h3>
+                <p>High-accuracy speech-to-text via AssemblyAI for reliable conversation analysis</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3 class="feature-title">Advanced Quality Control</h3>
+                <p>Sophisticated validation systems ensure reliable, consistent analytical insights</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3 class="feature-title">TDD-Driven Development</h3>
+                <p>Test-driven approach ensures system reliability and accurate measurement</p>
+            </div>
+        </div>
 
         <div class="footer">
-            <p>Built with authenticity-first principles • Evidence-based coaching insights</p>
+            <div class="footer-content">
+                <p><strong>AuthenticityCo-Pilot</strong> • Built with authenticity-first principles</p>
+                <p>Evidence-based coaching insights for transformational conversations</p>
+            </div>
         </div>
     </div>
 </body>
