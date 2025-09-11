@@ -2,6 +2,8 @@
         <!DOCTYPE html>
         <html>
         <head>
+        <script src="../../shared-nav.js"></script>
+        
             <title>Podcast Analysis - Ayush Prakash</title>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,67 +21,7 @@
         </head>
         <body>
             
-        <div style="
-            margin-bottom: 0;
-            padding: 20px 30px;
-            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);                                   
-            border: 1px solid rgba(148,163,184,0.14);
-            border-radius: 0;
-            box-shadow: 0 2px 8px rgba(2,6,23,0.3);
-        ">
-            <div style="
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 20px;
-            ">
-                <div style="
-                    font-size: 12px;
-                    color: #94a3b8;
-                ">
-                    <p style="margin: 0; color: #e2e8f0; font-weight: 600;">AuthenticityCo-Pilot</p>
-                    <p style="margin: 5px 0 0 0;">Advanced Podcast Coaching Analysis • Evidence-based insights</p>                                                                                                          
-                </div>
-                <div style="
-                    display: flex;
-                    gap: 15px;
-                    flex-wrap: wrap;
-                    align-items: center;
-                ">
-                    <a href="../index.html" style="
-                        display: inline-block;
-                        background: #3b82f6;
-                        color: white;
-                        padding: 8px 16px;
-                        text-decoration: none;
-                        border-radius: 6px;
-                        font-weight: 500;
-                        font-size: 14px;
-                        transition: all 0.3s;
-                        box-shadow: 0 0 12px rgba(59,130,246,0.4);
-                    " onmouseover="this.style.background='#2563eb'; this.style.transform='translateY(-1px)'" 
-                      onmouseout="this.style.background='#3b82f6'; this.style.transform='translateY(0)'">
-                        ← Back to All Reports
-                    </a>
-                    <a href="../../index.html" style="
-                        display: inline-block;
-                        background: transparent;
-                        color: #cbd5e1;
-                        padding: 8px 16px;
-                        text-decoration: none;
-                        border-radius: 6px;
-                        font-weight: 500;
-                        font-size: 14px;
-                        border: 1px solid rgba(203,213,225,0.2);
-                        transition: all 0.3s;
-                    " onmouseover="this.style.borderColor='rgba(203,213,225,0.4)'; this.style.color='#e2e8f0'" 
-                      onmouseout="this.style.borderColor='rgba(203,213,225,0.2)'; this.style.color='#cbd5e1'">
-                        🏠 Home
-                    </a>
-                </div>
-            </div>
-        </div>
+        <div id="authenticity-nav-header"></div>
         <div id="root"></div>
             
             <script type="text/babel">
@@ -359,8 +301,22 @@ function ReportApp({ report }) {
                     "0 0 14px rgba(255,255,255,0.7), 0 0 28px rgba(59,130,246,0.4)",
                 }}
               >
-                Free Episode Insights
+                Episode Insights For:
               </h2>
+              
+              <div className="mt-3 text-slate-300">
+                <div className="italic text-slate-200">
+                  <span className="font-medium">Podcast:</span> {report.header.podcast}
+                </div>
+                <div className="italic text-slate-200 mt-1">
+                  <span className="font-medium">Episode:</span> {report.header.episode}
+                </div>
+                {report.header.guest && (
+                  <div className="italic text-slate-200 mt-1">
+                    <span className="font-medium">Guest:</span> {report.header.guest}
+                  </div>
+                )}
+              </div>
 
               <p className="mt-3 text-slate-300">
                 {unlockedCount} insights unlocked.{" "}
@@ -640,68 +596,7 @@ function ReportApp({ report }) {
                 root.render(React.createElement(EnhancedReportApp, { report: reportData }));
             </script>
         
-        <div style="
-            margin-top: 0;
-            padding: 20px 30px;
-            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), 
-                       linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
-            border: 1px solid rgba(148,163,184,0.14);
-            border-radius: 0;
-            box-shadow: 0 2px 8px rgba(2,6,23,0.3);
-        ">
-            <div style="
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 20px;
-            ">
-                <div style="
-                    font-size: 12px;
-                    color: #94a3b8;
-                ">
-                    <p style="margin: 0; color: #e2e8f0; font-weight: 600;">AuthenticityCo-Pilot</p>
-                    <p style="margin: 5px 0 0 0;">Advanced Podcast Coaching Analysis • Evidence-based insights</p>
-                </div>
-                <div style="
-                    display: flex;
-                    gap: 15px;
-                    flex-wrap: wrap;
-                    align-items: center;
-                ">
-                    <a href="../index.html" style="
-                        display: inline-block;
-                        background: #3b82f6;
-                        color: white;
-                        padding: 8px 16px;
-                        text-decoration: none;
-                        border-radius: 6px;
-                        font-weight: 500;
-                        font-size: 14px;
-                        transition: all 0.3s;
-                        box-shadow: 0 0 12px rgba(59,130,246,0.4);
-                    " onmouseover="this.style.background='#2563eb'; this.style.transform='translateY(-1px)'" 
-                      onmouseout="this.style.background='#3b82f6'; this.style.transform='translateY(0)'">
-                        ← Back to All Reports
-                    </a>
-                    <a href="../../index.html" style="
-                        display: inline-block;
-                        background: transparent;
-                        color: #cbd5e1;
-                        padding: 8px 16px;
-                        text-decoration: none;
-                        border-radius: 6px;
-                        font-weight: 500;
-                        font-size: 14px;
-                        border: 1px solid rgba(203,213,225,0.2);
-                        transition: all 0.3s;
-                    " onmouseover="this.style.borderColor='rgba(203,213,225,0.4)'; this.style.color='#e2e8f0'" 
-                      onmouseout="this.style.borderColor='rgba(203,213,225,0.2)'; this.style.color='#cbd5e1'">
-                        🏠 Home
-                    </a>
-                </div>
-            </div>
-        </div>
+        <div id="authenticity-nav-footer"></div>
         </body>
         </html>
         
