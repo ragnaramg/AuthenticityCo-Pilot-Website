@@ -49,12 +49,55 @@
 </head>
 <body>
 <body class="text-slate-200">
-    <div class="max-w-7xl mx-auto px-6 py-8">
-        <div class="nav-section rounded-lg p-4 mb-8">
-            <a href="../index.html" class="text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                🏠 Back to Home
-            </a>
+    <!-- AuthenticityCo-Pilot Header -->
+    <div style="
+        margin-bottom: 0;
+        padding: 20px 30px;
+        background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
+        border: 1px solid rgba(148,163,184,0.14);
+        border-radius: 0;
+        box-shadow: 0 2px 8px rgba(2,6,23,0.3);
+    ">
+        <div style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        ">
+            <div style="
+                font-size: 12px;
+                color: #94a3b8;
+            ">
+                <p style="margin: 0; color: #e2e8f0; font-weight: 600;">AuthenticityCo-Pilot</p>
+                <p style="margin: 5px 0 0 0;">Advanced Podcast Coaching Analysis • Evidence-based insights</p>
+            </div>
+            <div style="
+                display: flex;
+                gap: 15px;
+                flex-wrap: wrap;
+                align-items: center;
+            ">
+                <a href="../index.html" style="
+                    display: inline-block;
+                    background: #3b82f6;
+                    color: white;
+                    padding: 8px 16px;
+                    text-decoration: none;
+                    border-radius: 6px;
+                    font-weight: 500;
+                    font-size: 14px;
+                    transition: all 0.3s;
+                    box-shadow: 0 0 12px rgba(59,130,246,0.4);
+                " onmouseover="this.style.background='#2563eb'; this.style.transform='translateY(-1px)'" 
+                  onmouseout="this.style.background='#3b82f6'; this.style.transform='translateY(0)'">
+                    🏠 Home
+                </a>
+            </div>
         </div>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-6 py-8">
         
         <div class="header-section rounded-2xl p-8 mb-10 text-center">
             <div class="mb-4">
@@ -562,21 +605,69 @@
             </div>
         </div>
         
-        <div class="report-card rounded-2xl p-8 text-center mt-16">
-            <div class="flex flex-wrap gap-4 justify-center mb-6">
-                <a href="../index.html" 
-                   class="inline-flex items-center gap-2 px-4 py-2 border border-slate-600 text-slate-300 rounded-lg font-medium hover:border-slate-500 hover:text-slate-200 transition-all duration-300">
-                    🏠 Home
-                </a>
-                <button onclick="window.scrollTo(0,0)"
-                        class="inline-flex items-center gap-2 px-4 py-2 border border-slate-600 text-slate-300 rounded-lg font-medium hover:border-slate-500 hover:text-slate-200 transition-all duration-300">
-                    ⬆️ Back to Top
-                </button>
+        <!-- AuthenticityCo-Pilot Footer -->
+        <div style="
+            margin-top: 0;
+            padding: 20px 30px;
+            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), 
+                       linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
+            border: 1px solid rgba(148,163,184,0.14);
+            border-radius: 0;
+            box-shadow: 0 2px 8px rgba(2,6,23,0.3);
+        ">
+            <div style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 20px;
+            ">
+                <div style="
+                    font-size: 12px;
+                    color: #94a3b8;
+                ">
+                    <p style="margin: 0; color: #e2e8f0; font-weight: 600;">AuthenticityCo-Pilot</p>
+                    <p style="margin: 5px 0 0 0;">Advanced Podcast Coaching Analysis • Evidence-based insights</p>
+                </div>
+                <div style="
+                    display: flex;
+                    gap: 15px;
+                    flex-wrap: wrap;
+                    align-items: center;
+                ">
+                    <a href="../index.html" style="
+                        display: inline-block;
+                        background: #3b82f6;
+                        color: white;
+                        padding: 8px 16px;
+                        text-decoration: none;
+                        border-radius: 6px;
+                        font-weight: 500;
+                        font-size: 14px;
+                        transition: all 0.3s;
+                        box-shadow: 0 0 12px rgba(59,130,246,0.4);
+                    " onmouseover="this.style.background='#2563eb'; this.style.transform='translateY(-1px)'" 
+                      onmouseout="this.style.background='#3b82f6'; this.style.transform='translateY(0)'">
+                        🏠 Home
+                    </a>
+                    <button onclick="window.scrollTo(0,0)" style="
+                        display: inline-block;
+                        background: transparent;
+                        color: #cbd5e1;
+                        padding: 8px 16px;
+                        text-decoration: none;
+                        border-radius: 6px;
+                        font-weight: 500;
+                        font-size: 14px;
+                        border: 1px solid rgba(203,213,225,0.2);
+                        transition: all 0.3s;
+                        cursor: pointer;
+                    " onmouseover="this.style.borderColor='rgba(203,213,225,0.4)'; this.style.color='#e2e8f0'" 
+                      onmouseout="this.style.borderColor='rgba(203,213,225,0.2)'; this.style.color='#cbd5e1'">
+                        ⬆️ Back to Top
+                    </button>
+                </div>
             </div>
-            <p class="text-white font-semibold mb-2">AuthenticityCo-Pilot</p>
-            <p class="text-slate-400 text-sm">
-                Advanced Podcast Coaching Analysis • Evidence-based insights for transformational conversations
-            </p>
         </div>
     </div>
 </body>
