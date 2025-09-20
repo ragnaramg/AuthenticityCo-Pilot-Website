@@ -1,0 +1,685 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <script src="../../shared-nav.js"></script>
+        
+            <title>Podcast Analysis - MorningMood</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+            <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+            <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+            <script src="https://cdn.tailwindcss.com"></script>
+            <style>
+                /* Dark neon theme overrides to ensure compatibility */
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+            </style>
+        </head>
+        <body>
+            
+        <div id="authenticity-nav-header"></div>
+        <div id="root"></div>
+            
+            <script type="text/babel">
+                /**
+ * Podcast Interviewer Co-Pilot — Report Template
+ * - Dark neon theme preserved
+ * - Expects a `report` prop (JSON) that matches the schema below
+ * - First-insight-free + teaser + locked everywhere
+ * - Conversational headers mapped at render
+ */
+
+// Available via global React
+const { useState } = React;
+
+/** ==== JSON prop schema (matches your latest report format) ==== */
+// Expected report structure with various sections for podcast analysis
+
+/* ---------- helpers ---------- */
+
+const iconForTitle = (title) => {
+  const t = title.toLowerCase();
+  if (t.includes("episode arc") || t.includes("conversation")) return "📈";
+  if (t.includes("quote") || t.includes("highlight") || t.includes("remembering")) return "💬";
+  if (t.includes("tone") || t.includes("energy")) return "🌊";
+  if (t.includes("theme") || t.includes("threads")) return "🧵";
+  if (t.includes("style") || t.includes("habits")) return "✨";
+  if (t.includes("voice")) return "🎙️";
+  if (t.includes("guest") || t.includes("rapport") || t.includes("feel")) return "🤝";
+  if (t.includes("chem") || t.includes("co-creation") || t.includes("ideas")) return "🧪";
+  if (t.includes("blind")) return "🙈";
+  if (t.includes("resource") || t.includes("tools")) return "📚";
+  return "•";
+};
+
+function effectiveScore(score, scoreType) {
+  if (score == null) return null;
+  if (scoreType === "lower") return 10 - score;
+  return score;
+}
+
+function computeHeaderStats(themes) {
+  const scored = themes
+    .map((d) => ({ d, eff: effectiveScore(d.score, d.scoreType) }))
+    .filter((x) => x.eff !== null);
+
+  const overall =
+    scored.length > 0
+      ? +(scored.reduce((s, x) => s + x.eff, 0) / scored.length).toFixed(1)
+      : 0;
+
+  const strength = scored.reduce((best, x) => (x.eff > best.eff ? x : best), scored[0]);
+  const opportunity = scored.reduce((worst, x) => (x.eff < worst.eff ? x : worst), scored[0]);
+
+  return {
+    overall,
+    strengthTitle: strength?.d?.title ?? "",
+    strengthScoreLabel: strength?.d?.score != null ? `${strength.d.score}/10` : "",
+    strengthColor: "#22C55E", // always green
+    opportunityTitle: opportunity?.d?.title ?? "",
+    opportunityScoreLabel: opportunity?.d?.score != null ? `${opportunity.d.score}/10` : "",
+    opportunityColor: "#FACC15", // always amber
+  };
+}
+
+/* ---------- sparkline ---------- */
+
+const Sparkline = ({ values, color }) => {
+  if (!values || values.length < 2) return null;
+  const W = 360, H = 64, pad = 6;
+  const clamp01 = (v) => Math.min(1, Math.max(0, v));
+  const pts = values.map((v, i) => {
+    const x = pad + (i * (W - pad * 2)) / (values.length - 1);
+    const y = pad + (H - pad * 2) * (1 - clamp01(v));
+    return [x, y];
+  });
+  const path = pts.map(([x, y], i) => `${i ? "L" : "M"} ${x} ${y}`).join(" ");
+  const area = `${path} L ${pts[pts.length - 1][0]} ${H - pad} L ${pts[0][0]} ${H - pad} Z`;
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="64" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id={`g-${color.replace("#", "")}`} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.22" />
+          <stop offset="100%" stopColor={color} stopOpacity="0.04" />
+        </linearGradient>
+      </defs>
+      <path d={area} fill={`url(#g-${color.replace("#", "")})`} />
+      <path d={path} fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" />
+      {pts.map(([x, y], i) => <circle key={i} cx={x} cy={y} r={2} fill={color} />)}
+    </svg>
+  );
+};
+
+/* ---------- small UI bits ---------- */
+
+const SectionLabel = ({ children }) => (
+  <h3 className="mb-3 text-slate-300 uppercase tracking-widest text-xl text-center">{children}</h3>
+);
+
+const PillScore = ({ value, color }) => (
+  <span
+    className="text-[13px] font-bold px-2 py-1 rounded-full border"
+    style={{
+      borderColor: color,
+      color,
+      boxShadow: `0 0 12px ${color}33`,
+      background: "rgba(2,6,23,0.4)",
+    }}
+  >
+    {value}
+  </span>
+);
+
+const ClampParagraph = ({ html, initiallyClamped = true }) => {
+  const [clamped, setClamped] = useState(initiallyClamped);
+  return (
+    <div>
+      <div
+        style={
+          clamped
+            ? {
+                display: "-webkit-box",
+                WebkitLineClamp: 5,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }
+            : {}
+        }
+        className="text-[14px] text-slate-200 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      <button
+        onClick={() => setClamped((v) => !v)}
+        className="mt-1 text-[12px] text-blue-300 hover:text-blue-200 underline"
+      >
+        {clamped ? "See more" : "See less"}
+      </button>
+    </div>
+  );
+};
+
+/** Locked content blur with teaser + count */
+const LockedListBlur = ({ teaser, items }) => {
+  const [open, setOpen] = useState(false);
+
+  const List = (
+    <ol className="list-decimal pl-5 space-y-3">
+      {items.map((p, i) => (
+        <li key={i} className="text-[14px] text-slate-300">
+          <span dangerouslySetInnerHTML={{ __html: p }} />
+        </li>
+      ))}
+    </ol>
+  );
+
+  if (open) return <div className="mt-2">{List}</div>;
+
+  return (
+    <div className="relative rounded-md overflow-hidden mt-2">
+      <div className="p-3 space-y-2">{List}</div>
+      <div
+        className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
+        style={{
+          background: "rgba(2,6,23,0.55)",
+          backdropFilter: "blur(8px)",
+          borderTop: "1px solid rgba(255,255,255,0.04)",
+          borderBottom: "1px solid rgba(255,255,255,0.04)",
+        }}
+      >
+        {teaser && (
+          <span className="text-[13px] font-medium text-slate-100 mb-2">
+            {teaser}
+          </span>
+        )}
+        <span className="text-[11px] text-slate-300 mb-3">
+          Includes <strong>{items.length}</strong> insights
+        </span>
+        <button
+          className="text-[12px] text-blue-300 hover:text-blue-200 underline"
+          onClick={() => setOpen(true)}
+        >
+          Upgrade to unlock
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/* ---------- title mapping to conversational headers ---------- */
+
+function mapDigestTitle(oldTitle) {
+  if (/episode arc/i.test(oldTitle)) return "How the Conversation Flowed";
+  if (/quotable|highlight/i.test(oldTitle)) return "Moments Worth Remembering";
+  if (/tone snapshot|shifts? in your energy/i.test(oldTitle)) return "Shifts in Your Energy";
+  if (/emergent theme|threads?/i.test(oldTitle)) return "The Threads You and Your Guest Wove Together";
+  if (/conversation(al)? style|habits/i.test(oldTitle)) return "Your Hosting Habits in Numbers";
+  return oldTitle;
+}
+
+function mapThemeTitle(oldTitle) {
+  if (/voice reflection/i.test(oldTitle)) return "How Your Voice Carried the Room";
+  if (/style.*differentiation/i.test(oldTitle)) return "What Makes You, You";
+  if (/guest.*connection/i.test(oldTitle)) return "How You Made Them Feel";
+  if (/intellectual.*chem|co-creation|ideas/i.test(oldTitle)) return "The Ideas You Cooked Up Together";
+  if (/blind/i.test(oldTitle)) return "Places to Grow (Without Losing Yourself)";
+  if (/resource|tools/i.test(oldTitle)) return "Extra Tools for Your Growth";
+  return oldTitle;
+}
+
+/* ------------------------------ APP ------------------------------ */
+
+function ReportApp({ report }) {
+  const headerStats = computeHeaderStats(report.themes);
+
+  const unlockedCount =
+    report.digest.length + report.themes.length + 1 /* game plan */;
+
+  const totalLocked =
+    report.digest.reduce((n, i) => n + i.lockedParagraphsHtml.length, 0) +
+    report.themes.reduce((n, i) => n + i.lockedParagraphsHtml.length, 0) +
+    report.gamePlan.lockedActions.length +
+    (report.progress ? report.progress.lockedItemsHtml.length : 0);
+
+  return (
+    <div
+      className="min-h-screen text-slate-100"
+      style={{
+        background:
+          "radial-gradient(120% 120% at 0% 0%, #0B1220 0%, #0B1220 12%, #0F172A 40%, #0F172A 100%)",
+        fontFamily: "Inter, system-ui, sans-serif",
+      }}
+    >
+      <div className="max-w-[1200px] mx-auto px-6 py-10">
+        {/* Header */}
+        <div
+          className="mb-8 rounded-2xl p-6 md:p-8"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+            boxShadow: "0 10px 30px rgba(2,6,23,0.5)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(148,163,184,0.18)",
+          }}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+            {/* Overall */}
+            <div
+              className="rounded-xl p-4 h-full flex flex-col items-center justify-center text-center"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(2,6,23,0.35) 0%, rgba(2,6,23,0.2) 100%)",
+                border: "1px solid rgba(148,163,184,0.14)",
+              }}
+            >
+              <div className="text-slate-200 text-[18px] uppercase tracking-wider font-semibold">
+                Overall Score
+              </div>
+              <div
+                className="mt-1 font-extrabold"
+                style={{
+                  fontSize: "36px",
+                  color: "#22C55E",
+                  textShadow: "0 0 12px rgba(34,197,94,0.5)",
+                  lineHeight: 1.1,
+                }}
+              >
+                {headerStats.overall.toFixed(1)}/10
+              </div>
+            </div>
+
+            {/* Title Block */}
+            <div className="flex flex-col items-center justify-center text-center">
+              <h2
+                className="text-[24px] font-semibold text-white"
+                style={{
+                  textShadow:
+                    "0 0 14px rgba(255,255,255,0.7), 0 0 28px rgba(59,130,246,0.4)",
+                }}
+              >
+                Episode Insights For:
+              </h2>
+              
+              <div className="mt-3 text-slate-300">
+                <div className="italic text-slate-200">
+                  <span className="font-medium">Podcast:</span> {report.header.podcast}
+                </div>
+                <div className="italic text-slate-200 mt-1">
+                  <span className="font-medium">Episode:</span> {report.header.episode}
+                </div>
+                {report.header.guest && (
+                  <div className="italic text-slate-200 mt-1">
+                    <span className="font-medium">Guest:</span> {report.header.guest}
+                  </div>
+                )}
+              </div>
+
+              <p className="mt-3 text-slate-300">
+                {unlockedCount} insights unlocked.{" "}
+                <button
+                  className="underline text-blue-300 hover:text-blue-200"
+                  onClick={() => console.log("open upgrade")}
+                >
+                  Upgrade
+                </button>{" "}
+                to see {totalLocked} more.
+              </p>
+            </div>
+
+            {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
+            <div
+              className="rounded-xl p-4 h-full flex flex-col items-start justify-center text-left"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(2,6,23,0.35) 0%, rgba(2,6,23,0.2) 100%)",
+                border: "1px solid rgba(148,163,184,0.14)",
+              }}
+            >
+              <div className="text-white text-[18px] uppercase tracking-wider font-semibold">
+                Strength
+              </div>
+              <div className="mt-1 text-[14px] text-slate-200">
+                {report.gamePlan.strength}
+              </div>
+
+              <div className="mt-4 text-white text-[18px] uppercase tracking-wider font-semibold">
+                Opportunity
+              </div>
+              <div className="mt-1 text-[14px] text-slate-200">
+                {report.gamePlan.opportunity}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Your Game Plan at a Glance */}
+        <SectionLabel>Your Game Plan at a Glance</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10"
+          style={{
+            background:
+              "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+            border: "1px solid rgba(148,163,184,0.14)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div className="text-[14px] text-slate-200 leading-relaxed">
+            <p className="mb-3">
+              <span className="font-semibold">Free:</span>{" "}
+              <span className="text-slate-100">{report.gamePlan.freeAction.title}</span>{" "}
+              — {report.gamePlan.freeAction.detail}
+            </p>
+            <LockedListBlur
+              teaser={report.gamePlan.teaser}
+              items={report.gamePlan.lockedActions}
+            />
+          </div>
+        </div>
+
+        {/* The Vibe Check */}
+        <SectionLabel>The Vibe Check</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10 text-center"
+          style={{
+            background:
+              "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+            border: "1px solid rgba(148,163,184,0.14)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div style={{ fontSize: "24px" }} className="mb-2">
+            {report.vibeCheck.icon}
+          </div>
+          <div
+            style={{ fontSize: "16px" }}
+            className="text-slate-200 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: report.vibeCheck.vibeHtml }}
+          />
+          <div
+            style={{ fontSize: "16px" }}
+            className="mt-2 text-slate-200 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: report.vibeCheck.quoteHtml }}
+          />
+        </div>
+
+        {/* Digest */}
+        <SectionLabel>Digest</SectionLabel>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {report.digest.map((c, idx) => {
+            const mappedTitle = mapDigestTitle(c.title);
+            return (
+              <div
+                key={idx}
+                className="rounded-2xl p-5"
+                style={{
+                  background:
+                    "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+                  border: "1px solid rgba(148,163,184,0.14)",
+                  boxShadow:
+                    "0 10px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.04)",
+                }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-[16px]" style={{ color: c.iconColor }}>
+                    {iconForTitle(mappedTitle)}
+                  </span>
+                  <div
+                    className="text-[15px] font-semibold"
+                    style={{ color: c.iconColor, textShadow: `0 0 6px ${c.iconColor}55` }}
+                  >
+                    {mappedTitle}
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+                    Unlocked Insight
+                  </p>
+                  <ClampParagraph html={c.unlockedHtml} />
+                </div>
+
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Scored Themes */}
+        <SectionLabel>Scored Themes</SectionLabel>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {report.themes.map((ins, idx) => {
+            const mappedTitle = mapThemeTitle(ins.title);
+            return (
+              <div
+                key={idx}
+                className="rounded-2xl p-5"
+                style={{
+                  background:
+                    "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+                  border: "1px solid rgba(148,163,184,0.14)",
+                  boxShadow:
+                    "0 10px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.04)",
+                }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[16px]" style={{ color: ins.iconColor }}>
+                      {iconForTitle(mappedTitle)}
+                    </span>
+                    <h4
+                      className="text-[15px] font-semibold"
+                      style={{ color: ins.iconColor, textShadow: `0 0 6px ${ins.iconColor}55` }}
+                    >
+                      {mappedTitle}
+                    </h4>
+                  </div>
+                  {ins.score != null && <PillScore value={`${ins.score}/10`} color={ins.color} />}
+                </div>
+
+                {ins.trend && ins.trend.length > 1 && (
+                  <div
+                    className="rounded-md px-2 py-1 mb-3"
+                    style={{ background: "linear-gradient(180deg, #0B1220 0%, #0F172A 100%)" }}
+                  >
+                    <Sparkline values={ins.trend} color={ins.color} />
+                  </div>
+                )}
+
+                <div className="space-y-1">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+                    Unlocked Insight
+                  </p>
+                  <ClampParagraph html={ins.unlockedHtml} />
+                </div>
+
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Progress Over Time - only show if progress data exists */}
+        {report.progress && (
+          <>
+            <SectionLabel>Tracking Your Progress Over Time</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+            border: "1px solid rgba(148,163,184,0.18)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div className="mb-3">
+            <p
+              className="text-[14px] text-slate-200 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: report.progress.summaryHtml }}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {report.progress.series.map((s, i) => (
+              <div key={i}>
+                <div className="text-xs text-slate-300 mb-1">{s.label}</div>
+                <div
+                  className="rounded-md px-2 py-1"
+                  style={{ background: "linear-gradient(180deg, #0B1220 0%, #0F172A 100%)" }}
+                >
+                  <Sparkline values={s.values} color={s.color} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <LockedListBlur
+            teaser={report.progress.lockedTeaser}
+            items={report.progress.lockedItemsHtml}
+          />
+        </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+                
+                // Report data from server
+                const reportData = {"header": {"podcast": "MorningMood", "host": "Unknown Host", "episode": "How I Convinced a 100-Year-Old Company to Go Digital in 6 Minutes", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your storytelling creates powerful emotional connection through authentic vulnerability and personal history, making business lessons feel deeply relatable and memorable.", "opportunity": "Your natural enthusiasm sometimes leads to scattered focus - you could amplify impact by structuring your core message more tightly around fewer key points.", "freeAction": {"title": "Create Story Anchors for Your Key Messages", "detail": "Before recording, identify your 2-3 main takeaways and assign each one a specific story moment. In this episode, your 'start with what you have' message was powerful but got diluted across multiple tangents. Try opening with your conclusion, then telling the story that proves it, then reinforcing the lesson. This structure will help your natural storytelling style land with maximum impact."}, "teaser": "Plus 3 advanced techniques for managing your storytelling pace, building stronger episode frameworks, and turning your personal experiences into repeatable teaching moments.", "lockedActions": ["Implement the 'Breadcrumb Technique' - drop hints about your main message early, then circle back to reinforce it every 3-4 minutes to keep listeners anchored to your core point", "Use 'Emotional Bookends' - start and end with the same energy level you want listeners to feel, rather than letting your natural excitement build throughout (which can lose some listeners early)", "Create 'Teaching Moments' - after each personal story, pause and explicitly state the business principle it demonstrates, then give listeners 10 seconds to internalize it before moving forward"]}, "vibeCheck": {"icon": "\ud83d\udd25", "vibeHtml": "<strong>Fired Up Storyteller</strong><br/>You brought infectious enthusiasm and authentic vulnerability that made listeners feel like they're getting insider access to your world. Your energy was consistently high and engaging.", "quoteHtml": "\"I am super jazzed to partner with these people and I can't believe I'm back in the oyster business again because it's wild to me that this is where I came from.\""}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "Analysis of your pacing patterns, transition techniques, and 3 specific moments where your flow either accelerated or slowed listener engagement.", "unlockedHtml": "You structured this as a classic hero's journey - starting with your origins, moving through your corporate adventure, then returning home with new wisdom. This narrative arc kept listeners engaged even through a 20-minute solo episode, which is notably difficult to sustain.", "lockedParagraphsHtml": ["Your transitions relied heavily on time-based markers (\"30 years later,\" \"a couple weeks ago\") which created clear chronological anchoring but missed opportunities for thematic bridges that could have strengthened your core message about starting with what you have.", "You demonstrated excellent 'conversational pivoting' when you shifted from backstory to present-day opportunity: \"Well, turns out that there's another oyster company who needs help\" - this phrase effectively transported listeners from past to present without losing narrative momentum.", "Your pacing accelerated noticeably when discussing the business opportunity (speaking faster, more excited tone) but slowed during reflective moments about your journey. This natural rhythm variation kept the monologue feeling conversational rather than scripted."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "4 standout moments that showcased your hosting strengths, plus 2 missed opportunities that could have elevated the episode further.", "unlockedHtml": "Your most powerful moment was the six-minute conversation recreation: \"That six minute conversation changed a hundred years of thinking because we could do it with what they have.\" You made listeners feel like they were witnessing a pivotal business moment in real-time.", "lockedParagraphsHtml": ["The vulnerability in admitting \"I did not take that job. Looking back, I regret that now\" created instant relatability - listeners could connect with the universal experience of wondering about paths not taken, making your eventual return to oysters feel like destiny rather than coincidence.", "Your community description was masterful: \"They're akin to ranchers... kind of lonely people, loners, rough, gruff sort of men and women. But that was my community.\" This painted a vivid picture while showing respect for people others might dismiss, revealing your character.", "You missed an opportunity when you said \"we haven't gotten it in the Nordstrom stuff guys\" - this created confusion rather than intrigue. A better approach would have been to briefly tease what's coming without breaking the current narrative flow."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "Detailed energy mapping showing 3 distinct phases of your delivery, plus specific techniques for managing energy dips in future solo episodes.", "unlockedHtml": "Your energy started warm and nostalgic during the childhood stories, then shifted to passionate advocacy when discussing helping watermen during COVID, and finally peaked at pure excitement when revealing your new partnership. This natural progression kept listeners emotionally engaged throughout.", "lockedParagraphsHtml": ["Your voice tone dropped noticeably when you said \"I involved myself. I did not get involved. There was no movement. I made a movement\" - this deliberate pacing created emphasis and showed your determination without sounding boastful.", "The phrase \"I am super fucking excited\" appeared three times with increasing intensity, showing genuine enthusiasm but also revealing a pattern where you rely on profanity for emphasis. This works for your brand but could be varied for even stronger impact.", "Your energy briefly dipped during the technical explanation of what the company needed (\"website and some boxes and a shipping contract\") but immediately recovered when you returned to the emotional impact of the decision. This shows you're most powerful when connecting business strategy to human stories."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "Since this was a solo episode, analysis of how you wove together multiple storylines and 3 techniques you used to maintain listener engagement without a conversation partner.", "unlockedHtml": "As a solo host, you effectively created multiple 'voices' in your narrative - your past self, the watermen community, the oyster company owners, and your current advisor self. This technique prevented the monologue from feeling one-dimensional.", "lockedParagraphsHtml": ["You used dialogue recreation masterfully: \"I can't get off the damn phone. These watermen are calling me all day long\" - this brought Mike Hut's voice into the story, making listeners feel like they were hearing a conversation rather than a report about one.", "Your thread about 'coming full circle' wove throughout the entire episode, from the opening childhood memories to the closing excitement about the new venture. This gave the rambling story a satisfying sense of completion and purpose.", "You created tension by withholding the company name (\"I'm not going to say who the company is yet\") which is a classic storytelling technique, but you could have built even more intrigue by hinting at why this particular partnership is so significant to the industry."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "Comprehensive metrics including your speaking pace, story-to-lesson ratio, and 4 specific patterns that define your hosting style.", "unlockedHtml": "You spoke for approximately 20 minutes straight while maintaining engagement - a significant achievement for solo podcasting. Your story-to-lesson ratio was roughly 80/20, with most teaching moments concentrated in the final third of the episode.", "lockedParagraphsHtml": ["You used the phrase 'start with what you have' or variations 8 times, with increasing emphasis each time. This repetition effectively drove home your core message, though it was concentrated in the final 5 minutes rather than distributed throughout.", "Your average sentence length increased from conversational (8-12 words) during storytelling to complex (15-20 words) during business analysis, showing how you naturally shift into 'advisor mode' when discussing strategy.", "You interrupted yourself 12 times with parenthetical thoughts or corrections (like 'Omnipresent in Omni president. That was, that was not talk about that'), which adds authenticity but could be reduced by 30% for tighter delivery without losing your natural style."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 8.2, "scoreType": "higher", "teaser": "Analysis of your vocal authority, storytelling rhythm, and 3 specific techniques that made your solo delivery compelling for 20+ minutes.", "unlockedHtml": "Your voice carried authentic authority throughout - you spoke as someone who's lived these experiences rather than someone reporting on them. The combination of vulnerability (\"I regret that now\") and confidence (\"I made a movement\") created a compelling duality that kept listeners invested.", "lockedParagraphsHtml": ["Your vocal pacing naturally slowed during emotional moments and accelerated during exciting revelations, creating an organic rhythm that felt conversational despite being a monologue. This instinctive pacing control is a significant hosting strength.", "You used strategic profanity (\"pretty fucking excited\") at emotional peaks, which reinforced authenticity for your audience while maintaining professional credibility. This balance is difficult to achieve and shows sophisticated audience awareness.", "Your voice carried genuine surprise when you said \"I couldn't believe it myself\" about the company's decision, which made listeners feel like they were getting real-time reactions rather than a rehearsed story. This immediacy is a powerful engagement tool."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 7.9, "scoreType": "higher", "teaser": "Deep dive into your signature storytelling approach, audience connection techniques, and 2 style elements that differentiate you from other business podcasters.", "unlockedHtml": "Your signature style blends corporate expertise with down-home authenticity - you can discuss million-dollar businesses while saying \"Good morning, my Moody's\" with equal credibility. This duality makes complex business concepts accessible without dumbing them down.", "lockedParagraphsHtml": ["You consistently frame business success through community impact rather than personal achievement. Even when discussing your own expertise, you focus on how it helped watermen during COVID, which positions you as a servant leader rather than a self-promoter.", "Your storytelling style uses 'nested loops' - you open multiple story threads (childhood, COVID, new partnership) then weave them together for a satisfying conclusion. This technique keeps listeners engaged because they're waiting for resolution on multiple fronts.", "You have a distinctive way of validating your audience's struggles before offering solutions: acknowledging that the company owners had legitimate concerns before showing them a different perspective. This empathy-first approach makes your advice more palatable."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 8.5, "scoreType": "higher", "teaser": "Since this was solo, analysis of how you made your AUDIENCE feel, including 3 emotional journey stages and specific language that created connection.", "unlockedHtml": "You made your audience feel like trusted confidants getting insider access to an exciting business opportunity. Your phrase \"I'm going to bring you behind the scenes\" explicitly invited them into your world, creating intimacy despite the one-way communication format.", "lockedParagraphsHtml": ["You created anticipation by promising future content (\"I'm going to start the story now\") while delivering immediate value, making listeners feel like they're getting both instant gratification and something to look forward to. This dual satisfaction is sophisticated audience management.", "Your vulnerability about coming full circle (\"I hope this doesn't mean that I'm done with my circle\") made listeners feel protective and invested in your success. This emotional investment transforms casual listeners into advocates.", "You consistently used inclusive language (\"we're going to\", \"I got you, babe\") that made listeners feel like partners in your journey rather than passive consumers of your content. This collaborative tone is particularly effective for business podcasting."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 7.6, "scoreType": "higher", "teaser": "Analysis of your solo ideation process, how you developed the 'start with what you have' concept, and 3 techniques for stronger message development.", "unlockedHtml": "Your central idea - 'start with what you have' - emerged organically from your story rather than being imposed on it. This natural development made the lesson feel discovered rather than preached, which is more persuasive for business audiences.", "lockedParagraphsHtml": ["You demonstrated the concept before naming it, showing how the oyster company had everything they needed before explicitly stating the principle. This 'show then tell' approach helps listeners internalize lessons more effectively than abstract explanations.", "Your idea development followed a classic problem-solution-proof structure: the company's hesitation (problem), your reframing conversation (solution), and their mindset shift (proof). This logical progression makes your advice feel tested rather than theoretical.", "You connected your main message to broader business wisdom by referencing Andrew's insight about failure, showing how individual lessons fit into larger frameworks. This contextual thinking elevates your content from tips to philosophy."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 6.8, "scoreType": "lower", "teaser": "3 specific areas where tighter structure could amplify your natural strengths, plus techniques for maintaining authenticity while improving focus.", "unlockedHtml": "Your biggest growth opportunity lies in message architecture - you have powerful insights and compelling delivery, but sometimes bury your key points in the middle of longer narratives. Earlier signposting could help listeners follow your journey more easily.", "lockedParagraphsHtml": ["You tend to front-load context before revealing relevance, which can lose some listeners early. Consider opening with your conclusion (\"start with what you have\") then telling the story that proves it, rather than building chronologically to the lesson.", "Your natural enthusiasm sometimes leads to tangential thoughts that dilute focus. The Nordstrom reference and GPS joke, while charming, interrupted narrative flow. A simple editing question - 'does this advance my main message?' - could tighten delivery without losing personality.", "You occasionally assume listener knowledge (\"you guys heard all that, right?\") which might alienate new audience members. Brief context phrases (\"as I've shared before\") acknowledge returning listeners while including newcomers."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 8.1, "scoreType": "higher", "teaser": "4 advanced techniques for solo episode structure, 2 methods for stronger message reinforcement, and specific tools for managing your natural storytelling style.", "unlockedHtml": "Your storytelling instincts are strong, but you could benefit from more structured preparation. Consider creating a simple episode outline with your main message at the top, then bullet points for supporting stories, to keep your natural flow while ensuring focus.", "lockedParagraphsHtml": ["Implement 'callback techniques' - reference earlier story elements when making your final points. You mentioned your first job offer early but didn't circle back to it when discussing coming full circle, missing a powerful reinforcement opportunity.", "Use 'energy mapping' in preparation - identify which parts of your story naturally excite you most, then structure the episode to build toward those peaks rather than letting energy fluctuate randomly. Your excitement about the new partnership should anchor the entire episode.", "Create 'teaching bridges' - short phrases that connect your personal stories to universal business principles. Instead of assuming listeners will make the connection, explicitly state how your experience applies to their situations.", "Develop 'audience check-ins' - brief moments where you acknowledge different listener perspectives or experience levels. This technique maintains intimacy while ensuring inclusivity for your growing audience."]}], "meta": {"jobId": "778d30b7-4fdc-4898-a191-50888955f06f"}};
+                
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
+                
+                // Add Job ID Footer component
+                const JobIdFooter = ({ jobId }) => {
+                    const copyToClipboard = () => {
+                        navigator.clipboard.writeText(jobId).then(() => {
+                            alert('Job ID copied to clipboard!');
+                        });
+                    };
+                    
+                    return React.createElement('div', {
+                        style: {
+                            marginTop: '0',
+                            padding: '15px 30px',
+                            textAlign: 'center',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderTop: 'none',
+                            color: '#cbd5e1'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'job-id',
+                            style: {
+                                fontSize: '12px',
+                                fontFamily: 'monospace, courier',
+                                cursor: 'pointer',
+                                userSelect: 'all',
+                                color: '#94a3b8',
+                                opacity: '0.8'
+                            },
+                            onClick: copyToClipboard,
+                            title: 'Click to copy Job ID'
+                        }, `Job ID: ${jobId}`)
+                    ]);
+                };
+                
+                // Enhanced ReportApp with header and footer
+                const EnhancedReportApp = ({ report }) => {
+                    return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
+                        React.createElement(ReportApp, { key: 'report', report }),
+                        React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
+                    ]);
+                };
+                
+                // Render the app
+                const root = ReactDOM.createRoot(document.getElementById('root'));
+                root.render(React.createElement(EnhancedReportApp, { report: reportData }));
+            </script>
+        
+        <div id="authenticity-nav-footer"></div>
+        </body>
+        </html>
+        
