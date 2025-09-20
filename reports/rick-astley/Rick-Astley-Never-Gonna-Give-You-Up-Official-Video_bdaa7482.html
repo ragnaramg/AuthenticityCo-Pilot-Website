@@ -190,7 +190,7 @@ const ClampParagraph = ({ html, initiallyClamped = true }) => {
 };
 
 /** Locked content blur with teaser + count */
-const LockedListBlur = ({ teaser, items }) => {
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
   const [open, setOpen] = useState(false);
 
   const List = (
@@ -203,7 +203,8 @@ const LockedListBlur = ({ teaser, items }) => {
     </ol>
   );
 
-  if (open) return <div className="mt-2">{List}</div>;
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
 
   return (
     <div className="relative rounded-md overflow-hidden mt-2">
@@ -259,7 +260,7 @@ function mapThemeTitle(oldTitle) {
 
 /* ------------------------------ APP ------------------------------ */
 
-function ReportApp({ report }) {
+function ReportApp({ report, isContentLocked = false }) {
   const headerStats = computeHeaderStats(report.themes);
 
   const unlockedCount =
@@ -402,6 +403,7 @@ function ReportApp({ report }) {
             <LockedListBlur
               teaser={report.gamePlan.teaser}
               items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
             />
           </div>
         </div>
@@ -468,7 +470,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={c.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -522,7 +524,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={ins.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -565,6 +567,7 @@ function ReportApp({ report }) {
           <LockedListBlur
             teaser={report.progress.lockedTeaser}
             items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
           />
         </div>
           </>
@@ -609,10 +612,96 @@ function ReportApp({ report }) {
                     ]);
                 };
                 
-                // Enhanced ReportApp with Job ID footer
+                // Paid Content Lock Toggle Component
+                const PaidContentToggle = ({ isLocked, onToggle }) => {
+                    return React.createElement('div', {
+                        style: {
+                            position: 'fixed',
+                            top: '20px',
+                            right: '20px',
+                            background: 'rgba(30,41,59,0.95)',
+                            border: '1px solid rgba(148,163,184,0.2)',
+                            borderRadius: '8px',
+                            padding: '12px 16px',
+                            boxShadow: '0 4px 12px rgba(2,6,23,0.3)',
+                            zIndex: 1000,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            color: '#e2e8f0',
+                            fontSize: '14px',
+                            fontWeight: '500'
+                        }
+                    }, [
+                        React.createElement('span', { key: 'label' }, 'Paid Content Locked'),
+                        React.createElement('label', {
+                            key: 'toggle',
+                            style: {
+                                position: 'relative',
+                                display: 'inline-block',
+                                width: '44px',
+                                height: '24px',
+                                cursor: 'pointer'
+                            }
+                        }, [
+                            React.createElement('input', {
+                                key: 'input',
+                                type: 'checkbox',
+                                checked: isLocked,
+                                onChange: onToggle,
+                                style: { display: 'none' }
+                            }),
+                            React.createElement('span', {
+                                key: 'slider',
+                                style: {
+                                    position: 'absolute',
+                                    top: '0',
+                                    left: '0',
+                                    right: '0',
+                                    bottom: '0',
+                                    backgroundColor: isLocked ? '#ef4444' : '#10b981',
+                                    borderRadius: '24px',
+                                    transition: 'background-color 0.3s',
+                                    cursor: 'pointer'
+                                }
+                            }),
+                            React.createElement('span', {
+                                key: 'thumb',
+                                style: {
+                                    position: 'absolute',
+                                    top: '2px',
+                                    left: isLocked ? '22px' : '2px',
+                                    width: '20px',
+                                    height: '20px',
+                                    backgroundColor: 'white',
+                                    borderRadius: '50%',
+                                    transition: 'left 0.3s',
+                                    cursor: 'pointer'
+                                }
+                            })
+                        ])
+                    ]);
+                };
+
+                // Enhanced ReportApp with Job ID footer and paid content toggle
                 const EnhancedReportApp = ({ report }) => {
+                    const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+                    const handleToggle = () => {
+                        setIsContentLocked(!isContentLocked);
+                    };
+
                     return React.createElement('div', {}, [
-                        React.createElement(ReportApp, { key: 'report', report }),
+                        React.createElement(PaidContentToggle, {
+                            key: 'toggle',
+                            isLocked: isContentLocked,
+                            onToggle: handleToggle
+                        }),
+                        React.createElement(ReportApp, {
+                            key: 'report',
+                            report,
+                            isContentLocked
+                        }),
                         React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
                     ]);
                 };

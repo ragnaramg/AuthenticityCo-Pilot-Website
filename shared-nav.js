@@ -8,12 +8,11 @@ class AuthenticityCoPilotNav {
         this.baseStyles = {
             container: `
                 margin-bottom: 0;
-                padding: 20px 30px;
-                background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), 
-                           linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
-                border: 1px solid rgba(148,163,184,0.14);
+                padding: 12px 20px;
+                background: linear-gradient(180deg, rgba(30,41,59,0.6) 0%, rgba(15,23,42,0.6) 100%);
+                border-bottom: 1px solid rgba(148,163,184,0.1);
                 border-radius: 0;
-                box-shadow: 0 2px 8px rgba(2,6,23,0.3);
+                box-shadow: none;
             `,
             flexContainer: `
                 display: flex;
@@ -23,16 +22,19 @@ class AuthenticityCoPilotNav {
                 gap: 20px;
             `,
             branding: `
-                font-size: 12px;
-                color: #94a3b8;
+                font-size: 10px;
+                color: #64748b;
             `,
             brandingTitle: `
-                margin: 0; 
-                color: #e2e8f0; 
-                font-weight: 600;
+                margin: 0;
+                color: #94a3b8;
+                font-weight: 500;
+                font-size: 11px;
             `,
             brandingSubtitle: `
-                margin: 5px 0 0 0;
+                margin: 2px 0 0 0;
+                font-size: 9px;
+                opacity: 0.8;
             `,
             navContainer: `
                 display: flex;
