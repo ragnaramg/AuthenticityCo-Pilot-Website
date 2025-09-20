@@ -1,0 +1,685 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <script src="../../shared-nav.js"></script>
+        
+            <title>Podcast Analysis - Transformational Journeys</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+            <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+            <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+            <script src="https://cdn.tailwindcss.com"></script>
+            <style>
+                /* Dark neon theme overrides to ensure compatibility */
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+            </style>
+        </head>
+        <body>
+            
+        <div id="authenticity-nav-header"></div>
+        <div id="root"></div>
+            
+            <script type="text/babel">
+                /**
+ * Podcast Interviewer Co-Pilot — Report Template
+ * - Dark neon theme preserved
+ * - Expects a `report` prop (JSON) that matches the schema below
+ * - First-insight-free + teaser + locked everywhere
+ * - Conversational headers mapped at render
+ */
+
+// Available via global React
+const { useState } = React;
+
+/** ==== JSON prop schema (matches your latest report format) ==== */
+// Expected report structure with various sections for podcast analysis
+
+/* ---------- helpers ---------- */
+
+const iconForTitle = (title) => {
+  const t = title.toLowerCase();
+  if (t.includes("episode arc") || t.includes("conversation")) return "📈";
+  if (t.includes("quote") || t.includes("highlight") || t.includes("remembering")) return "💬";
+  if (t.includes("tone") || t.includes("energy")) return "🌊";
+  if (t.includes("theme") || t.includes("threads")) return "🧵";
+  if (t.includes("style") || t.includes("habits")) return "✨";
+  if (t.includes("voice")) return "🎙️";
+  if (t.includes("guest") || t.includes("rapport") || t.includes("feel")) return "🤝";
+  if (t.includes("chem") || t.includes("co-creation") || t.includes("ideas")) return "🧪";
+  if (t.includes("blind")) return "🙈";
+  if (t.includes("resource") || t.includes("tools")) return "📚";
+  return "•";
+};
+
+function effectiveScore(score, scoreType) {
+  if (score == null) return null;
+  if (scoreType === "lower") return 10 - score;
+  return score;
+}
+
+function computeHeaderStats(themes) {
+  const scored = themes
+    .map((d) => ({ d, eff: effectiveScore(d.score, d.scoreType) }))
+    .filter((x) => x.eff !== null);
+
+  const overall =
+    scored.length > 0
+      ? +(scored.reduce((s, x) => s + x.eff, 0) / scored.length).toFixed(1)
+      : 0;
+
+  const strength = scored.reduce((best, x) => (x.eff > best.eff ? x : best), scored[0]);
+  const opportunity = scored.reduce((worst, x) => (x.eff < worst.eff ? x : worst), scored[0]);
+
+  return {
+    overall,
+    strengthTitle: strength?.d?.title ?? "",
+    strengthScoreLabel: strength?.d?.score != null ? `${strength.d.score}/10` : "",
+    strengthColor: "#22C55E", // always green
+    opportunityTitle: opportunity?.d?.title ?? "",
+    opportunityScoreLabel: opportunity?.d?.score != null ? `${opportunity.d.score}/10` : "",
+    opportunityColor: "#FACC15", // always amber
+  };
+}
+
+/* ---------- sparkline ---------- */
+
+const Sparkline = ({ values, color }) => {
+  if (!values || values.length < 2) return null;
+  const W = 360, H = 64, pad = 6;
+  const clamp01 = (v) => Math.min(1, Math.max(0, v));
+  const pts = values.map((v, i) => {
+    const x = pad + (i * (W - pad * 2)) / (values.length - 1);
+    const y = pad + (H - pad * 2) * (1 - clamp01(v));
+    return [x, y];
+  });
+  const path = pts.map(([x, y], i) => `${i ? "L" : "M"} ${x} ${y}`).join(" ");
+  const area = `${path} L ${pts[pts.length - 1][0]} ${H - pad} L ${pts[0][0]} ${H - pad} Z`;
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="64" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id={`g-${color.replace("#", "")}`} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.22" />
+          <stop offset="100%" stopColor={color} stopOpacity="0.04" />
+        </linearGradient>
+      </defs>
+      <path d={area} fill={`url(#g-${color.replace("#", "")})`} />
+      <path d={path} fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" />
+      {pts.map(([x, y], i) => <circle key={i} cx={x} cy={y} r={2} fill={color} />)}
+    </svg>
+  );
+};
+
+/* ---------- small UI bits ---------- */
+
+const SectionLabel = ({ children }) => (
+  <h3 className="mb-3 text-slate-300 uppercase tracking-widest text-xl text-center">{children}</h3>
+);
+
+const PillScore = ({ value, color }) => (
+  <span
+    className="text-[13px] font-bold px-2 py-1 rounded-full border"
+    style={{
+      borderColor: color,
+      color,
+      boxShadow: `0 0 12px ${color}33`,
+      background: "rgba(2,6,23,0.4)",
+    }}
+  >
+    {value}
+  </span>
+);
+
+const ClampParagraph = ({ html, initiallyClamped = true }) => {
+  const [clamped, setClamped] = useState(initiallyClamped);
+  return (
+    <div>
+      <div
+        style={
+          clamped
+            ? {
+                display: "-webkit-box",
+                WebkitLineClamp: 5,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }
+            : {}
+        }
+        className="text-[14px] text-slate-200 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      <button
+        onClick={() => setClamped((v) => !v)}
+        className="mt-1 text-[12px] text-blue-300 hover:text-blue-200 underline"
+      >
+        {clamped ? "See more" : "See less"}
+      </button>
+    </div>
+  );
+};
+
+/** Locked content blur with teaser + count */
+const LockedListBlur = ({ teaser, items }) => {
+  const [open, setOpen] = useState(false);
+
+  const List = (
+    <ol className="list-decimal pl-5 space-y-3">
+      {items.map((p, i) => (
+        <li key={i} className="text-[14px] text-slate-300">
+          <span dangerouslySetInnerHTML={{ __html: p }} />
+        </li>
+      ))}
+    </ol>
+  );
+
+  if (open) return <div className="mt-2">{List}</div>;
+
+  return (
+    <div className="relative rounded-md overflow-hidden mt-2">
+      <div className="p-3 space-y-2">{List}</div>
+      <div
+        className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
+        style={{
+          background: "rgba(2,6,23,0.55)",
+          backdropFilter: "blur(8px)",
+          borderTop: "1px solid rgba(255,255,255,0.04)",
+          borderBottom: "1px solid rgba(255,255,255,0.04)",
+        }}
+      >
+        {teaser && (
+          <span className="text-[13px] font-medium text-slate-100 mb-2">
+            {teaser}
+          </span>
+        )}
+        <span className="text-[11px] text-slate-300 mb-3">
+          Includes <strong>{items.length}</strong> insights
+        </span>
+        <button
+          className="text-[12px] text-blue-300 hover:text-blue-200 underline"
+          onClick={() => setOpen(true)}
+        >
+          Upgrade to unlock
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/* ---------- title mapping to conversational headers ---------- */
+
+function mapDigestTitle(oldTitle) {
+  if (/episode arc/i.test(oldTitle)) return "How the Conversation Flowed";
+  if (/quotable|highlight/i.test(oldTitle)) return "Moments Worth Remembering";
+  if (/tone snapshot|shifts? in your energy/i.test(oldTitle)) return "Shifts in Your Energy";
+  if (/emergent theme|threads?/i.test(oldTitle)) return "The Threads You and Your Guest Wove Together";
+  if (/conversation(al)? style|habits/i.test(oldTitle)) return "Your Hosting Habits in Numbers";
+  return oldTitle;
+}
+
+function mapThemeTitle(oldTitle) {
+  if (/voice reflection/i.test(oldTitle)) return "How Your Voice Carried the Room";
+  if (/style.*differentiation/i.test(oldTitle)) return "What Makes You, You";
+  if (/guest.*connection/i.test(oldTitle)) return "How You Made Them Feel";
+  if (/intellectual.*chem|co-creation|ideas/i.test(oldTitle)) return "The Ideas You Cooked Up Together";
+  if (/blind/i.test(oldTitle)) return "Places to Grow (Without Losing Yourself)";
+  if (/resource|tools/i.test(oldTitle)) return "Extra Tools for Your Growth";
+  return oldTitle;
+}
+
+/* ------------------------------ APP ------------------------------ */
+
+function ReportApp({ report }) {
+  const headerStats = computeHeaderStats(report.themes);
+
+  const unlockedCount =
+    report.digest.length + report.themes.length + 1 /* game plan */;
+
+  const totalLocked =
+    report.digest.reduce((n, i) => n + i.lockedParagraphsHtml.length, 0) +
+    report.themes.reduce((n, i) => n + i.lockedParagraphsHtml.length, 0) +
+    report.gamePlan.lockedActions.length +
+    (report.progress ? report.progress.lockedItemsHtml.length : 0);
+
+  return (
+    <div
+      className="min-h-screen text-slate-100"
+      style={{
+        background:
+          "radial-gradient(120% 120% at 0% 0%, #0B1220 0%, #0B1220 12%, #0F172A 40%, #0F172A 100%)",
+        fontFamily: "Inter, system-ui, sans-serif",
+      }}
+    >
+      <div className="max-w-[1200px] mx-auto px-6 py-10">
+        {/* Header */}
+        <div
+          className="mb-8 rounded-2xl p-6 md:p-8"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+            boxShadow: "0 10px 30px rgba(2,6,23,0.5)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(148,163,184,0.18)",
+          }}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+            {/* Overall */}
+            <div
+              className="rounded-xl p-4 h-full flex flex-col items-center justify-center text-center"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(2,6,23,0.35) 0%, rgba(2,6,23,0.2) 100%)",
+                border: "1px solid rgba(148,163,184,0.14)",
+              }}
+            >
+              <div className="text-slate-200 text-[18px] uppercase tracking-wider font-semibold">
+                Overall Score
+              </div>
+              <div
+                className="mt-1 font-extrabold"
+                style={{
+                  fontSize: "36px",
+                  color: "#22C55E",
+                  textShadow: "0 0 12px rgba(34,197,94,0.5)",
+                  lineHeight: 1.1,
+                }}
+              >
+                {headerStats.overall.toFixed(1)}/10
+              </div>
+            </div>
+
+            {/* Title Block */}
+            <div className="flex flex-col items-center justify-center text-center">
+              <h2
+                className="text-[24px] font-semibold text-white"
+                style={{
+                  textShadow:
+                    "0 0 14px rgba(255,255,255,0.7), 0 0 28px rgba(59,130,246,0.4)",
+                }}
+              >
+                Episode Insights For:
+              </h2>
+              
+              <div className="mt-3 text-slate-300">
+                <div className="italic text-slate-200">
+                  <span className="font-medium">Podcast:</span> {report.header.podcast}
+                </div>
+                <div className="italic text-slate-200 mt-1">
+                  <span className="font-medium">Episode:</span> {report.header.episode}
+                </div>
+                {report.header.guest && (
+                  <div className="italic text-slate-200 mt-1">
+                    <span className="font-medium">Guest:</span> {report.header.guest}
+                  </div>
+                )}
+              </div>
+
+              <p className="mt-3 text-slate-300">
+                {unlockedCount} insights unlocked.{" "}
+                <button
+                  className="underline text-blue-300 hover:text-blue-200"
+                  onClick={() => console.log("open upgrade")}
+                >
+                  Upgrade
+                </button>{" "}
+                to see {totalLocked} more.
+              </p>
+            </div>
+
+            {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
+            <div
+              className="rounded-xl p-4 h-full flex flex-col items-start justify-center text-left"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(2,6,23,0.35) 0%, rgba(2,6,23,0.2) 100%)",
+                border: "1px solid rgba(148,163,184,0.14)",
+              }}
+            >
+              <div className="text-white text-[18px] uppercase tracking-wider font-semibold">
+                Strength
+              </div>
+              <div className="mt-1 text-[14px] text-slate-200">
+                {report.gamePlan.strength}
+              </div>
+
+              <div className="mt-4 text-white text-[18px] uppercase tracking-wider font-semibold">
+                Opportunity
+              </div>
+              <div className="mt-1 text-[14px] text-slate-200">
+                {report.gamePlan.opportunity}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Your Game Plan at a Glance */}
+        <SectionLabel>Your Game Plan at a Glance</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10"
+          style={{
+            background:
+              "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+            border: "1px solid rgba(148,163,184,0.14)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div className="text-[14px] text-slate-200 leading-relaxed">
+            <p className="mb-3">
+              <span className="font-semibold">Free:</span>{" "}
+              <span className="text-slate-100">{report.gamePlan.freeAction.title}</span>{" "}
+              — {report.gamePlan.freeAction.detail}
+            </p>
+            <LockedListBlur
+              teaser={report.gamePlan.teaser}
+              items={report.gamePlan.lockedActions}
+            />
+          </div>
+        </div>
+
+        {/* The Vibe Check */}
+        <SectionLabel>The Vibe Check</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10 text-center"
+          style={{
+            background:
+              "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+            border: "1px solid rgba(148,163,184,0.14)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div style={{ fontSize: "24px" }} className="mb-2">
+            {report.vibeCheck.icon}
+          </div>
+          <div
+            style={{ fontSize: "16px" }}
+            className="text-slate-200 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: report.vibeCheck.vibeHtml }}
+          />
+          <div
+            style={{ fontSize: "16px" }}
+            className="mt-2 text-slate-200 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: report.vibeCheck.quoteHtml }}
+          />
+        </div>
+
+        {/* Digest */}
+        <SectionLabel>Digest</SectionLabel>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {report.digest.map((c, idx) => {
+            const mappedTitle = mapDigestTitle(c.title);
+            return (
+              <div
+                key={idx}
+                className="rounded-2xl p-5"
+                style={{
+                  background:
+                    "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+                  border: "1px solid rgba(148,163,184,0.14)",
+                  boxShadow:
+                    "0 10px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.04)",
+                }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-[16px]" style={{ color: c.iconColor }}>
+                    {iconForTitle(mappedTitle)}
+                  </span>
+                  <div
+                    className="text-[15px] font-semibold"
+                    style={{ color: c.iconColor, textShadow: `0 0 6px ${c.iconColor}55` }}
+                  >
+                    {mappedTitle}
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+                    Unlocked Insight
+                  </p>
+                  <ClampParagraph html={c.unlockedHtml} />
+                </div>
+
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Scored Themes */}
+        <SectionLabel>Scored Themes</SectionLabel>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {report.themes.map((ins, idx) => {
+            const mappedTitle = mapThemeTitle(ins.title);
+            return (
+              <div
+                key={idx}
+                className="rounded-2xl p-5"
+                style={{
+                  background:
+                    "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+                  border: "1px solid rgba(148,163,184,0.14)",
+                  boxShadow:
+                    "0 10px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.04)",
+                }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[16px]" style={{ color: ins.iconColor }}>
+                      {iconForTitle(mappedTitle)}
+                    </span>
+                    <h4
+                      className="text-[15px] font-semibold"
+                      style={{ color: ins.iconColor, textShadow: `0 0 6px ${ins.iconColor}55` }}
+                    >
+                      {mappedTitle}
+                    </h4>
+                  </div>
+                  {ins.score != null && <PillScore value={`${ins.score}/10`} color={ins.color} />}
+                </div>
+
+                {ins.trend && ins.trend.length > 1 && (
+                  <div
+                    className="rounded-md px-2 py-1 mb-3"
+                    style={{ background: "linear-gradient(180deg, #0B1220 0%, #0F172A 100%)" }}
+                  >
+                    <Sparkline values={ins.trend} color={ins.color} />
+                  </div>
+                )}
+
+                <div className="space-y-1">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+                    Unlocked Insight
+                  </p>
+                  <ClampParagraph html={ins.unlockedHtml} />
+                </div>
+
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Progress Over Time - only show if progress data exists */}
+        {report.progress && (
+          <>
+            <SectionLabel>Tracking Your Progress Over Time</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+            border: "1px solid rgba(148,163,184,0.18)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div className="mb-3">
+            <p
+              className="text-[14px] text-slate-200 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: report.progress.summaryHtml }}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {report.progress.series.map((s, i) => (
+              <div key={i}>
+                <div className="text-xs text-slate-300 mb-1">{s.label}</div>
+                <div
+                  className="rounded-md px-2 py-1"
+                  style={{ background: "linear-gradient(180deg, #0B1220 0%, #0F172A 100%)" }}
+                >
+                  <Sparkline values={s.values} color={s.color} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <LockedListBlur
+            teaser={report.progress.lockedTeaser}
+            items={report.progress.lockedItemsHtml}
+          />
+        </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+                
+                // Report data from server
+                const reportData = {"header": {"podcast": "Transformational Journeys", "host": "Unknown Host", "episode": "Kimberly Reuter: Choosing Freedom Changed Everything for Her", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your ability to identify and articulate deeper themes from surface-level responses. When Kimberly shared her conference story, you immediately connected it to broader philosophical concepts about identity beyond job titles.", "opportunity": "Your questions sometimes stack multiple concepts together, which can dilute focus. The 'be-do-have' philosophy introduction, while insightful, temporarily shifted attention from Kimberly's personal experience to abstract theory.", "freeAction": {"title": "Use the 'Thread and Dive' Technique", "detail": "When you identify a powerful theme like 'freedom,' immediately follow with a specific question about that exact word. Instead of 'Tell me more about that drive,' try 'You said freedom - what does freedom actually feel like to you?' This keeps guests anchored in their emotional truth rather than drifting to general explanations."}, "teaser": "3 advanced questioning techniques to deepen emotional connection, plus 2 methods to balance philosophy with personal storytelling", "lockedActions": ["Master the 'Contradiction Spotlight' - when guests reveal conflicting values (like Kimberly's family pressure vs. autonomy drive), ask them to sit in that tension rather than resolve it quickly", "Develop your 'Moment Magnification' skill - when someone mentions a pivotal scene (like the woman with the gun), slow down and get sensory details before moving to meaning", "Create 'Authenticity Anchors' - regularly return guests to their core truth throughout the conversation to prevent philosophical drift"]}, "vibeCheck": {"icon": "\ud83d\udd0d", "vibeHtml": "<strong>Thoughtful Detective</strong><br/>You approached this conversation like a skilled investigator of the human experience, carefully following threads and making connections that helped Kimberly see her own patterns more clearly.", "quoteHtml": "\"I'm trying to find the point where it breaks... because freedom is what is authentic to you. And I'm trying to find the breaking point, because I'm trying to find the point where you fell out of authenticity.\""}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "Analysis of 3 distinct conversation phases, 2 momentum shifts, and 1 critical turning point", "unlockedHtml": "You opened with an identity-focused question that immediately took the conversation deeper than typical career discussions. Your follow-up connected Kimberly's response to philosophical frameworks, showing your ability to elevate surface-level sharing into meaningful exploration.", "lockedParagraphsHtml": ["The conversation shifted into detective mode when you identified 'freedom' as Kimberly's core thread. Your systematic approach - asking about family background, then career choices, then the breaking point - created a logical progression that helped both you and Kimberly understand her patterns.", "You demonstrated strong momentum management by staying with the authenticity theme even when Kimberly's stories could have led to career-focused tangents. Your question about 'what took you to go against that pressure' kept the focus on internal motivation rather than external circumstances.", "The conversation's most powerful moment came when you introduced the concept of finding where authenticity 'broke.' This investigative approach transformed a general life story into a specific exploration of values and decision-making, giving the entire conversation a clear analytical framework."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "4 breakthrough moments, 2 emotional peaks, and 1 profound realization", "unlockedHtml": "Your most impactful moment was recognizing that Kimberly's marriage at 29 represented her departure from authenticity. This insight helped her articulate something she'd never consciously identified: \"I've never thought about that, but it was when I got married.\"", "lockedParagraphsHtml": ["The 'Christmas cake' revelation showed your skill at holding space for difficult truths. When Kimberly shared the societal pressure about being 'past 25,' you didn't rush to comfort or redirect - you let the weight of that cultural messaging land and inform the larger conversation about authenticity.", "Your question about the woman with the gun at the museum created a vivid scene that revealed Kimberly's first encounter with female power. By asking for details rather than immediately jumping to meaning, you helped paint a picture that made her motivation tangible and memorable.", "The conversation's emotional peak came when you helped Kimberly connect her childhood financial constraints to her adult drive for autonomy. Your observation that 'you know what it's like to be left there without support' validated her experience while connecting it to her current values."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "3 energy transitions, 2 engagement patterns, and 1 notable intensity change", "unlockedHtml": "Your energy became noticeably more focused and investigative when you identified the authenticity thread. The shift from general conversation to purposeful detective work was palpable and seemed to energize both you and Kimberly.", "lockedParagraphsHtml": ["You showed increased confidence when working with philosophical concepts, particularly the 'be-do-have' framework. However, this intellectual excitement sometimes pulled you away from Kimberly's emotional experience, requiring you to consciously redirect back to her personal story.", "Your questioning pace slowed significantly when exploring the marriage decision, showing your intuitive understanding that this was sensitive territory requiring careful navigation. This demonstrated strong emotional intelligence and respect for your guest's vulnerability.", "The conversation's final section showed you settling into a rhythm of patient exploration. Your willingness to sit with Kimberly's uncertainty about when she 'stopped being scared' showed growth in your comfort with ambiguity and incomplete answers."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "4 major themes developed, 3 connection points deepened, and 2 philosophical frameworks explored", "unlockedHtml": "The strongest thread you developed together was the relationship between money and freedom. You helped Kimberly articulate that she's 'not money motivated, I'm freedom motivated,' which became a key insight that reframed her entire career narrative.", "lockedParagraphsHtml": ["You and Kimberly co-created a powerful exploration of authenticity versus societal expectations. Your questions about family pressure and her responses about 'kicking the can' on traditional milestones revealed how external expectations can gradually erode personal truth.", "The theme of mentorship and helping others emerged organically from your questions about her background. By connecting her lack of corporate guidance to her current desire to help others, you helped her see how personal pain can transform into professional purpose.", "Together you developed a nuanced understanding of how authenticity can be lost gradually rather than in dramatic moments. Your detective work around the marriage decision helped illustrate how small compromises can accumulate into larger departures from personal truth."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "5 quantified patterns, 3 ratio analyses, and 2 timing metrics", "unlockedHtml": "Your average question length was notably longer in this conversation, with several multi-part questions that combined observation, philosophy, and inquiry. This created depth but occasionally required guests to choose which element to address first.", "lockedParagraphsHtml": ["You used reflective statements before questions approximately 70% of the time, showing strong active listening skills. However, your reflections sometimes included 2-3 separate observations, which could overwhelm guests trying to decide where to focus their response.", "Your interruption rate was very low, with only 2 brief clarifying questions ('What is it tells' and 'Did you actually do that or close?'). This restraint allowed Kimberly to fully develop her thoughts and created space for deeper revelations.", "You introduced philosophical concepts 4 times during the conversation, with mixed results. The 'be-do-have' framework landed well, but some abstract introductions temporarily pulled focus from Kimberly's personal experience before you skillfully redirected back to her story."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 8.2, "scoreType": "higher", "teaser": "3 vocal strengths, 2 areas for refinement, and 1 signature style element", "unlockedHtml": "Your voice carried genuine curiosity and intellectual excitement, particularly when exploring philosophical connections. You demonstrated strong conviction when introducing frameworks like 'be-do-have,' showing confidence in your ability to guide deeper conversations.", "lockedParagraphsHtml": ["Your tone became noticeably warmer and more collaborative when validating Kimberly's experiences. Phrases like 'I love that idea of autonomy motivated' showed authentic appreciation that encouraged further vulnerability and sharing.", "You occasionally rushed through complex observations, particularly when introducing multiple concepts simultaneously. Slowing down during philosophical introductions would give guests more time to process and engage with your frameworks.", "Your voice carried a detective-like quality that was both engaging and purposeful. This investigative tone helped transform casual storytelling into meaningful self-discovery, making you an active partner in Kimberly's exploration rather than just an interviewer."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 7.8, "scoreType": "higher", "teaser": "4 signature approaches, 2 unique strengths, and 3 style evolution opportunities", "unlockedHtml": "Your signature approach involves identifying core themes early and then systematically exploring them from multiple angles. This creates coherent, meaningful conversations that help guests understand themselves better.", "lockedParagraphsHtml": ["You have a unique ability to balance philosophical frameworks with personal storytelling. Your introduction of abstract concepts like authenticity and the 'be-do-have' model shows intellectual depth while your follow-up questions keep things grounded in lived experience.", "Your detective-style questioning sets you apart from typical interviewers. Instead of moving from topic to topic, you dig deeper into single themes, creating conversations that feel more like guided self-discovery sessions than traditional interviews.", "You show strong pattern recognition skills, connecting seemingly separate stories into coherent narratives about values and motivation. This helps guests see their own lives with greater clarity and gives listeners valuable insights into human behavior and decision-making."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 8.5, "scoreType": "higher", "teaser": "3 emotional safety indicators, 2 vulnerability catalysts, and 1 breakthrough moment", "unlockedHtml": "You created exceptional safety for vulnerability, evidenced by Kimberly's willingness to share deeply personal details about family pressure, marriage regrets, and financial struggles. Your non-judgmental responses encouraged continued openness.", "lockedParagraphsHtml": ["Your validation technique of reflecting back what you heard before asking follow-up questions made Kimberly feel truly understood. Comments like 'you know what it's like to be left there without that support' showed empathy that encouraged deeper sharing.", "You demonstrated remarkable patience with incomplete or evolving answers, particularly when Kimberly was working through complex emotions about authenticity and happiness. This patience created space for real-time self-discovery rather than rehearsed responses.", "Your detective approach, while intellectually engaging, occasionally made the conversation feel more analytical than emotional. Balancing your investigative curiosity with more feeling-focused questions could create even deeper emotional connection."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 8.7, "scoreType": "higher", "teaser": "4 co-created insights, 3 philosophical breakthroughs, and 2 reframe moments", "unlockedHtml": "Together you developed the powerful insight that authenticity can be lost gradually through small compromises rather than dramatic betrayals. This reframing helped explain how someone can feel unhappy without understanding why.", "lockedParagraphsHtml": ["You co-created a nuanced understanding of the relationship between money and freedom that went beyond typical career discussions. By helping Kimberly articulate 'I'm not money motivated, I'm freedom motivated,' you revealed how financial goals can serve deeper values.", "The conversation produced a breakthrough insight about how lack of mentorship can transform into a drive to help others. This connection between personal pain and professional purpose offers valuable perspective for anyone who's felt unsupported in their career journey.", "Together you explored how family expectations and societal pressure can gradually erode personal authenticity. This insight about 'falling into traps' provides a framework for understanding how external validation can lead people away from their true values and desires."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 6.8, "scoreType": "lower", "teaser": "3 growth opportunities, 2 balance points, and 1 integration challenge", "unlockedHtml": "Your tendency to introduce multiple concepts in single questions can overwhelm guests and dilute focus. While your intellectual curiosity is valuable, breaking complex observations into smaller, more digestible pieces would improve clarity.", "lockedParagraphsHtml": ["You sometimes prioritize philosophical exploration over emotional connection, which can make conversations feel more academic than intimate. While your frameworks add value, ensuring guests feel heard emotionally before introducing concepts would strengthen the relationship.", "Your detective approach, while effective for uncovering insights, occasionally makes you seem more interested in solving puzzles than understanding feelings. Balancing analytical questions with more open-ended emotional inquiries would create richer conversations.", "You have a slight tendency to rush through your own observations when introducing new concepts. Slowing down and giving guests time to process your frameworks would help them engage more deeply with the ideas you're presenting."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 7.5, "scoreType": "higher", "teaser": "4 specific techniques, 3 practice exercises, and 2 advanced frameworks", "unlockedHtml": "Practice the 'One Concept Rule' - introduce only one philosophical framework or complex observation per question. This will help guests engage more deeply with your ideas rather than feeling overwhelmed by multiple concepts.", "lockedParagraphsHtml": ["Develop your 'Emotional Temperature Check' skill by regularly asking how guests feel about what they're sharing, not just what they think. Questions like 'What does it feel like to recognize that pattern?' can deepen emotional connection alongside intellectual exploration.", "Master the 'Pause and Breathe' technique when introducing complex concepts. Take a moment between your observation and your question to let guests process what you've shared. This creates space for deeper engagement with your frameworks.", "Create a personal 'Philosophy Integration Checklist' to ensure your intellectual frameworks serve emotional connection rather than replacing it. Ask yourself: Does this concept help my guest understand themselves better, or am I showing off my own thinking?"]}], "meta": {"jobId": "1990b5c8-4874-4a6c-946e-10b934a430e3"}};
+                
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
+                
+                // Add Job ID Footer component
+                const JobIdFooter = ({ jobId }) => {
+                    const copyToClipboard = () => {
+                        navigator.clipboard.writeText(jobId).then(() => {
+                            alert('Job ID copied to clipboard!');
+                        });
+                    };
+                    
+                    return React.createElement('div', {
+                        style: {
+                            marginTop: '0',
+                            padding: '15px 30px',
+                            textAlign: 'center',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderTop: 'none',
+                            color: '#cbd5e1'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'job-id',
+                            style: {
+                                fontSize: '12px',
+                                fontFamily: 'monospace, courier',
+                                cursor: 'pointer',
+                                userSelect: 'all',
+                                color: '#94a3b8',
+                                opacity: '0.8'
+                            },
+                            onClick: copyToClipboard,
+                            title: 'Click to copy Job ID'
+                        }, `Job ID: ${jobId}`)
+                    ]);
+                };
+                
+                // Enhanced ReportApp with header and footer
+                const EnhancedReportApp = ({ report }) => {
+                    return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
+                        React.createElement(ReportApp, { key: 'report', report }),
+                        React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
+                    ]);
+                };
+                
+                // Render the app
+                const root = ReactDOM.createRoot(document.getElementById('root'));
+                root.render(React.createElement(EnhancedReportApp, { report: reportData }));
+            </script>
+        
+        <div id="authenticity-nav-footer"></div>
+        </body>
+        </html>
+        
