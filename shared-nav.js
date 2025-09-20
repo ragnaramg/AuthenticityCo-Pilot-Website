@@ -16,15 +16,19 @@ class AuthenticityCoPilotNav {
             `,
             flexContainer: `
                 display: flex;
-                justify-content: space-between;
+                justify-content: flex-start;
                 align-items: center;
                 flex-wrap: wrap;
                 gap: 20px;
+                position: relative;
             `,
             branding: `
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
                 text-align: center;
-                flex: 1;
                 color: #e2e8f0;
+                pointer-events: none;
             `,
             brandingTitle: `
                 margin: 0;
@@ -47,7 +51,7 @@ class AuthenticityCoPilotNav {
             `,
             primaryButton: `
                 display: inline-block;
-                background: #3b82f6;
+                background: #1e40af;
                 color: white;
                 padding: 8px 16px;
                 text-decoration: none;
@@ -55,7 +59,7 @@ class AuthenticityCoPilotNav {
                 font-weight: 500;
                 font-size: 14px;
                 transition: all 0.3s;
-                box-shadow: 0 0 12px rgba(59,130,246,0.4);
+                box-shadow: 0 0 12px rgba(30,64,175,0.4);
             `,
             secondaryButton: `
                 display: inline-block;
@@ -150,8 +154,8 @@ class AuthenticityCoPilotNav {
         const navButtonsHTML = navItems.map(item => {
             if (item.type === 'link') {
                 const buttonStyle = item.style === 'primary' ? this.baseStyles.primaryButton : this.baseStyles.secondaryButton;
-                const hoverEvents = item.style === 'primary' 
-                    ? `onmouseover="this.style.background='#2563eb'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#3b82f6'; this.style.transform='translateY(0)'"`
+                const hoverEvents = item.style === 'primary'
+                    ? `onmouseover="this.style.background='#1d4ed8'; this.style.transform='translateY(-1px)'" onmouseout="this.style.background='#1e40af'; this.style.transform='translateY(0)'"`
                     : `onmouseover="this.style.borderColor='rgba(203,213,225,0.4)'; this.style.color='#e2e8f0'" onmouseout="this.style.borderColor='rgba(203,213,225,0.2)'; this.style.color='#cbd5e1'"`;
                 
                 return `<a href="${item.href}" style="${buttonStyle}" ${hoverEvents}>${item.text}</a>`;
