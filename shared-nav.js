@@ -22,19 +22,22 @@ class AuthenticityCoPilotNav {
                 gap: 20px;
             `,
             branding: `
-                font-size: 10px;
-                color: #64748b;
+                text-align: center;
+                flex: 1;
+                color: #e2e8f0;
             `,
             brandingTitle: `
                 margin: 0;
-                color: #94a3b8;
-                font-weight: 500;
-                font-size: 11px;
+                color: #e2e8f0;
+                font-weight: 600;
+                font-size: 22px;
+                text-shadow: 0 0 14px rgba(255,255,255,0.7), 0 0 28px rgba(59,130,246,0.4);
             `,
             brandingSubtitle: `
-                margin: 2px 0 0 0;
-                font-size: 9px;
-                opacity: 0.8;
+                margin: 4px 0 0 0;
+                font-size: 12px;
+                color: #cbd5e1;
+                font-weight: 400;
             `,
             navContainer: `
                 display: flex;
@@ -97,19 +100,32 @@ class AuthenticityCoPilotNav {
                 }
             ];
         } else if (path.includes('/reports/') && path.includes('.html')) {
-            // Individual report - show Back to Reports and Home
+            // Individual report - show Home on left, Back arrow next to it
+            // Dynamically determine parent directory for robust navigation
+            const pathParts = path.split('/');
+            const reportsIndex = pathParts.findIndex(part => part === 'reports');
+
+            // Calculate relative path back to reports index
+            let backHref = '../index.html'; // Default fallback
+            if (reportsIndex >= 0) {
+                const depth = pathParts.length - reportsIndex - 2; // -2 for reports and filename
+                backHref = '../'.repeat(Math.max(depth, 1)) + 'index.html';
+            }
+
             return [
-                {
-                    type: 'link',
-                    text: '← All Reports',
-                    href: 'index.html',
-                    style: 'secondary'
-                },
                 {
                     type: 'link',
                     text: '🏠 Home',
                     href: '../../index.html',
-                    style: 'primary'
+                    style: 'primary',
+                    position: 'left'
+                },
+                {
+                    type: 'link',
+                    text: '← Back',
+                    href: backHref,
+                    style: 'secondary',
+                    position: 'left'
                 }
             ];
         } else {
@@ -151,12 +167,14 @@ class AuthenticityCoPilotNav {
         return `
             <div style="${this.baseStyles.container} ${marginStyle}">
                 <div style="${this.baseStyles.flexContainer}">
-                    <div style="${this.baseStyles.branding}">
-                        <p style="${this.baseStyles.brandingTitle}">AuthenticityCo-Pilot</p>
-                        <p style="${this.baseStyles.brandingSubtitle}">Advanced Podcast Coaching Analysis • Evidence-based insights</p>
-                    </div>
                     <div style="${this.baseStyles.navContainer}">
                         ${navButtonsHTML}
+                    </div>
+                    <div style="${this.baseStyles.branding}">
+                        <p style="${this.baseStyles.brandingTitle}">Authenticity CoPilot</p>
+                        <p style="${this.baseStyles.brandingSubtitle}">Individual Episode Report</p>
+                    </div>
+                    <div style="display: flex; gap: 15px; align-items: center;">
                         ${backToTopButton}
                     </div>
                 </div>
