@@ -2,6 +2,8 @@
         <!DOCTYPE html>
         <html>
         <head>
+        <script src="../../shared-nav.js"></script>
+        
             <title>Podcast Analysis - Rick Astley</title>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,37 +20,9 @@
             </style>
         </head>
         <body>
-            <div id="root">
-        <div style="
-            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.06) 0%, rgba(2,6,23,0) 55%), 
-                       linear-gradient(180deg, rgba(30,41,59,0.8) 0%, rgba(15,23,42,0.8) 100%);
-            border: 1px solid rgba(148,163,184,0.12);
-            padding: 15px 30px;
-            margin: -20px -30px 30px -30px;
-            border-radius: 10px 10px 0 0;
-        ">
-            <nav style="
-                font-size: 14px;
-                color: #cbd5e1;
-            ">
-                <a href="../../index.html" style="
-                    color: #60a5fa;
-                    text-decoration: none;
-                    margin-right: 8px;
-                    transition: color 0.3s;
-                " onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#60a5fa'">🏠 Home</a>
-                <span style="margin-right: 8px;">→</span>
-                <a href="../index.html" style="
-                    color: #60a5fa;
-                    text-decoration: none;
-                    margin-right: 8px;
-                    transition: color 0.3s;
-                " onmouseover="this.style.color='#93c5fd'" onmouseout="this.style.color='#60a5fa'">📊 All Reports</a>
-                <span style="margin-right: 8px;">→</span>
-                <span style="color: #e2e8f0; font-weight: 500;">Current Report</span>
-            </nav>
-        </div>
-        </div>
+            
+        <div id="authenticity-nav-header"></div>
+        <div id="root"></div>
             
             <script type="text/babel">
                 /**
@@ -260,7 +234,86 @@ function mapThemeTitle(oldTitle) {
 
 /* ------------------------------ APP ------------------------------ */
 
-function ReportApp({ report, isContentLocked = false }) {
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Preview Locked Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
   const headerStats = computeHeaderStats(report.themes);
 
   const unlockedCount =
@@ -355,6 +408,9 @@ function ReportApp({ report, isContentLocked = false }) {
                 </button>{" "}
                 to see {totalLocked} more.
               </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
             </div>
 
             {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
@@ -581,6 +637,84 @@ function ReportApp({ report, isContentLocked = false }) {
                 // Report data from server
                 const reportData = {"header": {"podcast": "Rick Astley", "host": "Unknown Host", "episode": "Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "The host demonstrates a strong command of the conversation, guiding the flow with confidence and energy.", "opportunity": "The host could improve their ability to actively listen and draw out more detailed responses from the guest.", "freeAction": {"title": "Practice active listening techniques", "detail": "Incorporate more open-ended questions and paraphrasing to encourage the guest to expand on their thoughts (from 20% \u2192 to 35% (+75%) of total speaking time)."}, "teaser": "3 additional insights to help the host enhance their hosting skills and create a more engaging conversation", "lockedActions": ["Vary your tone and pacing to match the energy of the conversation", "Summarize key points periodically to ensure you're both on the same page", "Ask follow-up questions to dive deeper into the guest's experiences and perspectives"]}, "vibeCheck": {"icon": "\ud83d\ude0a", "vibeHtml": "The host's energy and enthusiasm are palpable throughout the conversation, creating an upbeat and engaging atmosphere.", "quoteHtml": "\"We've known each other for so long your heart's been aching but you're too shy to say it's sad we both know what's been going on. We know the game and we're gonna play it. I just wanna tell you how I'm feel understand\" (00:30)"}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "Insights on the host's ability to guide the conversation and keep it moving forward", "unlockedHtml": "The host demonstrates strong control over the flow of the conversation, seamlessly transitioning between topics and maintaining a brisk pace.", "lockedParagraphsHtml": ["The host's interruptions increased from 12% \u2192 to 18% (+50%) of the total conversation, indicating a need to strike a better balance between guiding the discussion and allowing the guest to fully express their thoughts.", "The host's monologues made up 45% of the total speaking time, which is on the higher end and could be reduced to create a more balanced dialogue.", "The host's use of open-ended questions decreased from 20% \u2192 to 15% (-25%) of their total questions, suggesting an opportunity to encourage more expansive responses from the guest."]}, {"title": "Moments Worth Remembering", "iconColor": "#F97316", "teaser": "2 key moments that showcased the host's strengths and areas for improvement", "unlockedHtml": "The host's enthusiastic delivery and use of repetition helped drive home the key message of the conversation.", "lockedParagraphsHtml": ["At the 1:15 mark, the host's use of rhetorical questions and vivid language helped to create a sense of shared understanding with the guest: \"We've known each other for so long your heart's been aching but you're too shy to say it's sad we both know what's been going on.\"", "However, the host's tendency to interrupt the guest at 2:30 may have prevented the guest from fully expressing their perspective on the topic: \"Never gonna say goodbye Never gonna tell a l Never gonna give Never gonna give Never gonna give Never gonna give.\""]}, {"title": "Shifts in Your Energy", "iconColor": "#EC4899", "teaser": "Observations on how the host's energy and engagement levels changed throughout the conversation", "unlockedHtml": "The host maintained a consistently high level of energy and enthusiasm throughout the conversation, creating an engaging and dynamic atmosphere.", "lockedParagraphsHtml": ["The host's vocal variety, as measured by changes in pitch and volume, increased from 65% \u2192 to 75% (+15%) of the conversation, helping to sustain the listener's attention.", "The host's use of expressive body language and gestures, as observed through the transcript, also increased from 50% \u2192 to 65% (+30%) of the conversation, further contributing to the engaging delivery.", "However, the host's pauses and hesitations decreased from 10% \u2192 to 5% (-50%) of the conversation, which could be an area to explore to allow for more thoughtful pacing and response time."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#10B981", "teaser": "Insights on the host's ability to connect with the guest and explore shared themes", "unlockedHtml": "The host skillfully wove together several common threads throughout the conversation, creating a sense of cohesion and shared understanding with the guest.", "lockedParagraphsHtml": ["The host's use of personal anecdotes and shared experiences increased from 30% \u2192 to 40% (+33%), helping to build rapport and a sense of connection with the guest.", "The host's ability to identify and expand on key themes, such as the concept of \"the game\" and the importance of understanding, increased from 40% \u2192 to 50% (+25%), demonstrating their capacity to engage in meaningful dialogue.", "However, the host's use of open-ended questions to further explore the guest's perspectives decreased from 20% \u2192 to 15% (-25%), which could be an area to focus on to deepen the connection and understanding between the host and guest."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#6366F1", "teaser": "Quantitative insights on the host's speaking patterns and engagement levels", "unlockedHtml": "The host's overall speaking time made up 55% of the total conversation, indicating a balanced dialogue with the guest.", "lockedParagraphsHtml": ["The host's interruptions of the guest increased from 12% \u2192 to 18% (+50%) of the total conversation, suggesting an opportunity to improve active listening skills.", "The host's use of filler words, such as \"um\" and \"uh,\" decreased from 8% \u2192 to 5% (-38%), demonstrating a polished and confident delivery.", "The host's response time, measured as the average duration between the guest's statements and the host's replies, decreased from 3.2 seconds \u2192 to 2.5 seconds (-22%), indicating a more dynamic and responsive conversation."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 8.2, "scoreType": "higher", "teaser": "Insights on the host's vocal delivery and its impact on the conversation", "unlockedHtml": "The host's energetic and expressive vocal delivery helped to engage the listener and maintain their attention throughout the conversation.", "lockedParagraphsHtml": ["The host's use of vocal variety, as measured by changes in pitch and volume, increased from 65% \u2192 to 75% (+15%) of the conversation, keeping the listener engaged and interested.", "The host's pacing and rhythm, as evidenced by their use of pauses and hesitations, decreased from 10% \u2192 to 5% (-50%) of the conversation, creating a more polished and confident delivery.", "The host's ability to modulate their tone and emphasis to match the content and energy of the conversation increased from 70% \u2192 to 80% (+14%), further enhancing the overall impact of their vocal performance."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#F97316", "score": 7.5, "scoreType": "higher", "teaser": "Insights on the host's unique personality and communication style", "unlockedHtml": "The host's enthusiastic and engaging personality shines through in their delivery, creating a warm and inviting atmosphere.", "lockedParagraphsHtml": ["The host's use of personal anecdotes and shared experiences increased from 30% \u2192 to 40% (+33%), helping to build rapport and a sense of connection with the guest.", "The host's use of expressive body language and gestures, as observed through the transcript, increased from 50% \u2192 to 65% (+30%) of the conversation, further contributing to their unique and engaging communication style.", "However, the host's tendency to interrupt the guest at times, as observed at the 2:30 mark, may be an area to address to ensure a more balanced and collaborative dialogue."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#EC4899", "score": 6.8, "scoreType": "higher", "teaser": "Insights on the host's ability to connect with and engage the guest", "unlockedHtml": "The host's enthusiasm and energy helped to create an engaging and welcoming atmosphere for the guest, fostering a sense of shared understanding.", "lockedParagraphsHtml": ["The host's use of open-ended questions to encourage the guest's participation decreased from 20% \u2192 to 15% (-25%) of their total questions, suggesting an opportunity to create more space for the guest to share their perspectives.", "The host's ability to identify and expand on key themes, such as the concept of \"the game\" and the importance of understanding, increased from 40% \u2192 to 50% (+25%), demonstrating their capacity to engage in meaningful dialogue with the guest.", "However, the host's tendency to interrupt the guest at times, as observed at the 2:30 mark, may have prevented the guest from fully expressing their thoughts and feelings, an area for the host to improve."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#3B82F6", "score": 7.9, "scoreType": "higher", "teaser": "Insights on the host's ability to explore ideas and themes with the guest", "unlockedHtml": "The host skillfully wove together several common threads throughout the conversation, creating a sense of cohesion and shared understanding with the guest.", "lockedParagraphsHtml": ["The host's use of personal anecdotes and shared experiences increased from 30% \u2192 to 40% (+33%), helping to build rapport and a sense of connection with the guest.", "The host's ability to identify and expand on key themes, such as the concept of \"the game\" and the importance of understanding, increased from 40% \u2192 to 50% (+25%), demonstrating their capacity to engage in meaningful dialogue.", "However, the host's use of open-ended questions to further explore the guest's perspectives decreased from 20% \u2192 to 15% (-25%), which could be an area to focus on to deepen the connection and understanding between the host and guest."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#6366F1", "score": 6.2, "scoreType": "lower", "teaser": "Insights on areas for the host to focus on for personal and professional growth", "unlockedHtml": "The host's strong command of the conversation and engaging delivery are clear strengths, but there are opportunities to improve their active listening skills and create a more balanced dialogue.", "lockedParagraphsHtml": ["The host's interruptions of the guest increased from 12% \u2192 to 18% (+50%) of the total conversation, suggesting an opportunity to improve active listening skills and create more space for the guest to share their perspectives.", "The host's use of open-ended questions to encourage the guest's participation decreased from 20% \u2192 to 15% (-25%) of their total questions, indicating a need to focus on drawing out more detailed responses from the guest.", "The host's tendency to dominate the conversation, as evidenced by their monologues making up 45% of the total speaking time, could be an area to address to achieve a more balanced and collaborative dialogue."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#10B981", "score": 8.0, "scoreType": "higher", "teaser": "Recommendations for additional resources and strategies to support the host's development", "unlockedHtml": "The host has a strong foundation in engaging delivery and connecting with the guest, but could benefit from focusing on active listening and creating a more balanced dialogue.", "lockedParagraphsHtml": ["Consider incorporating more active listening techniques, such as paraphrasing and open-ended questions, to encourage the guest to expand on their thoughts and perspectives.", "Experiment with varying your pacing and use of pauses to create a more thoughtful and responsive delivery, while maintaining your energetic and expressive style.", "Seek out resources on effective facilitation and moderating skills to help you strike a better balance between guiding the conversation and allowing the guest to fully contribute."]}], "meta": {"jobId": "bdaa7482-360f-4fd9-90a2-05542a014b81"}};
                 
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
+                
                 // Add Job ID Footer component
                 const JobIdFooter = ({ jobId }) => {
                     const copyToClipboard = () => {
@@ -591,10 +725,12 @@ function ReportApp({ report, isContentLocked = false }) {
                     
                     return React.createElement('div', {
                         style: {
-                            marginTop: '40px',
-                            padding: '20px',
+                            marginTop: '0',
+                            padding: '15px 30px',
                             textAlign: 'center',
-                            borderTop: '1px solid rgba(148,163,184,0.18)',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderTop: 'none',
                             color: '#cbd5e1'
                         }
                     }, [
@@ -604,7 +740,9 @@ function ReportApp({ report, isContentLocked = false }) {
                                 fontSize: '12px',
                                 fontFamily: 'monospace, courier',
                                 cursor: 'pointer',
-                                userSelect: 'all'
+                                userSelect: 'all',
+                                color: '#94a3b8',
+                                opacity: '0.8'
                             },
                             onClick: copyToClipboard,
                             title: 'Click to copy Job ID'
@@ -612,96 +750,11 @@ function ReportApp({ report, isContentLocked = false }) {
                     ]);
                 };
                 
-                // Paid Content Lock Toggle Component
-                const PaidContentToggle = ({ isLocked, onToggle }) => {
-                    return React.createElement('div', {
-                        style: {
-                            position: 'fixed',
-                            top: '20px',
-                            right: '20px',
-                            background: 'rgba(30,41,59,0.95)',
-                            border: '1px solid rgba(148,163,184,0.2)',
-                            borderRadius: '8px',
-                            padding: '12px 16px',
-                            boxShadow: '0 4px 12px rgba(2,6,23,0.3)',
-                            zIndex: 1000,
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '8px',
-                            color: '#e2e8f0',
-                            fontSize: '14px',
-                            fontWeight: '500'
-                        }
-                    }, [
-                        React.createElement('span', { key: 'label' }, 'Paid Content Locked'),
-                        React.createElement('label', {
-                            key: 'toggle',
-                            style: {
-                                position: 'relative',
-                                display: 'inline-block',
-                                width: '44px',
-                                height: '24px',
-                                cursor: 'pointer'
-                            }
-                        }, [
-                            React.createElement('input', {
-                                key: 'input',
-                                type: 'checkbox',
-                                checked: isLocked,
-                                onChange: onToggle,
-                                style: { display: 'none' }
-                            }),
-                            React.createElement('span', {
-                                key: 'slider',
-                                style: {
-                                    position: 'absolute',
-                                    top: '0',
-                                    left: '0',
-                                    right: '0',
-                                    bottom: '0',
-                                    backgroundColor: isLocked ? '#ef4444' : '#10b981',
-                                    borderRadius: '24px',
-                                    transition: 'background-color 0.3s',
-                                    cursor: 'pointer'
-                                }
-                            }),
-                            React.createElement('span', {
-                                key: 'thumb',
-                                style: {
-                                    position: 'absolute',
-                                    top: '2px',
-                                    left: isLocked ? '22px' : '2px',
-                                    width: '20px',
-                                    height: '20px',
-                                    backgroundColor: 'white',
-                                    borderRadius: '50%',
-                                    transition: 'left 0.3s',
-                                    cursor: 'pointer'
-                                }
-                            })
-                        ])
-                    ]);
-                };
-
-                // Enhanced ReportApp with Job ID footer and paid content toggle
+                // Enhanced ReportApp with header and footer
                 const EnhancedReportApp = ({ report }) => {
-                    const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
-
-                    const handleToggle = () => {
-                        setIsContentLocked(!isContentLocked);
-                    };
-
                     return React.createElement('div', {}, [
-                        React.createElement(PaidContentToggle, {
-                            key: 'toggle',
-                            isLocked: isContentLocked,
-                            onToggle: handleToggle
-                        }),
-                        React.createElement(ReportApp, {
-                            key: 'report',
-                            report,
-                            isContentLocked
-                        }),
+                        React.createElement(ReportHeader, { key: 'header' }),
+                        React.createElement(ReportApp, { key: 'report', report }),
                         React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
                     ]);
                 };
@@ -711,61 +764,7 @@ function ReportApp({ report, isContentLocked = false }) {
                 root.render(React.createElement(EnhancedReportApp, { report: reportData }));
             </script>
         
-        <div style="
-            margin-top: 40px;
-            padding: 30px;
-            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), 
-                       linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
-            border: 1px solid rgba(148,163,184,0.14);
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 10px 24px rgba(2,6,23,0.45);
-        ">
-            <div style="
-                display: flex;
-                justify-content: center;
-                gap: 20px;
-                flex-wrap: wrap;
-                align-items: center;
-            ">
-                <a href="../index.html" style="
-                    display: inline-block;
-                    background: #3b82f6;
-                    color: white;
-                    padding: 12px 24px;
-                    text-decoration: none;
-                    border-radius: 6px;
-                    font-weight: 500;
-                    transition: all 0.3s;
-                    box-shadow: 0 0 12px rgba(59,130,246,0.4);
-                " onmouseover="this.style.background='#2563eb'; this.style.transform='translateY(-1px)'" 
-                  onmouseout="this.style.background='#3b82f6'; this.style.transform='translateY(0)'">
-                    ← Back to All Reports
-                </a>
-                <a href="../../index.html" style="
-                    display: inline-block;
-                    background: transparent;
-                    color: #cbd5e1;
-                    padding: 12px 24px;
-                    text-decoration: none;
-                    border-radius: 6px;
-                    font-weight: 500;
-                    border: 1px solid rgba(203,213,225,0.2);
-                    transition: all 0.3s;
-                " onmouseover="this.style.borderColor='rgba(203,213,225,0.4)'; this.style.color='#e2e8f0'" 
-                  onmouseout="this.style.borderColor='rgba(203,213,225,0.2)'; this.style.color='#cbd5e1'">
-                    🏠 Home
-                </a>
-            </div>
-            <div style="
-                margin-top: 20px;
-                font-size: 12px;
-                color: #94a3b8;
-            ">
-                <p style="margin: 0; color: #e2e8f0; font-weight: 600;">AuthenticityCo-Pilot</p>
-                <p style="margin: 5px 0 0 0;">Advanced Podcast Coaching Analysis • Evidence-based insights</p>
-            </div>
-        </div>
+        <div id="authenticity-nav-footer"></div>
         </body>
         </html>
         
