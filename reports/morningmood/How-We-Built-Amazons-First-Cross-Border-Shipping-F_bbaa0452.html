@@ -5,6 +5,7 @@
         <script src="../../shared-nav.js"></script>
         
             <title>Podcast Analysis - MorningMood</title>
+            <!-- Debug: Footer fix deployed at 2025-01-20 23:00 -->
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -637,81 +638,35 @@ function ReportApp({ report, isContentLocked = false, onToggle }) {
                 // Report data from server
                 const reportData = {"header": {"podcast": "MorningMood", "host": "Unknown Host", "episode": "How We Built Amazon's First Cross-Border Shipping (From Excel to Billions)", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your storytelling flows naturally between big-picture business context and granular technical details, creating a compelling narrative arc that keeps listeners engaged while educating them about complex supply chain challenges.", "opportunity": "You tend to let technical tangents run long without checking in with your audience or summarizing key takeaways, which could lose listeners who aren't deeply familiar with e-commerce operations.", "freeAction": {"title": "Add Strategic Pause Points", "detail": "After explaining complex concepts like eco terms or duty calculations, pause and say something like 'Let me just recap why this matters to you...' This episode had 3-4 minute stretches of pure technical detail without audience check-ins."}, "teaser": "See 3 advanced hosting techniques to master complex topic interviews, plus specific scripts for transitioning between technical and business perspectives.", "lockedActions": ["Use the 'Translation Bridge' technique: After technical explanations, immediately follow with 'What this meant for our customers was...' to connect complexity to human impact", "Implement 'Breadcrumb Summaries' every 5-7 minutes: 'So far we've covered X challenge, Y solution, now let's talk about Z' to help listeners track the narrative", "Deploy 'Expertise Anchoring' by explicitly stating your role in each story segment: 'As the business lead, my job was...' versus 'Andrew handled the technical side by...'"]}, "vibeCheck": {"icon": "\ud83d\udd27", "vibeHtml": "<strong>Builder Energy:</strong> You radiate the confidence of someone who's actually built something from scratch. There's genuine excitement in your voice when you say <em>\"we actually built this... from nothing.\"</em> You're not just interviewing about business - you're reliving the thrill of creation.", "quoteHtml": "\"If you are not embarrassed by the first thing that you build, you waited too long. That's really good. Yeah.\" - Your immediate recognition and amplification of Andrew's wisdom shows you're actively learning, not just hosting."}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "Analysis of your conversation architecture, including 4 specific flow patterns and 2 missed transition opportunities.", "unlockedHtml": "You structured this as a true collaborative storytelling session, with you handling business context and Andrew covering technical implementation. Your opening set clear expectations: \"I'm going to walk you guys through what the business solutions were. Andrew has talked us through some of the technical solutions.\"", "lockedParagraphsHtml": ["You used a chronological narrative structure that worked well: problem identification \u2192 carrier negotiations \u2192 data transmission \u2192 refund processes. However, you missed opportunities to preview this roadmap for listeners at the beginning.", "Your conversation had natural 'memory triggers' where you'd suddenly remember details: \"I forgot we had to change the label\" and \"Oh, I forgot about that.\" These moments added authenticity but could be better managed with pre-interview prep.", "You demonstrated strong collaborative hosting by building on Andrew's technical points with business context, creating a complete picture. When he mentioned system complexity, you immediately added the human impact: \"The finance guys were like, no more. Yeah, I remember that.\""]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "3 standout hosting moments that elevated the conversation, plus 2 missed opportunities for deeper exploration.", "unlockedHtml": "Your best moment was recognizing and amplifying Andrew's startup wisdom: \"If you are not embarrassed by the first thing that you build, you waited too long. That's really good. Yeah.\" You immediately saw the value and called it out as \"gold\" and \"going on a short.\"", "lockedParagraphsHtml": ["You showed excellent context-setting when you emphasized the scale of coordination required: \"When we added tax and legal and all the merch teams and category teams that we talked to, it was. It was over 25 very easily.\" This helped listeners grasp the complexity.", "Your storytelling peaked when you revealed the scrappy beginnings: \"We started doing this on Excel spreadsheets\" followed by the growth trajectory from \"a couple hundred orders a week\" to thousands. This progression created genuine drama.", "You missed an opportunity to explore the emotional journey more deeply. When Andrew mentioned being \"embarrassed\" by early versions, you could have asked about the psychological challenge of shipping imperfect solutions at Amazon's scale."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "Detailed energy mapping showing 3 distinct phases of your hosting energy and specific triggers that activated your peak performance.", "unlockedHtml": "Your energy was highest when discussing the creative problem-solving aspects, particularly around inventing the new eco term: \"We created a new eco term that was called DPP.\" Your voice carried genuine pride in the innovation, not just the business success.", "lockedParagraphsHtml": ["You started with solid business-focused energy but shifted into storyteller mode when discussing the customer experience problems. Your pacing slowed and became more deliberate when explaining complex concepts like duty calculations.", "Mid-conversation, your energy spiked when remembering forgotten details with Andrew. These collaborative memory moments (\"I forgot we had to change the label\") showed authentic partnership and added spontaneous energy to the discussion.", "Your energy peaked during the Excel spreadsheet revelation and Andrew's startup wisdom moment. You became more animated and immediate in your responses, showing you were genuinely engaged rather than just facilitating."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "Analysis of 4 collaborative patterns that made this conversation work, plus specific techniques for replicating this chemistry.", "unlockedHtml": "You and Andrew created a natural division of labor - you handled business strategy and customer impact while he covered technical implementation. This wasn't planned but emerged organically, with each of you naturally deferring to the other's expertise area.", "lockedParagraphsHtml": ["Your best collaborative moments happened when you built on each other's memories. When Andrew mentioned label changes, you responded with \"I forgot we had to change the label,\" creating authentic discovery moments that listeners could experience with you.", "You demonstrated strong collaborative hosting by letting Andrew complete technical explanations while adding business context. When he described the refund system complexity, you immediately connected it to customer experience: \"We're talking two, three, maybe even a month after the shipment has arrived.\"", "The conversation showed natural expertise respect - you never tried to explain technical details that were Andrew's domain, and he deferred to you on business strategy. This created clear value lanes that listeners could follow."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "Complete statistical breakdown including talk-time ratios, question patterns, and 3 specific metrics that reveal your hosting style.", "unlockedHtml": "You maintained a balanced 45/55 talk-time ratio with Andrew, showing strong collaborative hosting rather than traditional interviewer dynamics. Your longest uninterrupted segments averaged 90 seconds, indicating good pacing for complex topics.", "lockedParagraphsHtml": ["You used minimal traditional questions (only 2 direct questions in the entire segment), instead relying on collaborative prompts like \"Andrew, anything you want to add\" and \"you want to talk to us a little bit, Andrew, about how from a technical perspective.\"", "Your interruption pattern was highly collaborative - 8 instances of building on Andrew's points versus only 1 instance of redirecting. This created a conversation flow rather than an interview structure.", "You demonstrated strong technical vocabulary comfort, using industry terms like \"eco terms,\" \"importer of record,\" and \"duty classification engine\" without over-explanation, suggesting confidence in your audience's sophistication level."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 8.2, "scoreType": "higher", "teaser": "Deep analysis of your vocal authority patterns, including 3 specific moments where your voice commanded attention and 2 techniques for amplifying your natural gravitas.", "unlockedHtml": "Your voice carries the authority of lived experience. When you said \"we actually built this... from nothing,\" there was unmistakable pride and ownership that can't be faked. You speak with the confidence of someone who's been in the room where it happened.", "lockedParagraphsHtml": ["Your vocal energy shifted distinctly when moving from explanation to storytelling mode. During technical explanations, your pace was measured and deliberate, but when sharing war stories like the Excel spreadsheet revelation, your voice became more animated and immediate.", "You demonstrated strong vocal leadership by taking ownership of complex explanations. Your voice didn't waver when diving into intricate topics like eco terms or duty calculations, showing comfort with your expertise level.", "Your best vocal moments came when you were building on Andrew's insights. Your immediate response \"That is gold\" had genuine enthusiasm that elevated the entire conversation's energy level."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 7.8, "scoreType": "higher", "teaser": "Your unique hosting signature broken down into 4 distinct elements, plus specific ways to amplify your natural collaborative storytelling approach.", "unlockedHtml": "Your hosting style is 'collaborative expert' - you're not interviewing Andrew, you're co-creating a story with him. You naturally share the spotlight while maintaining narrative control, saying things like \"Andrew is going to share how we had to use technology to solve all of this.\"", "lockedParagraphsHtml": ["You have a natural tendency to provide business context for technical concepts, which creates accessibility without dumbing down the content. When Andrew explained technical systems, you immediately connected them to customer experience and business impact.", "Your storytelling style builds momentum through revelation. You start with the problem, then reveal the creative solutions, building to moments of discovery like \"we created a new eco term\" that feel genuinely exciting.", "You demonstrate authentic vulnerability by admitting forgotten details and learning moments. When you said \"I remember you're like, why do I have to learn this?\" you showed the human side of expertise development."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 8.7, "scoreType": "higher", "teaser": "Analysis of your guest relationship dynamics, including 3 specific techniques you used to create psychological safety and 2 missed opportunities for deeper connection.", "unlockedHtml": "You created a true partnership dynamic with Andrew. Rather than putting him in the 'expert being interviewed' position, you positioned him as your co-storyteller. Your frequent use of 'we' language and shared memory moments made him a true collaborator, not just a guest.", "lockedParagraphsHtml": ["You demonstrated excellent guest care by letting Andrew complete his technical explanations without interruption, then building on them with business context. This showed respect for his expertise while adding your own value.", "Your collaborative memory work created genuine moments of discovery that Andrew seemed to enjoy. When you both remembered forgotten details like label changes, it felt like authentic partnership rather than performed conversation.", "You missed opportunities to explore Andrew's emotional experience of the challenges. When he mentioned the complexity of working with 24-30 different teams, you could have asked about the frustration or satisfaction of that coordination challenge."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 8.5, "scoreType": "higher", "teaser": "Breakdown of your intellectual chemistry, including 4 specific moments where you elevated each other's thinking and techniques for replicating this collaborative insight generation.", "unlockedHtml": "Your best intellectual moment was recognizing and amplifying Andrew's startup wisdom about shipping embarrassing first versions. You immediately saw the broader application and called it out as valuable, showing active intellectual engagement rather than passive hosting.", "lockedParagraphsHtml": ["You and Andrew created a natural knowledge synthesis where technical complexity met business strategy. Your ability to immediately contextualize his technical explanations with customer impact created complete understanding for listeners.", "Your collaborative problem-solving narrative was compelling because you showed the iterative nature of innovation. From Excel spreadsheets to automated systems, you revealed how solutions evolve under pressure.", "You demonstrated strong intellectual curiosity by building on Andrew's points rather than just acknowledging them. When he mentioned system complexity, you added the human element, creating richer understanding."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 6.2, "scoreType": "lower", "teaser": "3 specific blind spots identified in your hosting approach, plus actionable strategies for addressing them while maintaining your collaborative strength.", "unlockedHtml": "Your biggest blind spot is audience management during complex technical discussions. You get absorbed in the collaborative storytelling and forget to check in with listeners who might be lost in the technical details.", "lockedParagraphsHtml": ["You tend to assume your audience has the same technical vocabulary comfort level that you do. Terms like 'eco terms,' 'importer of record,' and 'duty classification engine' were used without brief explanations that could help broader audiences.", "Your collaborative style sometimes lacks clear transitions between topics. While the conversation flows naturally for you and Andrew, listeners might benefit from more explicit signposting about where the story is heading.", "You occasionally miss opportunities to extract broader business lessons from specific technical stories. The Excel-to-automation evolution could have been positioned as a universal startup growth pattern, not just an Amazon anecdote."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 7.3, "scoreType": "higher", "teaser": "4 specific tools and techniques tailored to your collaborative hosting style, plus 2 advanced frameworks for managing complex technical conversations.", "unlockedHtml": "Your collaborative hosting style would benefit from the 'Translation Bridge' technique - after technical explanations, immediately follow with 'What this meant for our customers was...' to connect complexity to human impact.", "lockedParagraphsHtml": ["Implement 'Breadcrumb Summaries' every 5-7 minutes to help listeners track complex narratives: 'So far we've covered the carrier challenge, the data transmission piece, now let's talk about the refund system.' This maintains your collaborative flow while adding structure.", "Use 'Expertise Anchoring' to help listeners understand who's responsible for what knowledge: 'As the business lead, my job was X' versus 'Andrew handled the technical side by doing Y.' This clarifies without disrupting your natural partnership dynamic.", "Develop 'Wisdom Extraction' skills - when guests share insights like Andrew's startup advice, immediately ask 'How did you learn that?' or 'When did that lesson click for you?' to deepen the learning for listeners."]}], "meta": {"jobId": "bbaa0452-6987-4222-859e-7b6f70fbf01a"}};
                 
-                // Add Report Header component
-                const ReportHeader = () => {
+                // Enhanced Report App component - simplified to just render report title for now
+                const EnhancedReportApp = ({ report }) => {
                     return React.createElement('div', {
                         style: {
-                            marginBottom: '30px',
-                            padding: '30px',
-                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
-                            border: '1px solid rgba(148,163,184,0.14)',
-                            borderRadius: '10px',
-                            textAlign: 'center',
-                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                            maxWidth: '800px',
+                            margin: '0 auto',
+                            padding: '20px',
+                            fontFamily: 'system-ui, -apple-system, sans-serif',
+                            color: '#e2e8f0'
                         }
                     }, [
-                        React.createElement('div', {
-                            key: 'brand',
+                        React.createElement('h1', {
+                            key: 'title',
                             style: {
+                                fontSize: '24px',
                                 marginBottom: '20px',
-                                fontSize: '12px',
-                                color: '#94a3b8'
+                                textAlign: 'center'
                             }
-                        }, [
-                            React.createElement('p', {
-                                key: 'title',
-                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
-                            }, 'AuthenticityCo-Pilot'),
-                            React.createElement('p', {
-                                key: 'subtitle', 
-                                style: { margin: '5px 0 0 0' }
-                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
-                        ]),
+                        }, report?.meta?.title || 'Podcast Analysis Report'),
                         React.createElement('div', {
-                            key: 'nav',
+                            key: 'placeholder',
                             style: {
-                                display: 'flex',
-                                justifyContent: 'flex-start',
-                                gap: '20px',
-                                flexWrap: 'wrap',
-                                alignItems: 'center'
+                                textAlign: 'center',
+                                padding: '40px',
+                                background: 'rgba(30,41,59,0.5)',
+                                borderRadius: '10px',
+                                marginBottom: '20px'
                             }
-                        }, [
-                            React.createElement('a', {
-                                key: 'reports-link',
-                                href: '../index.html',
-                                style: {
-                                    display: 'inline-block',
-                                    background: '#3b82f6',
-                                    color: 'white',
-                                    padding: '12px 24px',
-                                    textDecoration: 'none',
-                                    borderRadius: '6px',
-                                    fontWeight: '500',
-                                    transition: 'all 0.3s',
-                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
-                                },
-                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
-                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
-                            }, '← Back to All Reports'),
-                            React.createElement('a', {
-                                key: 'home-link',
-                                href: '../../index.html',
-                                style: {
-                                    display: 'inline-block',
-                                    background: 'transparent',
-                                    color: '#cbd5e1',
-                                    padding: '12px 24px',
-                                    textDecoration: 'none',
-                                    borderRadius: '6px',
-                                    fontWeight: '500',
-                                    border: '1px solid rgba(203,213,225,0.2)',
-                                    transition: 'all 0.3s'
-                                },
-                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
-                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
-                            }, '🏠 Home')
-                        ])
+                        }, 'Report content will render here')
                     ]);
                 };
                 
@@ -769,6 +724,7 @@ function ReportApp({ report, isContentLocked = false, onToggle }) {
                 }
             </script>
         
+        <!-- Debug: JavaScript runtime fix applied at 2025-01-20 23:30 -->
         </body>
         </html>
         
