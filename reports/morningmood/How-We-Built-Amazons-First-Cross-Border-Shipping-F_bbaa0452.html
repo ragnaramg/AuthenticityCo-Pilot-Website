@@ -762,6 +762,12 @@ function ReportApp({ report, isContentLocked = false, onToggle }) {
                 // Render the app
                 const root = ReactDOM.createRoot(document.getElementById('root'));
                 root.render(React.createElement(MainReportApp, { report: reportData }));
+
+                // Ensure navigation is initialized after React render
+                if (window.AuthenticityCoPilotNav) {
+                    const nav = new window.AuthenticityCoPilotNav();
+                    nav.autoInit();
+                }
             </script>
         
         <div id="authenticity-nav-footer"></div>
