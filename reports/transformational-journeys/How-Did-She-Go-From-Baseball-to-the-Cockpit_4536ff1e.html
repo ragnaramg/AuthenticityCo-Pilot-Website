@@ -164,7 +164,7 @@ const ClampParagraph = ({ html, initiallyClamped = true }) => {
 };
 
 /** Locked content blur with teaser + count */
-const LockedListBlur = ({ teaser, items }) => {
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
   const [open, setOpen] = useState(false);
 
   const List = (
@@ -177,7 +177,8 @@ const LockedListBlur = ({ teaser, items }) => {
     </ol>
   );
 
-  if (open) return <div className="mt-2">{List}</div>;
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
 
   return (
     <div className="relative rounded-md overflow-hidden mt-2">
@@ -233,7 +234,86 @@ function mapThemeTitle(oldTitle) {
 
 /* ------------------------------ APP ------------------------------ */
 
-function ReportApp({ report }) {
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Preview Locked Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
   const headerStats = computeHeaderStats(report.themes);
 
   const unlockedCount =
@@ -328,6 +408,9 @@ function ReportApp({ report }) {
                 </button>{" "}
                 to see {totalLocked} more.
               </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
             </div>
 
             {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
@@ -376,6 +459,7 @@ function ReportApp({ report }) {
             <LockedListBlur
               teaser={report.gamePlan.teaser}
               items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
             />
           </div>
         </div>
@@ -442,7 +526,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={c.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -496,7 +580,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={ins.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -539,6 +623,7 @@ function ReportApp({ report }) {
           <LockedListBlur
             teaser={report.progress.lockedTeaser}
             items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
           />
         </div>
           </>
@@ -552,6 +637,84 @@ function ReportApp({ report }) {
                 // Report data from server
                 const reportData = {"header": {"podcast": "Transformational Journeys", "host": "Unknown Host", "episode": "How Did She Go From Baseball to the Cockpit?", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your ability to create profound emotional safety through vulnerable sharing and authentic curiosity. You masterfully balanced personal disclosure with guest-focused questions, creating space for deep exploration of identity and authenticity.", "opportunity": "Your questions, while thoughtful, sometimes became lengthy multi-part inquiries that could overwhelm the conversational flow. Simplifying to single, focused questions would enhance clarity and guest response quality.", "freeAction": {"title": "Practice the Power Pause", "detail": "After asking a question, count to three before adding clarification or follow-ups. In this episode, you asked compound questions like 'how did embracing your authenticity lead you to this moment? Did it lead you to this moment? If so, how?' Practice asking one clear question, then letting silence work for you. This creates space for deeper guest reflection and prevents question overload."}, "teaser": "Unlock 3 advanced techniques for emotional resonance, conversation threading, and authentic vulnerability sharing", "lockedActions": ["Master the 'Echo and Elevate' technique - when your guest shares something profound like Ria's 'lightning bolt' moment, echo back the emotional core ('that daring, amazing story') then elevate with a question that goes deeper into the feeling rather than the facts", "Develop your 'Authentic Bridge' skill - use your own experiences more strategically as bridges to guest stories, like when you connected food choices to social pressure, but practice making these bridges shorter and more purposeful", "Create 'Resonance Moments' by naming the emotional undercurrent you're sensing, such as when you said 'the hairs on my arms' - practice verbalizing these physical/emotional responses more frequently to deepen connection"]}, "vibeCheck": {"icon": "\ud83c\udf1f", "vibeHtml": "<strong>Warm Sanctuary Energy</strong><br/>You created a space that felt like a safe harbor for deep exploration. Your genuine curiosity and willingness to be vulnerable alongside your guest fostered an atmosphere of mutual discovery and acceptance.", "quoteHtml": "\"Yeah. Thank you for sharing that. You know, I love how you talk about growing up and kind of feeling like you're in two different worlds and one of those things that forces us to examine who we are.\""}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "See 4 specific flow patterns, including your question-to-response ratios and conversation threading techniques", "unlockedHtml": "You demonstrated excellent thematic threading, weaving authenticity through career choices, cultural identity, and community belonging. Your transitions felt organic, moving from Ria's pilot journey to her umpiring background with natural curiosity rather than forced segues.", "lockedParagraphsHtml": ["Your conversation architecture followed a powerful spiral pattern - starting with surface-level authenticity definitions, then diving deeper into childhood trauma, career pivots, and finally intimate community connections. This created natural momentum toward increasingly vulnerable territory.", "You asked an average of 1.8 follow-up questions per major topic, showing good persistence without overwhelming. However, 60% of your questions contained multiple parts, which sometimes scattered the focus and required Ria to choose which element to address first.", "Your pacing shifted noticeably around the Star Trek discussion - you became more animated and personal, asking shorter questions and offering more of your own perspective. This energy shift was palpable and created some of the episode's most engaging moments.", "You excelled at 'callback threading' - referencing earlier topics like food authenticity when discussing broader life choices. This technique created conversational cohesion and showed you were truly listening, not just waiting for your next question."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "Discover 5 peak moments where your hosting created breakthrough insights, plus 2 missed opportunities for even deeper connection", "unlockedHtml": "Your response to Ria's career pivot story - \"the hairs on my arms\" - was a masterclass in authentic reaction. You didn't just acknowledge her courage; you let your physical response show the impact of her words, which invited even more vulnerability.", "lockedParagraphsHtml": ["The moment you connected food choices to social pressure (\"Food is a social thing. Right. And sometimes we get pressured to eat what other people are eating\") was brilliant hosting - you took her specific example and elevated it to universal truth, helping listeners connect personally.", "Your vulnerability about swearing (\"No, you're good if you want the real fucking Ria\") created an instant intimacy shift. Ria's energy completely opened up after this moment, leading to some of her most honest sharing about her past experiences and current challenges.", "You missed a golden opportunity when Ria mentioned being \"beaten up\" for being a woman umpire. A simple \"Tell me about that\" could have unlocked a powerful story about resilience and determination that would have resonated deeply with listeners facing their own battles.", "Your question about self-acceptance (\"where does that come from like for you?\") hit at exactly the right moment when Ria was exploring her inner strength. The timing created space for her profound insight about her mother 'breaking' her ability to feel guilt - a breakthrough moment for both guest and audience.", "The Star Trek community discussion became electric when you shared your own connection to that world. Your authentic enthusiasm was contagious and created the episode's most joyful, celebratory energy - showing how host vulnerability can elevate guest storytelling."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "Track 3 distinct energy phases in your hosting, including specific moments where your authenticity peaked and dipped", "unlockedHtml": "Your energy transformed most dramatically during the Star Trek discussion, shifting from interviewer to fellow enthusiast. You became more animated, asked shorter questions, and shared more personal connections, creating the episode's most dynamic segment.", "lockedParagraphsHtml": ["You started with careful, thoughtful energy - longer questions, more formal language, establishing safety. Around the 15-minute mark, when discussing Ria's childhood isolation, your tone became noticeably warmer and more protective, showing your natural empathy.", "Your confidence peaked during discussions of authenticity and self-acceptance, where your questions became more incisive and your responses more immediate. You seemed most in your element exploring these psychological and emotional territories.", "There was a subtle energy dip when navigating Ria's more technical career details (medical certificates, flight training logistics). Your questions became slightly more perfunctory, suggesting these practical elements were less energizing for you than the emotional and philosophical content."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "Explore 4 collaborative meaning-making moments and 2 areas where deeper co-creation was possible", "unlockedHtml": "You and Ria created beautiful collaborative insights around the concept of authenticity as cultural choice-making. Your food analogy sparked her deeper reflection on rejecting societal expectations, showing how good hosting can help guests discover new aspects of their own stories.", "lockedParagraphsHtml": ["The most powerful co-creation happened around the theme of 'superpower from trauma.' You helped Ria articulate how childhood isolation became adult independence by asking the right follow-up questions and reflecting back what you heard, allowing her to build on her own insights.", "Your shared Star Trek enthusiasm created genuine collaborative joy - you weren't just interviewing about her community, you were celebrating it together. This shift from interviewer-subject to fellow traveler created some of the episode's most authentic and engaging content.", "You missed an opportunity for deeper collaboration when Ria mentioned feeling like 'a gay man on the inside.' Your response was supportive but analytical rather than exploratory. A more curious approach might have helped her (and listeners) understand this identity insight more fully.", "The rejection theme became a powerful collaborative exploration when you helped Ria see the pattern across her life experiences. Your questions helped her connect dots between childhood, career, and current relationships in ways that seemed revelatory even to her."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "Get precise metrics on your question patterns, response timing, and 3 specific areas for numerical improvement", "unlockedHtml": "You asked 23 questions total, with an average length of 28 words per question. Your longest question contained 67 words with multiple parts, while your most effective questions averaged just 12 words and focused on single concepts.", "lockedParagraphsHtml": ["Your talk-to-listen ratio was approximately 25:75, showing excellent restraint and guest focus. However, your questions became 40% longer in the middle section of the interview, suggesting you may have been overthinking rather than trusting your instincts.", "You used 'right' as a verbal filler 18 times, often at the end of statements seeking agreement. While this created connection, reducing this by half would make your questions feel more confident and less seeking validation.", "Your response time to guest answers averaged 2.3 seconds, showing good active listening. Your fastest responses (under 1 second) came during emotional moments, demonstrating authentic engagement, while longer pauses (4+ seconds) preceded your most thoughtful questions."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 8.2, "scoreType": "higher", "teaser": "Discover your signature vocal patterns, 3 moments of peak authenticity, and specific techniques to amplify your natural warmth", "unlockedHtml": "Your voice carried genuine warmth and curiosity that created immediate safety for vulnerable sharing. You demonstrated natural empathy through your tone shifts, becoming more gentle during difficult topics and more animated during joyful moments like the Star Trek discussion.", "lockedParagraphsHtml": ["Your authentic reactions (\"the hairs on my arms,\" \"holy cow\") created powerful vocal moments that showed real-time impact. These unscripted responses were more engaging than your prepared questions, suggesting your natural reactions are a hosting superpower to lean into more frequently.", "You have a distinctive pattern of using \"right\" and \"you know\" to create connection, but these verbal habits sometimes undercut your authority. When you said \"Food is a social thing. Right.\" the insight was powerful, but the \"right\" made it sound like you needed validation rather than sharing wisdom.", "Your voice became most compelling when you shared personal connections, like discussing your own Star Trek community experience. In these moments, your tone shifted from interviewer to fellow human, creating the episode's most magnetic energy and showing your authentic voice is your strongest hosting tool."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 7.8, "scoreType": "higher", "teaser": "Uncover your unique hosting DNA, including 4 signature moves and 2 areas where more 'you' would elevate the conversation", "unlockedHtml": "Your hosting style blends thoughtful preparation with spontaneous vulnerability. You create safety through your own openness, like when you shared your swearing comfort level, which immediately deepened the conversation's authenticity and gave Ria permission to be fully herself.", "lockedParagraphsHtml": ["Your signature move is the 'vulnerable bridge' - using your own experiences to connect with guest stories. When you linked food choices to social pressure, you weren't just asking questions; you were co-creating understanding. This collaborative approach sets you apart from traditional interview styles.", "You have an intuitive gift for emotional timing - knowing when to push deeper and when to simply witness. Your response to Ria's career pivot story showed perfect emotional intelligence, letting your genuine amazement show rather than rushing to the next question.", "Your style becomes most distinctive when you abandon formal interview structure and engage as a fellow seeker. The Star Trek discussion revealed your natural enthusiasm and curiosity, showing that your authentic interests create the most engaging content - trust this instinct more often."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 9.1, "scoreType": "higher", "teaser": "See 5 specific moments where you created emotional safety, plus advanced techniques for even deeper guest comfort", "unlockedHtml": "You created exceptional emotional safety that allowed Ria to share deeply personal stories about childhood trauma, career struggles, and identity questions. Your genuine appreciation for her courage (\"such a daring, amazing story\") validated her vulnerability and encouraged even deeper sharing.", "lockedParagraphsHtml": ["Your gift for making guests feel seen showed most clearly when you reflected back Ria's insights with added depth. When she mentioned her childhood isolation, you helped her recognize it as a 'superpower,' showing you weren't just listening but truly understanding and valuing her experience.", "You demonstrated masterful emotional attunement by matching Ria's energy shifts - becoming more serious during trauma discussions and more playful during Star Trek talk. This emotional mirroring created a sense of being truly understood that's rare in podcast interviews.", "Your willingness to be vulnerable alongside your guest (sharing your own Star Trek enthusiasm, your physical reactions to her stories) created reciprocal safety. Ria opened up most after moments when you showed your own authenticity, proving that host vulnerability is a powerful tool for guest comfort.", "The moment you said 'you're good if you want the real fucking Ria' was transformational - it gave her explicit permission to drop any remaining masks. This kind of direct permission-giving is advanced hosting that creates space for guests to be more authentic than they might be anywhere else."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 8.5, "scoreType": "higher", "teaser": "Explore 4 breakthrough insights you co-created, including the authenticity framework that emerged from your collaboration", "unlockedHtml": "You and Ria developed a powerful framework around authenticity as active choice-making rather than passive self-discovery. Your food analogy sparked her insight about cultural selection, creating a practical model for listeners struggling with identity questions in multicultural contexts.", "lockedParagraphsHtml": ["The most significant intellectual breakthrough came when you helped Ria articulate how childhood trauma became adult superpower. Your questions guided her to see the pattern: isolation \u2192 independence \u2192 authentic self-determination. This insight has profound implications for anyone dealing with difficult backgrounds.", "Together you explored the concept of 'rejection as validation' - the idea that being rejected for authenticity confirms you're doing something right. This collaborative insight emerged from your shared understanding of non-conformity and offers a powerful reframe for listeners facing social pressure.", "Your discussion of community belonging created a nuanced understanding of how authentic people find their tribes. The Star Trek community example showed that authenticity attracts authentic connection, but it requires courage to show up as yourself in spaces that might reject you.", "You co-created an important distinction between external validation and internal compass. Through your questions, Ria articulated how her childhood forced her to develop internal guidance systems that now serve her in pursuing unconventional paths - a valuable lesson for anyone seeking authentic direction."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 6.8, "scoreType": "lower", "teaser": "Identify 3 specific growth edges, including question complexity patterns and 2 missed storytelling opportunities", "unlockedHtml": "Your questions sometimes became multi-layered puzzles that scattered focus rather than creating clarity. When you asked \"how did embracing your authenticity lead you to this moment? Did it lead you to this moment? If so, how?\" you gave Ria three different questions to choose from, diluting the power of each.", "lockedParagraphsHtml": ["You have a tendency to over-explain your questions, which can make you seem less confident than you are. Trust that your initial question is usually the right one - your instincts are strong, but your follow-up explanations sometimes muddy the waters rather than clarifying them.", "You missed opportunities to explore conflict and tension more deeply. When Ria mentioned being 'beaten up' for umpiring or facing daily bullying in Nebraska, you acknowledged these experiences but didn't dive into the emotional reality or resilience strategies - areas that could offer powerful lessons for listeners.", "Your natural empathy sometimes prevents you from pushing for specifics when stories could be more vivid. While your supportive approach creates safety, occasionally asking for concrete details (\"What did that look like?\" \"What exactly happened?\") would help listeners connect more viscerally with the experiences being shared."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 7.3, "scoreType": "higher", "teaser": "Access 4 advanced hosting techniques, including the 'Emotional Echo' method and specific question frameworks for deeper exploration", "unlockedHtml": "Your natural gift for emotional resonance can be enhanced with the 'Emotional Echo' technique - when guests share something powerful, reflect back not just the content but the feeling you're sensing. You did this beautifully with \"the hairs on my arms\" but could use this tool more systematically.", "lockedParagraphsHtml": ["Develop your 'Curiosity Ladder' - instead of asking compound questions, ask one simple question, then build follow-ups based on the response. Start with 'What was that like?' then climb deeper with 'What did that teach you?' and 'How does that show up in your life now?' This creates natural progression without overwhelming complexity.", "Practice the 'Vulnerable Validation' technique you used naturally - when guests share difficult experiences, briefly share your own resonance before asking the next question. This creates reciprocal safety and often unlocks deeper sharing than direct questions alone.", "Master the 'Significance Spotlight' - when guests mention important moments casually, slow down and highlight them. Ria mentioned several pivotal moments that deserved more exploration. Learning to recognize and amplify these moments will create more impactful episodes.", "Develop your 'Energy Matching' skills more consciously. You did this intuitively, but practicing deliberate energy calibration - matching guest energy for safety, then gradually elevating for engagement - will help you guide conversations more skillfully while maintaining authenticity."]}], "meta": {"jobId": "4536ff1e-542a-407e-a7da-4ac44f7659e7"}};
                 
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
+                
                 // Add Job ID Footer component
                 const JobIdFooter = ({ jobId }) => {
                     const copyToClipboard = () => {
@@ -562,10 +725,12 @@ function ReportApp({ report }) {
                     
                     return React.createElement('div', {
                         style: {
-                            marginTop: '40px',
-                            padding: '20px',
+                            marginTop: '0',
+                            padding: '15px 30px',
                             textAlign: 'center',
-                            borderTop: '1px solid rgba(148,163,184,0.18)',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderTop: 'none',
                             color: '#cbd5e1'
                         }
                     }, [
@@ -575,7 +740,9 @@ function ReportApp({ report }) {
                                 fontSize: '12px',
                                 fontFamily: 'monospace, courier',
                                 cursor: 'pointer',
-                                userSelect: 'all'
+                                userSelect: 'all',
+                                color: '#94a3b8',
+                                opacity: '0.8'
                             },
                             onClick: copyToClipboard,
                             title: 'Click to copy Job ID'
@@ -583,9 +750,10 @@ function ReportApp({ report }) {
                     ]);
                 };
                 
-                // Enhanced ReportApp with Job ID footer
+                // Enhanced ReportApp with header and footer
                 const EnhancedReportApp = ({ report }) => {
                     return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
                         React.createElement(ReportApp, { key: 'report', report }),
                         React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
                     ]);
