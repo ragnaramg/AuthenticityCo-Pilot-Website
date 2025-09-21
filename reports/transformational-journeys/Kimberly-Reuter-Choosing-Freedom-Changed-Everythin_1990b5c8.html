@@ -164,7 +164,7 @@ const ClampParagraph = ({ html, initiallyClamped = true }) => {
 };
 
 /** Locked content blur with teaser + count */
-const LockedListBlur = ({ teaser, items }) => {
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
   const [open, setOpen] = useState(false);
 
   const List = (
@@ -177,7 +177,8 @@ const LockedListBlur = ({ teaser, items }) => {
     </ol>
   );
 
-  if (open) return <div className="mt-2">{List}</div>;
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
 
   return (
     <div className="relative rounded-md overflow-hidden mt-2">
@@ -233,7 +234,86 @@ function mapThemeTitle(oldTitle) {
 
 /* ------------------------------ APP ------------------------------ */
 
-function ReportApp({ report }) {
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Preview Locked Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
   const headerStats = computeHeaderStats(report.themes);
 
   const unlockedCount =
@@ -328,6 +408,9 @@ function ReportApp({ report }) {
                 </button>{" "}
                 to see {totalLocked} more.
               </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
             </div>
 
             {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
@@ -376,6 +459,7 @@ function ReportApp({ report }) {
             <LockedListBlur
               teaser={report.gamePlan.teaser}
               items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
             />
           </div>
         </div>
@@ -442,7 +526,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={c.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -496,7 +580,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={ins.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -539,6 +623,7 @@ function ReportApp({ report }) {
           <LockedListBlur
             teaser={report.progress.lockedTeaser}
             items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
           />
         </div>
           </>
@@ -552,7 +637,83 @@ function ReportApp({ report }) {
                 // Report data from server
                 const reportData = {"header": {"podcast": "Transformational Journeys", "host": "Unknown Host", "episode": "Kimberly Reuter: Choosing Freedom Changed Everything for Her", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your ability to identify and articulate deeper patterns in your guest's story. You consistently moved beyond surface-level responses to uncover core values and motivations, particularly when you identified the 'freedom thread' running through Kimberly's entire narrative.", "opportunity": "Your questions sometimes contain multiple concepts that could dilute focus. When you asked about 'be-do-have philosophy' while also discussing values, it created a moment where the conversation could have scattered rather than deepened.", "freeAction": {"title": "Practice the Single-Thread Question", "detail": "When you sense a powerful theme emerging (like you did with 'freedom'), resist the urge to introduce new frameworks. Instead, follow that single thread with laser focus. Your 'freedom is the thread' moment was brilliant - build 3-4 follow-up questions around just that concept before introducing new ideas."}, "teaser": "3 advanced techniques for thread-following, plus specific question frameworks for authenticity conversations", "lockedActions": ["Master the 'Breaking Point Technique' - you started this brilliantly by looking for where the freedom thread broke, but there's a specific 5-step process to make this even more powerful", "Develop your 'Value Archaeology' skills - learn how to dig deeper into the emotional landscape behind values like autonomy without losing conversational flow", "Create your 'Authenticity Roadmap' - a systematic approach to helping guests trace their journey from authentic to inauthentic and back again"]}, "vibeCheck": {"icon": "\ud83d\udd0d", "vibeHtml": "<strong>Thoughtful Detective</strong><br/>You brought a curious, investigative energy that made your guest feel truly seen. There's a quality of genuine fascination in how you approach their story.", "quoteHtml": "\"I'm trying to find the point where it breaks... because freedom is what is authentic to you. And I'm trying to find the breaking point, because I'm trying to find the point where you fell out of authenticity.\""}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "3 flow patterns that shaped this conversation, including your signature move", "unlockedHtml": "You created a beautiful arc from identity exploration to value discovery to authenticity archaeology. Your opening question about identity without job titles immediately set a reflective tone that carried through the entire conversation.", "lockedParagraphsHtml": ["Your 'thread-following' technique emerged as your signature move - when you identified 'freedom' as the core theme, you pursued it relentlessly across different life phases. This created remarkable depth and coherence.", "You demonstrated excellent 'context bridging' - connecting her corporate background to her family dynamics to her current helping nature. Each transition felt natural and built understanding.", "Your pacing shifted from broad exploration (identity, values) to specific investigation (marriage as breaking point) to emotional archaeology (finding authenticity again). This created a satisfying journey for both guest and listener."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "4 standout moments where your hosting elevated the conversation", "unlockedHtml": "Your most powerful moment came when you reframed her story: \"What's interesting about this thread is that I'm trying to find the point where it breaks.\" This transformed a meandering life story into a focused exploration of authenticity.", "lockedParagraphsHtml": ["Your validation of her authenticity was beautifully crafted: \"it takes real commitment to authenticity to say I'm coming from a family of government workers... But then you just went completely a different direction.\" This gave her permission to own her choices.", "The telex/telegram clarification showed excellent hosting instincts - you sensed listener confusion and addressed it naturally without breaking flow. Small moments like this build trust and understanding.", "Your insight about autonomy motivation was spot-on: \"I love that idea of autonomy motivated.\" You didn't just hear her words, you synthesized them into a powerful concept she could own."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "How your energy evolved through 3 distinct phases", "unlockedHtml": "You started with gentle curiosity in the identity exploration phase, then shifted into detective mode when you sensed the freedom theme, becoming more focused and investigative as the conversation deepened.", "lockedParagraphsHtml": ["Your energy peaked during the 'breaking point' investigation - you became more direct and purposeful, asking sharper questions about when she lost authenticity. This intensity served the conversation well.", "You showed beautiful patience during her longer stories, never rushing but always ready with the perfect follow-up when she finished. This created space for deeper revelations.", "Your excitement was palpable when you discovered patterns - \"What I'm so fascinated by the thread I see across all of this\" - this enthusiasm was contagious and encouraged her to go deeper."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "5 collaborative meaning-making moments that created insight", "unlockedHtml": "You and Kimberly co-created the concept of 'autonomy motivation' - she provided the raw experience, you provided the framework, and together you built a powerful insight about what really drives her.", "lockedParagraphsHtml": ["The 'freedom thread' became a shared discovery - you identified it, she confirmed it (\"The common freedom\"), and together you traced it through her entire life story. This collaborative investigation created deep understanding.", "You built on her 'helping' identity by connecting it to her lack of mentorship, creating a beautiful origin story for her current mission. She provided the pieces, you helped assemble the picture.", "The exploration of her marriage as an authenticity breaking point was truly collaborative - you provided the framework, she provided the emotional honesty, and together you created insight about the cost of societal pressure."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "Detailed metrics on question types, response patterns, and conversation balance", "unlockedHtml": "Your questions averaged 2.3 concepts per question, with your most effective questions focusing on single themes. You asked 12 total questions with 8 being follow-ups that built on previous responses, showing strong listening skills.", "lockedParagraphsHtml": ["You maintained excellent conversation balance - approximately 25% talking time to her 75%, which is ideal for deep exploration. Your longest speaking turn was 45 words, showing restraint and focus.", "Your question evolution showed sophistication: 40% identity/values questions early, shifting to 60% specific experience questions as the conversation deepened. This progression created natural intimacy.", "You used 6 validation statements throughout the conversation, each strategically placed after vulnerable shares. This consistent affirmation encouraged deeper disclosure and built psychological safety."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 8.2, "scoreType": "higher", "teaser": "Analysis of your conversational authority and 3 vocal leadership techniques", "unlockedHtml": "Your voice carried quiet authority throughout this conversation. You never dominated, but you consistently guided with purposeful questions and insightful observations that moved the dialogue forward.", "lockedParagraphsHtml": ["Your 'investigative voice' emerged as your signature style - when you said \"I'm trying to find the point where it breaks,\" you took clear conversational leadership while maintaining collaborative tone. This balance is sophisticated hosting.", "You demonstrated excellent 'conceptual voice' - introducing frameworks like 'be-do-have' and 'autonomy motivation' without being preachy. You offered tools rather than imposed them, which invited engagement rather than resistance.", "Your validation voice was particularly strong - phrases like \"I love that idea\" and \"What's fascinating\" showed genuine appreciation for her insights while encouraging deeper exploration."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 7.8, "scoreType": "higher", "teaser": "Your unique hosting fingerprint across 4 distinct style elements", "unlockedHtml": "Your hosting style blends philosophical curiosity with practical psychology. You're drawn to the 'why behind the why' - not just what happened, but what it reveals about human nature and authentic living.", "lockedParagraphsHtml": ["You're a 'pattern detective' - you excel at finding threads across seemingly disconnected life events. Your ability to connect her childhood, career choices, and marriage into a coherent freedom narrative shows sophisticated analytical thinking.", "Your 'gentle challenger' approach stands out - you push for deeper truth without being confrontational. When you suggested marriage was her authenticity breaking point, you did it with curiosity rather than judgment.", "You have a 'framework gift' - you naturally translate personal experiences into broader concepts that others can apply. This makes your conversations valuable beyond entertainment."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 8.7, "scoreType": "higher", "teaser": "4 specific techniques that created psychological safety and deeper sharing", "unlockedHtml": "You created exceptional psychological safety for Kimberly. Her willingness to share vulnerable details about her marriage, family dynamics, and personal struggles indicates she felt truly heard and understood.", "lockedParagraphsHtml": ["Your 'non-judgmental curiosity' was evident throughout - when she shared about not wanting children or criticizing government work, you responded with interest rather than surprise. This acceptance encouraged more honesty.", "You practiced 'generous interpretation' - consistently finding the positive intention behind her choices. When you framed her career moves as 'commitment to authenticity,' you helped her see her own strength.", "Your 'emotional archaeology' approach made her feel like her story mattered. By treating her life experiences as worthy of deep investigation, you elevated her sense of self-worth and narrative importance."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 8.5, "scoreType": "higher", "teaser": "5 breakthrough insights and the collaborative process that created them", "unlockedHtml": "You and Kimberly co-created the powerful concept of 'autonomy motivation' - the idea that what looks like money motivation is actually freedom motivation. This insight has broad applicability beyond her personal story.", "lockedParagraphsHtml": ["The 'authenticity breaking point' framework emerged from your collaborative investigation - you provided the analytical structure, she provided the emotional honesty, creating a tool others could use to examine their own lives.", "Your exploration of identity beyond job titles created a beautiful insight about the vulnerability of solopreneurship and the journey back to authentic self-definition. This resonates with many career transition stories.", "The connection between lack of mentorship and desire to help others became a powerful origin story for purpose-driven work. You helped her see how her pain became her mission, creating meaning from struggle."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 3.2, "scoreType": "lower", "teaser": "3 growth opportunities and specific techniques to address them", "unlockedHtml": "Your biggest growth opportunity lies in question complexity. Some of your questions contained multiple concepts that could scatter focus rather than deepen it, particularly when introducing philosophical frameworks.", "lockedParagraphsHtml": ["Watch for 'concept stacking' - when you introduced 'be-do-have' philosophy while also discussing values, it created potential confusion. Practice isolating single concepts for maximum impact and clarity.", "Your follow-up timing occasionally rushed past emotional moments. When she shared vulnerable content, consider adding more space before moving to the next question to let the emotion fully land.", "You sometimes telegraph your analytical process ('I'm trying to find...') which, while transparent, can make the conversation feel more like an interview than a natural dialogue. Trust that your insights will emerge organically."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 7.5, "scoreType": "higher", "teaser": "Specific resources and practice techniques tailored to your hosting style", "unlockedHtml": "Given your strength in pattern recognition and philosophical exploration, focus on developing your emotional intelligence and timing skills to complement your analytical abilities.", "lockedParagraphsHtml": ["Practice 'emotional parking' - when you identify a powerful theme, resist immediately analyzing it. Let it breathe emotionally before applying your analytical framework. This creates more impactful moments.", "Develop your 'silence toolkit' - your insights are strong, but strategic pauses after vulnerable shares could create even deeper revelations. Practice counting to three before responding to emotional content.", "Study 'Socratic questioning' techniques to refine your investigative approach. Your natural curiosity is excellent, but formal training in philosophical inquiry could make your questions even more powerful and precise."]}], "meta": {"jobId": "1990b5c8-4874-4a6c-946e-10b934a430e3"}};
                 
-                // ReportHeader removed - using shared navigation instead
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
                 
                 // Add Job ID Footer component
                 const JobIdFooter = ({ jobId }) => {
@@ -589,9 +750,10 @@ function ReportApp({ report }) {
                     ]);
                 };
                 
-                // Enhanced ReportApp with footer only (header already in ReportApp)
+                // Enhanced ReportApp with header and footer
                 const EnhancedReportApp = ({ report }) => {
                     return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
                         React.createElement(ReportApp, { key: 'report', report }),
                         React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
                     ]);
