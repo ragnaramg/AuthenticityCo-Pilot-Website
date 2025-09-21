@@ -164,7 +164,7 @@ const ClampParagraph = ({ html, initiallyClamped = true }) => {
 };
 
 /** Locked content blur with teaser + count */
-const LockedListBlur = ({ teaser, items }) => {
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
   const [open, setOpen] = useState(false);
 
   const List = (
@@ -177,7 +177,8 @@ const LockedListBlur = ({ teaser, items }) => {
     </ol>
   );
 
-  if (open) return <div className="mt-2">{List}</div>;
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
 
   return (
     <div className="relative rounded-md overflow-hidden mt-2">
@@ -233,7 +234,86 @@ function mapThemeTitle(oldTitle) {
 
 /* ------------------------------ APP ------------------------------ */
 
-function ReportApp({ report }) {
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Preview Locked Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
   const headerStats = computeHeaderStats(report.themes);
 
   const unlockedCount =
@@ -328,6 +408,9 @@ function ReportApp({ report }) {
                 </button>{" "}
                 to see {totalLocked} more.
               </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
             </div>
 
             {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
@@ -376,6 +459,7 @@ function ReportApp({ report }) {
             <LockedListBlur
               teaser={report.gamePlan.teaser}
               items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
             />
           </div>
         </div>
@@ -442,7 +526,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={c.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -496,7 +580,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={ins.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -539,6 +623,7 @@ function ReportApp({ report }) {
           <LockedListBlur
             teaser={report.progress.lockedTeaser}
             items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
           />
         </div>
           </>
@@ -552,7 +637,83 @@ function ReportApp({ report }) {
                 // Report data from server
                 const reportData = {"header": {"podcast": "MorningMood", "host": "Unknown Host", "episode": "How to Say NO to Toxic Feedback at Work", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "You excel at creating conceptual frameworks that help listeners understand complex topics. Your distinction between data-based feedback and opinion-based feedback provided clear structure for a nuanced conversation.", "opportunity": "Your energy shifts noticeably when you get passionate about a topic, sometimes leading to rapid-fire delivery that could overwhelm listeners. Finding ways to maintain that passion while pacing your insights would enhance accessibility.", "freeAction": {"title": "Practice the Pause-and-Bridge Technique", "detail": "After making a key distinction (like feedback vs. opinion), pause for 2-3 seconds before asking your guest to respond. This gives listeners time to process and creates natural conversation rhythm. Try: 'So that's the difference between feedback and opinion.' [pause] 'Tiana, how does that land with you?'"}, "teaser": "Unlock 3 advanced hosting strategies including your signature questioning technique and energy management methods", "lockedActions": ["Develop your 'Can you tell me more?' follow-up into a signature interviewing technique by adding specific probing questions that dig deeper into guest experiences", "Create energy checkpoints every 8-10 minutes where you consciously slow your pace and invite guest reflection to balance your natural intensity", "Build on your strength of real-world examples by preparing 2-3 personal anecdotes that you can deploy when guests need encouragement to open up"]}, "vibeCheck": {"icon": "\ud83d\udd25", "vibeHtml": "<strong>Passionate Teacher Energy</strong><br/>You brought the energy of someone who's genuinely excited to share knowledge. There's a warmth in how you celebrate small wins (\"bonus exceeded goals\") and a fire when you tackle misconceptions about feedback culture.", "quoteHtml": "\"That's why I want to get into this, because there is truly feedback, and then there are people who are just cramming their opinions down your throat.\""}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "See 4 specific flow patterns including your transition techniques and pacing analysis", "unlockedHtml": "You opened with celebration and context-setting, then used Tiana's personal sharing as a springboard to introduce your framework. Your transition from her defensive feedback experiences to your broader categorization was smooth and purposeful.", "lockedParagraphsHtml": ["Your questioning pattern follows a consistent structure: broad concept introduction \u2192 guest experience \u2192 your framework \u2192 practical application. This creates predictable rhythm that helps listeners follow complex topics.", "You accelerated noticeably when introducing the feedback vs. opinion distinction, speaking 40% faster than your opening pace. This intensity signals importance but may challenge listener comprehension.", "Your use of \"Right?\" and \"Yeah\" as micro-confirmations (appearing 8 times) creates conversational intimacy but sometimes interrupts your guest's flow of thought.", "The conversation's energy peaked during your mentoring story example, where your pace, volume, and specificity all increased simultaneously, creating the episode's most memorable moment."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "Discover 3 standout moments and 2 missed opportunities for deeper connection", "unlockedHtml": "Your \"feedback is a gift that you can return\" line was pure gold - it took a corporate clich\u00e9 and flipped it with humor and wisdom. Tiana's immediate positive response (\"Oh, I love the end\") showed you'd landed something special.", "lockedParagraphsHtml": ["The mentoring story about Jennifer and her colleague created the episode's strongest teaching moment. Your specific dialogue examples (\"No, thank you. Not accepting feedback today\") gave listeners exact scripts they could use.", "When you said \"But if your boss walks up and pulls you aside, says, I got something to tell you, better fucking listen,\" you showed authentic personality while making a crucial distinction about power dynamics.", "You missed an opportunity when Tiana mentioned building \"protective mechanisms\" - this was rich territory for exploring workplace trauma that you moved past quickly to get to your framework."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "Track 5 distinct energy levels and learn when your passion helps vs. hurts listener engagement", "unlockedHtml": "Your energy started warm and celebratory, then shifted into teacher mode when introducing concepts. The biggest spike came during your mentoring story, where passion and frustration about workplace dynamics clearly energized you.", "lockedParagraphsHtml": ["Your speaking pace increased from conversational (120 wpm) to rapid-fire (180+ wpm) when discussing the \"feedback is a gift\" corporate culture, indicating this topic triggers strong feelings.", "You used more decisive language (\"This is what I tell them\") and shorter sentences when sharing your advice, shifting from collaborative discussion to authoritative instruction.", "Your energy dipped slightly when asking Tiana to elaborate on concepts, suggesting you're more energized by teaching than by discovery through questioning."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "Explore 4 collaboration patterns and see how your different approaches created unexpected synergy", "unlockedHtml": "You and Tiana created beautiful call-and-response energy around the concept of unsolicited feedback. Her \"That part\" and \"Come on\" responses showed she was tracking with your passion, while her different perspective (defensive vs. framework-building) enriched the conversation.", "lockedParagraphsHtml": ["Tiana's street-smart language (\"coof,\" \"double dutch\") paired perfectly with your business framework approach, creating accessibility for different audience segments without either of you changing your authentic voice.", "Your collaborative moment around \"not all feedback is a gift\" built naturally, with Tiana extending your metaphor (\"not all money is good money\") in a way that strengthened both your points.", "The power dynamic discussion emerged organically from both your experiences - her defensive mechanisms and your mentoring observations created a fuller picture than either perspective alone."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "Get detailed metrics on 6 hosting behaviors including question types and response patterns", "unlockedHtml": "You spoke for approximately 65% of the conversation, which is higher than typical interview ratios but appropriate for a teaching-focused episode. Your questions were primarily leading rather than open-ended, guiding listeners toward specific insights.", "lockedParagraphsHtml": ["You asked 12 questions total: 8 leading/rhetorical, 3 clarifying, and only 1 truly open-ended. This pattern supports your teaching style but limits discovery opportunities.", "Your average response length was 45 words compared to Tiana's 25 words, indicating you're comfortable taking conversational space to develop ideas fully.", "You used confirmation phrases (\"Yeah,\" \"Right,\" \"Yes\") 23 times, creating supportive atmosphere but sometimes cutting off your guest's momentum."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 8.2, "scoreType": "higher", "teaser": "Discover your signature vocal patterns and 3 techniques to enhance your natural authority", "unlockedHtml": "Your voice carries natural authority that becomes more pronounced when you're teaching. The combination of business expertise and genuine care for people creates trustworthiness that makes listeners lean in, especially when you share specific examples.", "lockedParagraphsHtml": ["Your vocal energy shifts dramatically between collaborative discussion (warm, measured) and passionate teaching (faster, more intense). This range keeps listeners engaged but could benefit from smoother transitions.", "You have a gift for taking complex workplace concepts and making them immediately practical. Your voice becomes more conversational and accessible when sharing real stories versus abstract frameworks.", "Your use of strategic profanity (\"better fucking listen\") demonstrates authentic personality while emphasizing key points, but timing these moments more deliberately could increase their impact."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 7.8, "scoreType": "higher", "teaser": "Uncover 4 unique hosting traits and learn how to amplify your natural teaching style", "unlockedHtml": "You're a framework builder who takes messy workplace realities and creates clear categories that help people navigate them. Your style blends business advisor expertise with genuine empathy for people dealing with difficult workplace dynamics.", "lockedParagraphsHtml": ["Your signature move is the conceptual distinction - taking something everyone experiences (feedback) and creating clear categories (data-based vs. opinion-based) that immediately clarify confusion.", "You naturally shift between peer conversation and mentor guidance, which creates intimacy with both your guest and audience. This dual role requires careful balance to avoid seeming inconsistent.", "Your storytelling style focuses on practical outcomes rather than emotional journey, giving listeners concrete tools they can implement immediately in their own situations."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 8.5, "scoreType": "higher", "teaser": "See 5 specific moments where you created psychological safety and 2 areas for deeper connection", "unlockedHtml": "You created excellent psychological safety for Tiana to share vulnerable workplace experiences. Your immediate validation of her defensive feedback experiences (\"Yeah, yeah\") and building on her insights showed you valued her perspective as much as your own framework.", "lockedParagraphsHtml": ["Your celebration of the podcast's success (\"bonus exceeded goals\") at the opening created shared accomplishment that set a positive tone for the entire conversation.", "When Tiana shared about having \"one of those mouths,\" you didn't judge or try to fix her - instead, you used her experience as a bridge to your broader teaching points.", "Your collaborative energy around the \"accountability partner\" concept showed you can build on guest insights rather than just waiting for your turn to teach, creating true co-creation moments."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 7.5, "scoreType": "higher", "teaser": "Explore 4 breakthrough insights and see how your collaborative chemistry sparked new concepts", "unlockedHtml": "The biggest intellectual breakthrough was distinguishing between feedback and opinion, which emerged from combining Tiana's defensive experiences with your framework thinking. This created a practical tool that neither of you might have developed alone.", "lockedParagraphsHtml": ["Your concept of \"feedback as a returnable gift\" evolved through the conversation, becoming more nuanced as Tiana added layers about power dynamics and unsolicited advice.", "The discussion of workplace power dynamics deepened when you brought mentoring examples and Tiana contributed street-smart wisdom about protecting yourself, creating a fuller picture of feedback complexity.", "Together you developed the idea that not all feedback deserves the same response, with clear criteria for when to engage versus when to politely decline - a practical framework listeners can immediately apply."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 6.8, "scoreType": "lower", "teaser": "Identify 3 blind spots and get specific strategies to address them while maintaining your strengths", "unlockedHtml": "Your passion for teaching sometimes overshadows your curiosity about your guest's unique experiences. When Tiana mentioned building protective mechanisms, there was rich territory to explore that you moved past to get to your framework.", "lockedParagraphsHtml": ["You tend to use your guest's experiences as launching pads for your own insights rather than diving deeper into their specific situations. More follow-up questions could uncover unexpected wisdom.", "Your energy spikes when discussing topics that frustrate you (corporate feedback culture) can make you speak faster and interrupt more, potentially overwhelming listeners who need processing time.", "You sometimes assume shared understanding of business concepts without checking if your audience is following. Phrases like \"OKRs\" and workplace dynamics might need more context for broader audiences."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 8.0, "scoreType": "higher", "teaser": "Access 5 advanced techniques including energy management and question frameworks", "unlockedHtml": "Your natural teaching ability could be enhanced with more structured discovery techniques. Consider developing a question bank that helps you explore guest experiences more deeply before moving to framework application.", "lockedParagraphsHtml": ["Practice the \"Tell me more about that\" technique when guests share vulnerable experiences. This simple phrase could unlock deeper stories that make your frameworks more relatable and powerful.", "Develop energy transition phrases that help you shift from high-intensity teaching back to collaborative conversation, maintaining engagement while giving listeners processing time.", "Create a pre-episode ritual that helps you balance your natural teaching enthusiasm with curiosity about your guest's unique perspective, ensuring both voices contribute fully to the conversation."]}], "meta": {"jobId": "5ffc514b-fe3f-4a1d-a4fd-18873550262d"}};
                 
-                // ReportHeader removed - using shared navigation instead
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
                 
                 // Add Job ID Footer component
                 const JobIdFooter = ({ jobId }) => {
@@ -589,9 +750,10 @@ function ReportApp({ report }) {
                     ]);
                 };
                 
-                // Enhanced ReportApp with footer only (header already in ReportApp)
+                // Enhanced ReportApp with header and footer
                 const EnhancedReportApp = ({ report }) => {
                     return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
                         React.createElement(ReportApp, { key: 'report', report }),
                         React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
                     ]);
