@@ -164,7 +164,7 @@ const ClampParagraph = ({ html, initiallyClamped = true }) => {
 };
 
 /** Locked content blur with teaser + count */
-const LockedListBlur = ({ teaser, items }) => {
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
   const [open, setOpen] = useState(false);
 
   const List = (
@@ -177,7 +177,8 @@ const LockedListBlur = ({ teaser, items }) => {
     </ol>
   );
 
-  if (open) return <div className="mt-2">{List}</div>;
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
 
   return (
     <div className="relative rounded-md overflow-hidden mt-2">
@@ -233,7 +234,86 @@ function mapThemeTitle(oldTitle) {
 
 /* ------------------------------ APP ------------------------------ */
 
-function ReportApp({ report }) {
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Preview Locked Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
   const headerStats = computeHeaderStats(report.themes);
 
   const unlockedCount =
@@ -328,6 +408,9 @@ function ReportApp({ report }) {
                 </button>{" "}
                 to see {totalLocked} more.
               </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
             </div>
 
             {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
@@ -376,6 +459,7 @@ function ReportApp({ report }) {
             <LockedListBlur
               teaser={report.gamePlan.teaser}
               items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
             />
           </div>
         </div>
@@ -442,7 +526,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={c.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -496,7 +580,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={ins.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -539,6 +623,7 @@ function ReportApp({ report }) {
           <LockedListBlur
             teaser={report.progress.lockedTeaser}
             items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
           />
         </div>
           </>
@@ -552,7 +637,83 @@ function ReportApp({ report }) {
                 // Report data from server
                 const reportData = {"header": {"podcast": "Transformational Journeys", "host": "Unknown Host", "episode": "Jamie Meyer on How to Stop Performing and Reclaim Your Authentic Identity", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your philosophical questioning style creates profound moments of insight. You consistently dig deeper into concepts, moving from surface-level understanding to meaningful exploration of human behavior and authenticity.", "opportunity": "While your deep questions are powerful, you sometimes miss opportunities to share your own perspective earlier in exchanges, which could create more balanced dialogue and help guests feel less like they're being interviewed and more like they're in conversation.", "freeAction": {"title": "Practice the 'Share-Then-Ask' Technique", "detail": "After asking a deep question and receiving an answer, try sharing a brief personal insight or related experience before asking your follow-up question. For example, instead of immediately asking 'Can you tell me more about that?' try 'That resonates with me because I've noticed... How does that connect to your experience with...?' This creates more conversational flow while maintaining your excellent depth."}, "teaser": "Unlock 3 advanced techniques for balancing philosophical depth with conversational warmth, plus specific timing strategies for when to probe deeper versus when to pivot.", "lockedActions": ["Develop 'philosophical bridges' - specific phrases that connect abstract concepts to concrete examples, helping guests ground their insights while maintaining intellectual rigor", "Master the 'vulnerability ladder' technique - strategically sharing your own struggles with similar concepts to encourage deeper guest disclosure without losing your hosting authority", "Create 'concept check-ins' - periodic moments where you summarize complex ideas in simpler terms, ensuring both you and your audience stay connected to the deeper meaning being explored"]}, "vibeCheck": {"icon": "\ud83e\udd14", "vibeHtml": "<strong>Thoughtful Explorer</strong><br/>You brought a genuinely curious, almost philosophical energy to this conversation. There's a sense that you're not just asking questions to fill time - you're genuinely wrestling with these concepts alongside your guest. Your energy feels contemplative and engaged, like someone who values understanding over performance.", "quoteHtml": "\"I'm curious, how did you get to this point where you realize that it's almost like you have this allergy to, to labels. And I'm so curious because I think what I love about this like label thing is that labels can bypass authenticity, right?\""}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "See the 4 distinct conversation phases, your question-to-statement ratio, and how your pacing evolved throughout the dialogue.", "unlockedHtml": "Your conversation followed a beautiful arc from personal introduction to deep philosophical exploration. You started with an unconventional opening question about identity without labels, then skillfully guided the discussion through values, people-pleasing, authenticity, and finally to practical applications of these concepts.", "lockedParagraphsHtml": ["The conversation had four distinct phases: Identity Exploration (opening), Values Deep-Dive (middle-early), Philosophical Framework Building (middle-late), and Practical Application (closing). Your transitions between these phases were smooth, using phrases like 'Yeah, explain that one' and 'I'm curious' to maintain momentum.", "Your question-to-statement ratio was approximately 3:1, showing strong interviewer discipline. However, your statements became more substantive as the conversation progressed, evolving from simple acknowledgments ('Yeah') to complex reflections that added value ('And it's like it also allows for curiosity, right? Discovery beyond what you might know about oneself').", "Your pacing showed interesting patterns - you asked rapid-fire clarifying questions early on, then slowed down to allow for deeper exploration in the middle section. The conversation's rhythm shifted from interview-style to more collaborative dialogue, particularly when discussing control versus composure."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "Discover your 3 strongest breakthrough moments, the question that created the biggest shift, and the insight that surprised even you.", "unlockedHtml": "Your most powerful moment came when you connected people-pleasing to authenticity, saying 'there must have been something that caused this transition for you where you're like, I'm a people pleaser and now I'm not. And like not being a people pleaser, counterintuitively, it sounds like came as a result of valuing people.' This insight clearly surprised and delighted your guest.", "lockedParagraphsHtml": ["The breakthrough moment around labels bypassing authenticity was electric - you could feel the energy shift when you said 'what I love about this like label thing is that labels can bypass authenticity, right? They can bypass understanding somebody else or understanding self.' Your guest's engagement level visibly increased after this observation.", "Your analogy work was particularly strong when you reflected back the container concept: 'the label almost, it's like a container that you have to stay within.' This wasn't just parroting - you were actively building on the guest's ideas and making them more concrete and relatable.", "The moment when you shared your own podcast creation process as an example of internal versus external orientation showed your ability to make abstract concepts practical. Your willingness to be vulnerable about your own motivations ('The creation of this podcast for me is a forum for me and others to express themselves first and foremost') created genuine connection."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "Track your energy evolution across 5 conversation segments, including your confidence peaks and the moment you became most personally invested.", "unlockedHtml": "Your energy started curious but somewhat formal, then gradually became more personally invested and collaborative. By the end, you were actively co-creating insights rather than just extracting them. Your 'wow' responses showed genuine surprise and engagement with the ideas being shared.", "lockedParagraphsHtml": ["Early in the conversation, your energy was professionally curious - asking good questions but maintaining interviewer distance. This shifted around the people-pleasing discussion, where you became more intellectually excited, evidenced by your rapid follow-up questions and building on concepts.", "Your confidence peaked during the control versus composure discussion, where you started making connections to your own mental models ('What's kind of mapping to. In my brain is, you know, I guess the external control maps, but the, the, the internal'). This showed you moving from interviewer to thought partner.", "The most personally invested moment came when discussing your podcast's purpose. Your energy became more vulnerable and reflective, showing you were willing to use yourself as an example rather than keeping the focus entirely on your guest. This created the conversation's most authentic moment."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "Explore the 6 conceptual threads you developed together, how you built on each other's ideas, and the framework you co-created.", "unlockedHtml": "You and your guest co-created a fascinating framework around authenticity, moving from people-pleasing through labels and attachment to internal versus external orientation. Your ability to connect these concepts and reflect them back in new ways showed true collaborative thinking.", "lockedParagraphsHtml": ["The people-pleasing to authenticity thread was your strongest collaboration. You identified the counterintuitive nature of the relationship, your guest explained the mechanism, and together you built understanding of how self-perception drives behavior. Your insight about achieving goals versus valuing people was crucial to this development.", "The labels discussion became a rich exploration of attachment, expectation, and containers for identity. You contributed the 'container' metaphor and the idea that labels bypass authenticity, while your guest provided the framework of attachment versus non-attachment. Together, you created a practical philosophy for human interaction.", "Your co-creation of the control versus composure distinction was particularly powerful. You helped ground the abstract concept by connecting it to internal versus external locus of control, while adding practical examples like your podcast creation. This showed your ability to make philosophical concepts actionable."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "Get your complete hosting metrics: question types breakdown, response patterns, conversation control ratio, and speaking time analysis.", "unlockedHtml": "You asked 23 questions throughout the conversation, with your average question length increasing from 12 words early on to 28 words in deeper sections. Your 'I'm curious' phrase appeared 4 times, showing it as a signature transition technique.", "lockedParagraphsHtml": ["Your question types broke down as: 35% clarifying questions ('Can you explain that?'), 30% exploratory questions ('How did you get to this point?'), 25% connecting questions ('Where does that relate to...?'), and 10% personal application questions. This shows strong balance between understanding and application.", "Your response patterns showed evolution: early responses averaged 3 words ('Yeah', 'Absolutely'), middle responses averaged 15 words with more reflection, and later responses averaged 25 words with substantial content contribution. This demonstrates growing engagement and confidence.", "Speaking time analysis: You spoke for approximately 28% of the conversation, which is ideal for deep interview format. Your longest speaking turn was 47 words (discussing internal/external locus of control), showing restraint while still contributing meaningfully. Your silence-to-speech ratio allowed for natural pauses that encouraged deeper guest reflection."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 8.2, "scoreType": "higher", "teaser": "Analysis of your vocal authority, question crafting mastery, and the 3 signature phrases that define your hosting style.", "unlockedHtml": "Your voice carries genuine intellectual curiosity rather than performative questioning. You have a natural ability to ask questions that feel like invitations to explore rather than demands for information. Your 'I'm curious' opening creates psychological safety while maintaining forward momentum.", "lockedParagraphsHtml": ["Your question crafting shows sophisticated layering - you often embed multiple concepts in a single question, giving guests choice in how to respond. For example: 'I'm curious, how did you get to this point where you realize that it's almost like you have this allergy to, to labels' contains both the journey question and the conceptual framing, allowing for rich response options.", "Your vocal authority comes from intellectual honesty rather than positional power. When you say 'I think I have, I have thoughts. I can probably tell you how I interpret it, but I'm curious to hear from you,' you demonstrate confidence in your own thinking while prioritizing the guest's perspective. This creates collaborative rather than extractive energy.", "Three signature phrases define your style: 'I'm curious' (creates openness), 'Yeah, explain that one' (shows engagement while requesting depth), and 'What's an example of...' (moves from abstract to concrete). These phrases consistently appear at conversation turning points, showing their effectiveness in maintaining flow while deepening exploration."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 7.8, "scoreType": "higher", "teaser": "Your unique hosting DNA: philosophical bent, vulnerability patterns, and the specific way you build on guest ideas.", "unlockedHtml": "Your hosting style is distinctly philosophical - you're drawn to the 'why behind the why' and comfortable with abstract concepts. You have a natural ability to find the deeper human truth in any topic, moving conversations from surface-level sharing to meaningful exploration of how we think and behave.", "lockedParagraphsHtml": ["Your philosophical bent shows in your question construction - you consistently ask about underlying mechanisms rather than just outcomes. Instead of 'What changed?' you ask 'What caused this transition?' This approach reveals your genuine interest in understanding human psychology and behavior patterns, not just collecting stories.", "Your vulnerability pattern is strategic and authentic - you share personal insights when they serve the conversation's depth, not for attention. Your admission about your podcast's purpose ('The creation of this podcast for me is a forum for me and others to express themselves first and foremost') demonstrates this perfectly - vulnerable enough to be real, focused enough to stay relevant.", "Your unique strength is conceptual bridge-building. You take guest insights and reflect them back with new frameworks or connections they hadn't considered. When you connected people-pleasing to goal achievement versus authentic valuing, you weren't just summarizing - you were adding analytical value that enhanced the guest's own understanding."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 8.5, "scoreType": "higher", "teaser": "Guest comfort analysis: safety creation techniques, intellectual validation moments, and how you encouraged deeper disclosure.", "unlockedHtml": "You created exceptional psychological safety through intellectual validation. Your guest clearly felt heard and understood, evidenced by their willingness to share increasingly personal insights and their engagement with your conceptual contributions. Your 'wow' responses showed genuine appreciation for their thinking.", "lockedParagraphsHtml": ["Your safety creation technique centers on intellectual respect - you treat every guest insight as valuable and worth exploring. When your guest shared complex ideas about attachment to labels, you didn't just acknowledge them, you built on them with your own frameworks, showing you were genuinely processing and valuing their thoughts.", "The guest's comfort level increased significantly after your people-pleasing insight. Their responses became longer and more personal, and they started asking for your perspective ('And I prefer the idea of self possession'). This shift indicates they moved from feeling interviewed to feeling understood and intellectually matched.", "Your encouragement of deeper disclosure was masterful - you used phrases like 'I love that' and 'That's really helpful' to reward vulnerability, then immediately asked for more depth. Your guest responded by sharing increasingly personal examples, including daily discoveries about themselves, showing they felt safe to be authentic."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 9.1, "scoreType": "higher", "teaser": "Intellectual chemistry breakdown: co-creation moments, concept building patterns, and the breakthrough insights you developed together.", "unlockedHtml": "Your intellectual chemistry was exceptional - you and your guest genuinely built ideas together rather than just exchanging them. The control versus composure framework, the labels-as-containers concept, and the internal versus external orientation model all emerged from true collaborative thinking.", "lockedParagraphsHtml": ["Your co-creation pattern follows a consistent rhythm: guest shares concept, you reflect it back with new language or framework, guest builds on your addition, you connect it to broader implications. This happened perfectly with the control/composure discussion, where your internal locus of control connection helped ground their abstract concept in psychological terminology.", "The breakthrough moment around labels bypassing authenticity showed your ability to synthesize guest insights into memorable frameworks. Your guest had been circling around this idea, but your articulation ('labels can bypass authenticity, right? They can bypass understanding somebody else or understanding self') gave it clarity and power that excited both of you.", "Your intellectual chemistry peaked when discussing practical applications. You moved seamlessly between abstract philosophy and concrete examples, using your podcast creation as a case study for internal versus external orientation. This showed your ability to make philosophical concepts actionable while maintaining their depth and nuance."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 3.2, "scoreType": "lower", "teaser": "Growth opportunities: conversation balance points, energy management strategies, and techniques for maintaining depth while increasing accessibility.", "unlockedHtml": "Your main growth opportunity lies in balancing your excellent depth with broader accessibility. While your philosophical approach creates profound moments, some listeners might benefit from more concrete examples or practical applications earlier in complex discussions.", "lockedParagraphsHtml": ["Your question sequences sometimes create intellectual intensity that could benefit from periodic 'breathing room.' While your rapid-fire follow-ups show engagement, occasionally pausing to summarize or ground abstract concepts in simple terms could help both guests and listeners stay connected to the deeper meaning you're exploring.", "You have a tendency to stay in the abstract longer than necessary before moving to concrete examples. The control versus composure discussion was fascinating but took significant time to reach practical application. Consider introducing the 'for example' question earlier in complex conceptual explorations to maintain accessibility without sacrificing depth.", "Your energy management could benefit from more intentional variation. You maintain consistent intellectual intensity throughout, which is impressive but potentially exhausting for some guests. Developing techniques for creating lighter moments or emotional breaks could help guests feel more comfortable sharing vulnerable insights over longer conversations."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 7.5, "scoreType": "higher", "teaser": "Advanced techniques: 4 question frameworks for philosophical depth, energy calibration methods, and specific practices for balancing exploration with accessibility.", "unlockedHtml": "Your philosophical hosting style would benefit from developing a toolkit of 'grounding techniques' - specific methods for making abstract concepts concrete without losing their depth. Consider practicing the 'ladder technique' where you move between abstract and concrete levels intentionally.", "lockedParagraphsHtml": ["Develop four question frameworks: The Mechanism Question ('What causes that?'), The Example Question ('What does that look like in practice?'), The Connection Question ('How does that relate to...?'), and The Application Question ('How might someone use that?'). Rotating through these types will maintain your depth while increasing accessibility and practical value.", "Practice energy calibration by developing 'temperature check' skills - reading when guests need more space to think versus when they're ready for deeper probing. Your guest gave signals ('Every day. Wow.') that indicated emotional intensity, which could be opportunities for brief acknowledgment before continuing deeper exploration.", "Create a 'concept translation' practice where you regularly convert abstract ideas into concrete metaphors or examples. Your 'container' metaphor for labels was perfect - develop this skill further to help guests and listeners connect with complex philosophical concepts through familiar, tangible comparisons."]}], "meta": {"jobId": "430a4daa-8234-49b6-8de1-0286b7b8d0de"}};
                 
-                // ReportHeader removed - using shared navigation instead
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
                 
                 // Add Job ID Footer component
                 const JobIdFooter = ({ jobId }) => {
@@ -589,9 +750,10 @@ function ReportApp({ report }) {
                     ]);
                 };
                 
-                // Enhanced ReportApp with footer only (header already in ReportApp)
+                // Enhanced ReportApp with header and footer
                 const EnhancedReportApp = ({ report }) => {
                     return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
                         React.createElement(ReportApp, { key: 'report', report }),
                         React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
                     ]);
