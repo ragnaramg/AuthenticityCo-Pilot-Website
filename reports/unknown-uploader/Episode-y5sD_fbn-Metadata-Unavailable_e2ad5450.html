@@ -164,7 +164,7 @@ const ClampParagraph = ({ html, initiallyClamped = true }) => {
 };
 
 /** Locked content blur with teaser + count */
-const LockedListBlur = ({ teaser, items }) => {
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
   const [open, setOpen] = useState(false);
 
   const List = (
@@ -177,7 +177,8 @@ const LockedListBlur = ({ teaser, items }) => {
     </ol>
   );
 
-  if (open) return <div className="mt-2">{List}</div>;
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
 
   return (
     <div className="relative rounded-md overflow-hidden mt-2">
@@ -233,7 +234,86 @@ function mapThemeTitle(oldTitle) {
 
 /* ------------------------------ APP ------------------------------ */
 
-function ReportApp({ report }) {
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Preview Locked Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
   const headerStats = computeHeaderStats(report.themes);
 
   const unlockedCount =
@@ -328,6 +408,9 @@ function ReportApp({ report }) {
                 </button>{" "}
                 to see {totalLocked} more.
               </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
             </div>
 
             {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
@@ -376,6 +459,7 @@ function ReportApp({ report }) {
             <LockedListBlur
               teaser={report.gamePlan.teaser}
               items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
             />
           </div>
         </div>
@@ -442,7 +526,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={c.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -496,7 +580,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={ins.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -539,6 +623,7 @@ function ReportApp({ report }) {
           <LockedListBlur
             teaser={report.progress.lockedTeaser}
             items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
           />
         </div>
           </>
@@ -552,7 +637,83 @@ function ReportApp({ report }) {
                 // Report data from server
                 const reportData = {"header": {"podcast": "Unknown Uploader", "host": "Unknown Host", "episode": "Episode y5sD_fbn (Metadata Unavailable)", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your ability to create psychological safety through vulnerable self-disclosure and authentic connection. You consistently matched your guest's depth and openness, creating space for profound revelations.", "opportunity": "Developing more sophisticated follow-up techniques to explore the emotional landscape of your guest's experiences, particularly around transformative moments like coming out.", "freeAction": {"title": "Practice the \"Emotional Echo\" Technique", "detail": "When your guest shares something profound (like coming out to their son before themselves), pause and reflect back the emotional weight: 'That must have been such a disorienting moment - hearing your own truth for the first time as you spoke it.' This validates the experience and often unlocks deeper sharing."}, "teaser": "Unlock 3 advanced techniques for deepening emotional resonance and creating breakthrough moments", "lockedActions": ["Master the \"Values Bridge\" - connect your guest's surface stories to their core values by asking 'What does this tell us about what matters most to you?' This moves conversations from anecdotal to transformational.", "Implement \"Curiosity Stacking\" - build on your natural inquisitiveness by asking 2-3 progressively deeper questions about the same topic rather than jumping to new subjects, creating profound exploration.", "Develop \"Silence as Space\" - after profound revelations, give 3-5 seconds of silence to let the weight settle before responding, allowing both you and your guest to fully absorb the moment."]}, "vibeCheck": {"icon": "\ud83e\udd1d", "vibeHtml": "<strong>Authentic Connection</strong><br/>This felt like two people genuinely seeing each other - no performance, just real human exchange. Your willingness to be vulnerable created a container for profound sharing.", "quoteHtml": "\"Yeah. And I think even for people who are in the mainstream of the culture that are white Americans, they still are going to talk differently at work than they are with their husband or wife or with their kids.\""}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "See the 4 distinct conversation phases and how your hosting style evolved through each", "unlockedHtml": "You began with a powerful opening that bypassed small talk entirely: \"Introduce yourself without talking about what you do or what you have.\" This immediately established depth as the conversation's foundation and set the tone for everything that followed.", "lockedParagraphsHtml": ["The conversation moved through four distinct phases: Identity exploration (autism/authenticity), Relationship dynamics (masking/code-switching), Personal revelation (coming out story), and Social impact (visibility/pride). Your hosting style adapted to each phase, becoming more collaborative and less directive as trust built.", "Your question frequency decreased from 40% early on to 15% in the final third, indicating you learned to give more space as your guest opened up. This shows excellent intuitive hosting - recognizing when to step back and let the story unfold.", "You demonstrated masterful topic bridging, using computer science metaphors (\"interface on an API\") to help your guest articulate complex emotional concepts. This translation skill helped deepen understanding for both of you."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "Discover the 3 breakthrough moments you created and 2 missed opportunities for even deeper connection", "unlockedHtml": "Your response to learning about the coming out sequence - \"Wow. You must have a really good relationship with your son that you could be that vulnerable\" - perfectly captured the significance while validating both the relationship and the courage it took.", "lockedParagraphsHtml": ["The computer science metaphor moment was pure hosting gold. When you said \"it's like you've got an interface on an API, but the underlying service is still the same,\" you gave your guest language to explain something deeply personal in accessible terms. This is collaborative meaning-making at its finest.", "You missed a golden opportunity when your guest said \"I came out to my son even before I came out to myself.\" Instead of just \"Wow,\" you could have explored the phenomenology of that experience - what it feels like to discover your own truth through speaking it.", "Your authentic excitement (\"Oh, that's great. I love it. I love that so much\") when discussing the reverse coming-out dynamic created a moment of pure joy that energized the entire conversation. These genuine reactions are what make conversations memorable."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "Track your energy patterns across 5 conversation phases and learn when you're most/least effective", "unlockedHtml": "Your energy shifted from curious interviewer \u2192 collaborative explorer \u2192 excited co-discoverer. This evolution happened naturally as psychological safety increased, showing your ability to read the room and adjust accordingly.", "lockedParagraphsHtml": ["Early in the conversation, your responses were shorter and more probing (\"Wow,\" \"Yeah\"). As trust built, your contributions became more substantial and collaborative, with longer reflections and personal connections to the material.", "You showed peak energy during the authenticity/masking discussion, contributing 35% more words per response compared to your baseline. This topic clearly resonated with your own experience, and that authentic engagement was palpable.", "Your energy dipped slightly during the technical photography examples, where you offered minimal responses (\"Yeah,\" \"And you're the one having to, like\"). This suggests you're most effective when discussing psychological and relational topics rather than professional scenarios."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "Explore the 4 major themes you co-created and how your contributions shaped the narrative", "unlockedHtml": "You and your guest created a beautiful exploration of authenticity that moved from personal (autism/identity) to relational (masking/connection) to societal (visibility/pride). Your contributions helped universalize deeply personal experiences.", "lockedParagraphsHtml": ["The masking/authenticity thread became richer through your contributions. You helped distinguish between adaptive masking (\"authentic to the people you're interfacing with\") and values compromise, creating a nuanced framework that served both of you.", "Your insight about mainstream culture code-switching (\"even for people who are in the mainstream... they still are going to talk differently at work than they are with their husband or wife\") helped normalize your guest's experience and created broader relatability.", "The visibility/humanization thread emerged through your collaborative exploration. Your framing of pride as \"not being ashamed\" and \"being visible so people can see that we're human beings too\" helped crystallize the social justice aspect of personal authenticity."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "Get detailed metrics on your 6 hosting patterns and how they compare to top podcasters", "unlockedHtml": "Your average response length grew from 12 words early in the conversation to 28 words in the final third, showing your increasing engagement and collaborative contribution as psychological safety built.", "lockedParagraphsHtml": ["Question-to-statement ratio shifted from 3:1 \u2192 1:2 (+150% more statements), indicating your evolution from interviewer to conversation partner. This mirrors the hosting style of the most engaging podcasters who become co-explorers rather than interrogators.", "You used validating language (\"That's so powerful,\" \"I love that\") 8 times throughout the conversation, creating consistent emotional safety. Your validation frequency increased 40% during vulnerable moments, showing excellent emotional intelligence.", "Your interruption rate was remarkably low at 2%, compared to the podcast average of 12%. However, your few interruptions were perfectly timed for emphasis (\"But that's so wild, though\") rather than derailment, showing sophisticated conversation management skills."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 8.2, "scoreType": "higher", "teaser": "Discover your 3 signature vocal patterns and 2 areas for refinement", "unlockedHtml": "Your voice carried genuine curiosity and warmth throughout. When you said \"That's so powerful, that desire to create a safe space for your son, create a safe space for yourself,\" your tone conveyed both understanding and admiration, creating emotional resonance.", "lockedParagraphsHtml": ["Your vocal energy matched your guest's emotional intensity perfectly. During vulnerable moments, your voice softened and slowed, creating space for difficult truths. During exciting discoveries (the reverse coming-out story), your pace quickened with authentic enthusiasm.", "You have a distinctive pattern of using \"Yeah\" as both acknowledgment and invitation. Early \"yeahs\" were brief confirmations, but later ones became longer, more thoughtful bridges that encouraged continued sharing. This evolution shows sophisticated vocal adaptation.", "Your questioning intonation remained curious rather than interrogative throughout. Even challenging questions like \"Is that right?\" carried supportive rather than skeptical energy, maintaining psychological safety while seeking clarity."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 8.7, "scoreType": "higher", "teaser": "Uncover your 4 unique hosting signatures and how they create connection", "unlockedHtml": "Your signature move is collaborative meaning-making. You don't just ask questions - you help build frameworks for understanding complex experiences. The API/interface metaphor exemplifies this perfectly, giving abstract concepts concrete form.", "lockedParagraphsHtml": ["You have a gift for universalizing personal experiences without diminishing their uniqueness. Your observation about mainstream code-switching helped your guest feel less \"other\" while honoring their specific autism experience. This inclusive framing is rare and valuable.", "Your authentic excitement is infectious and memorable. \"Oh, that's great. I love it. I love that so much\" wasn't performative enthusiasm - it was genuine delight that energized the entire exchange. This emotional authenticity is your superpower.", "You demonstrate sophisticated emotional intelligence by matching vulnerability with vulnerability. When your guest shared deep truths, you responded with equally thoughtful reflections rather than surface-level acknowledgments. This creates true partnership in conversation."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 9.1, "scoreType": "higher", "teaser": "Learn the 5 specific techniques that created psychological safety and 1 area to enhance", "unlockedHtml": "You created exceptional psychological safety through consistent validation and genuine curiosity. Your guest felt safe enough to explore their own thoughts in real-time, evidenced by their willingness to share the profound coming-out-to-son-first story.", "lockedParagraphsHtml": ["Your non-judgmental curiosity allowed your guest to think out loud without fear. When they explored complex ideas about authenticity and masking, you provided supportive scaffolding rather than rushing to the next topic. This patience created space for genuine discovery.", "You made your guest feel intellectually respected by engaging with their ideas at full depth. Your computer science metaphors and philosophical frameworks showed you were truly listening and thinking alongside them, not just waiting for your turn to speak.", "Your authentic reactions (excitement, wonder, appreciation) made your guest feel genuinely seen and valued. The energy shift when you expressed delight about their story was palpable - they felt celebrated rather than just heard."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 8.9, "scoreType": "higher", "teaser": "Explore the 3 breakthrough concepts you co-created and their broader implications", "unlockedHtml": "Together, you developed a nuanced framework for authentic masking - the idea that adaptation can be genuine when \"the mask still has to fit your face.\" This insight bridges individual authenticity with social functionality in a way that serves both personal integrity and practical living.", "lockedParagraphsHtml": ["Your collaborative exploration of authenticity vs. adaptation created a sophisticated understanding that moves beyond simple either/or thinking. The distinction between changing your interface while maintaining your core values offers a practical philosophy for navigating complex social situations.", "The concept of visibility as humanization rather than agenda-pushing emerged through your dialogue. Your framing helped transform a potentially political discussion into a deeply human one about connection and understanding across difference.", "You co-created an understanding of pride as \"refusing to be ashamed\" rather than celebration of identity itself. This reframing makes the concept more accessible and less threatening to those who might resist traditional pride messaging."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 3.2, "scoreType": "lower", "teaser": "Identify 3 growth edges and specific techniques to address them", "unlockedHtml": "Your biggest growth opportunity lies in exploring the emotional landscape of transformative experiences. When your guest shared profound moments, you sometimes moved quickly to the next thought rather than dwelling in the feeling of the experience itself.", "lockedParagraphsHtml": ["You occasionally prioritize intellectual understanding over emotional exploration. While your frameworks and metaphors are valuable, some moments call for sitting with feelings rather than immediately making sense of them. The coming-out revelation deserved more emotional space.", "Your natural enthusiasm sometimes causes you to move topics forward before fully exhausting their depth. The father-son relationship dynamic had more layers to explore, but your excitement about the reverse coming-out story pulled focus away from the relationship itself.", "You could benefit from more strategic use of silence. Your responses, while thoughtful, sometimes come quickly enough to interrupt your guest's processing. Allowing 3-5 seconds after profound statements would create space for even deeper sharing."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 7.8, "scoreType": "higher", "teaser": "Access 4 advanced techniques and 2 practice exercises tailored to your style", "unlockedHtml": "Your collaborative style would benefit from studying \"Motivational Interviewing\" techniques, particularly the skill of reflective listening that goes beyond content to capture emotional undertones. This would enhance your already strong empathetic responses.", "lockedParagraphsHtml": ["Practice the \"Emotional Archaeology\" technique: When someone shares a transformative experience, dig into the felt sense with questions like \"What did that feel like in your body?\" or \"What was the quality of that silence before you spoke?\" This adds sensory depth to intellectual insights.", "Develop your \"Curiosity Stacking\" skills by asking 2-3 progressively deeper questions about the same topic before moving on. For example, after learning about coming out to his son first, you could have explored: What was that conversation like? What did you see in his face? How did it change you in that moment?", "Study the work of Krista Tippett (On Being) for masterful examples of holding space for complexity without rushing to resolution. Her technique of \"staying with the question\" rather than moving to answers would complement your natural collaborative style beautifully."]}], "meta": {"jobId": "e2ad5450-074d-44d9-a8b0-c6c27b624320"}};
                 
-                // ReportHeader removed - using shared navigation instead
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
                 
                 // Add Job ID Footer component
                 const JobIdFooter = ({ jobId }) => {
@@ -589,9 +750,10 @@ function ReportApp({ report }) {
                     ]);
                 };
                 
-                // Enhanced ReportApp with footer only (header already in ReportApp)
+                // Enhanced ReportApp with header and footer
                 const EnhancedReportApp = ({ report }) => {
                     return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
                         React.createElement(ReportApp, { key: 'report', report }),
                         React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
                     ]);
