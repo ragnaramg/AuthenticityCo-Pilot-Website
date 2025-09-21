@@ -220,8 +220,9 @@ class AuthenticityCoPilotNav {
             body.insertAdjacentHTML('afterbegin', headerNav);
         }
 
-        // Insert footer navigation
-        if (body) {
+        // Insert footer navigation - but only if no React footer exists
+        const hasReactFooter = document.body && document.body.textContent.includes('JobIdFooter');
+        if (body && !hasReactFooter) {
             body.insertAdjacentHTML('beforeend', footerNav);
         }
     }
