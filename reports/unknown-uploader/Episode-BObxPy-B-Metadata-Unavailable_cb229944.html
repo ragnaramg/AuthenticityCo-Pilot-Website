@@ -164,7 +164,7 @@ const ClampParagraph = ({ html, initiallyClamped = true }) => {
 };
 
 /** Locked content blur with teaser + count */
-const LockedListBlur = ({ teaser, items }) => {
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
   const [open, setOpen] = useState(false);
 
   const List = (
@@ -177,7 +177,8 @@ const LockedListBlur = ({ teaser, items }) => {
     </ol>
   );
 
-  if (open) return <div className="mt-2">{List}</div>;
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
 
   return (
     <div className="relative rounded-md overflow-hidden mt-2">
@@ -233,7 +234,86 @@ function mapThemeTitle(oldTitle) {
 
 /* ------------------------------ APP ------------------------------ */
 
-function ReportApp({ report }) {
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Preview Locked Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
   const headerStats = computeHeaderStats(report.themes);
 
   const unlockedCount =
@@ -328,6 +408,9 @@ function ReportApp({ report }) {
                 </button>{" "}
                 to see {totalLocked} more.
               </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
             </div>
 
             {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
@@ -376,6 +459,7 @@ function ReportApp({ report }) {
             <LockedListBlur
               teaser={report.gamePlan.teaser}
               items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
             />
           </div>
         </div>
@@ -442,7 +526,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={c.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -496,7 +580,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={ins.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -539,6 +623,7 @@ function ReportApp({ report }) {
           <LockedListBlur
             teaser={report.progress.lockedTeaser}
             items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
           />
         </div>
           </>
@@ -552,7 +637,83 @@ function ReportApp({ report }) {
                 // Report data from server
                 const reportData = {"header": {"podcast": "Unknown Uploader", "host": "Unknown Host", "episode": "Episode BObxPy-B (Metadata Unavailable)", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your ability to synthesize and reflect back your guest's insights shows exceptional active listening. When you said \"Your process for staying in your authenticity is seeing rejection as redirection,\" you distilled a complex emotional story into a powerful framework.", "opportunity": "Your questions sometimes jump topics without fully exploring the emotional depth your guest offers. When Tiffany shared about her mother not accepting her pregnancy, you moved quickly to \"Yeah, I love that\" without creating space for that vulnerable moment.", "freeAction": {"title": "Create Emotional Landing Strips", "detail": "When guests share vulnerable moments (like family rejection), pause for 3-5 seconds before responding. Use phrases like \"That sounds incredibly difficult\" or \"Help me understand what that felt like\" to create space for deeper exploration before moving forward."}, "teaser": "3 advanced techniques for deepening emotional conversations and 2 specific question frameworks for vulnerable moments", "lockedActions": ["Develop a \"vulnerability follow-up\" question bank - when guests share pain points, have 3-4 go-to questions that invite them to explore the emotional landscape rather than moving to solutions", "Practice the \"echo and expand\" technique - repeat back the emotional core of what they shared, then ask them to expand on one specific aspect of that experience", "Create transition bridges between topics by acknowledging what was just shared before moving forward: \"That insight about rejection as redirection is powerful. Speaking of authenticity...\""]}, "vibeCheck": {"icon": "\ud83c\udfaf", "vibeHtml": "<strong>Focused Explorer</strong> - You maintained clear direction while staying curious about your guest's insights. Your energy was consistently engaged and intellectually curious.", "quoteHtml": "\"I think what you're saying is that in order to build the right connections that you need for your business, you need to be authentic, which then means you need to understand what does being authentic mean for you.\""}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "3 conversation flow patterns and 2 missed transition opportunities", "unlockedHtml": "You guided the conversation through clear thematic progressions: personal authenticity \u2192 business applications \u2192 practical implementation. Your transitions were logical, moving from \"What does authentic connection look like?\" to exploring how this applies in business contexts.", "lockedParagraphsHtml": ["You missed opportunities to create smoother emotional transitions. When Tiffany shared about her mother's rejection of her pregnancy, you responded with \"Yeah, I love that\" and immediately moved to philosophical territory. A more effective transition would acknowledge the emotional weight before shifting topics.", "Your question sequencing showed strong strategic thinking - you consistently moved from abstract concepts to concrete applications. The progression from \"Who is Tiffany?\" to business authenticity to practical implementation created a natural learning arc for listeners.", "You demonstrated excellent recovery skills when you caught yourself making generalizations about gender differences, immediately clarifying \"there's no monoliths\" and acknowledging the nuance. This self-correction showed real-time awareness and respect for your guest's expertise."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "4 standout moments and 2 missed opportunities for deeper exploration", "unlockedHtml": "Your synthesis moment stood out: \"Your process for staying in your authenticity is seeing rejection as redirection.\" This showed you were actively processing and distilling your guest's insights into memorable frameworks that listeners could apply.", "lockedParagraphsHtml": ["The Slipknot and Manson meditation moment was pure gold - your response \"So you all heard it here. If you want to get in, connect with yourself. Slipknot and Manson is the key to inner connection\" showed perfect comedic timing while honoring your guest's unconventional wisdom.", "You created a powerful teaching moment when you said \"we're feeling machines that happen to think.\" This reframe challenged conventional thinking and supported your guest's point about the importance of intuition over pure analysis.", "Your model-building approach (\"I'm building a model here\") made complex concepts accessible to listeners. You consistently took abstract ideas and created frameworks people could follow and apply in their own lives."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "3 energy patterns and 2 moments where your engagement visibly increased", "unlockedHtml": "Your energy remained consistently engaged throughout, with notable increases when discussing practical applications. You moved from curious interviewer \u2192 active collaborator when exploring the business authenticity connection.", "lockedParagraphsHtml": ["Your energy peaked during the gender differences discussion around intuition vs. analytical thinking. Your voice became more animated and you started building on ideas more rapidly, showing genuine intellectual excitement about the topic.", "You showed subtle energy dips during some of the heavier emotional content, particularly around the family rejection topic. While you maintained professionalism, your responses became slightly more surface-level during these vulnerable moments.", "Your collaborative energy emerged strongly when discussing the prerequisites for authenticity work. You shifted from asking questions to co-creating frameworks, saying things like \"I'm building a model here\" which showed you were fully engaged in the intellectual exploration."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "4 collaborative insights and 3 missed connection opportunities", "unlockedHtml": "You and Tiffany created a powerful framework together around the prerequisites for authenticity: stillness \u2192 self-acceptance \u2192 unconditional love for humanity. Your questions helped her articulate a complete system listeners could follow.", "lockedParagraphsHtml": ["The meditation redefinition was a beautiful co-creation. Tiffany shared her unconventional approach with metal music, and you immediately validated and expanded it: \"it doesn't have to be lotus position. Doesn't have to be traditional meditation.\" This collaboration made the concept accessible to a broader audience.", "You missed an opportunity to explore the sex work perspective she mentioned. When she said \"my experience as a sex worker, and I get to see a side of humanity that 99% of the world doesn't get to see,\" you didn't follow up on this unique insight that could have added depth to the conversation about human nature.", "Your collaborative exploration of the \"feeling machines that happen to think\" concept created a powerful reframe. You took her intuition-focused approach and provided the neuroscience backing, creating a more complete picture for listeners who need both emotional and logical validation."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "5 key metrics and 3 specific improvement targets", "unlockedHtml": "You asked 12 substantive questions across the conversation, with an average of 2.3 follow-up questions per topic thread. Your question-to-statement ratio was approximately 60/40, showing good balance between inquiry and contribution.", "lockedParagraphsHtml": ["Your response time to vulnerable shares averaged 1-2 seconds, which may be too quick for processing emotional content. When guests share difficult experiences, extending this to 3-5 seconds allows for better emotional attunement and more thoughtful responses.", "You used synthesis language (\"what I'm hearing,\" \"what you're saying is\") 6 times throughout the conversation, demonstrating strong active listening skills. However, you could increase this to 8-10 times for even better guest validation and listener comprehension.", "Your topic transition success rate was about 70% - you successfully bridged 7 out of 10 major topic shifts. The missed transitions typically occurred after emotional content, suggesting an opportunity to develop better emotional-to-intellectual bridging techniques."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 7.2, "scoreType": "higher", "teaser": "3 vocal patterns and 2 specific techniques for deeper emotional resonance", "unlockedHtml": "Your voice carried intellectual curiosity and genuine engagement throughout. You maintained a collaborative tone that invited exploration rather than interrogation, particularly evident when you said \"I'm building a model here\" - showing you were thinking alongside your guest.", "lockedParagraphsHtml": ["Your vocal energy shifted noticeably when moving from emotional content to intellectual frameworks. While this shows your natural strengths, developing more vocal warmth during vulnerable moments would create better emotional safety for guests sharing difficult experiences.", "You demonstrated excellent vocal recovery when you caught yourself making generalizations. Your immediate clarification \"and there's no monoliths\" showed real-time awareness and your voice carried genuine respect for nuance and complexity.", "Your use of reflective language (\"what I'm hearing,\" \"what you're saying\") created vocal anchors that helped both guest and listeners track the conversation's evolution. Increasing this technique would enhance your natural collaborative style."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 8.1, "scoreType": "higher", "teaser": "4 signature hosting traits and 3 areas for authentic expansion", "unlockedHtml": "Your signature style blends intellectual curiosity with practical application. You consistently took abstract concepts and built frameworks listeners could use, like when you synthesized the authenticity prerequisites into a clear model.", "lockedParagraphsHtml": ["Your model-building approach is distinctly yours - you naturally organize complex ideas into teachable frameworks. This systematic thinking helps guests articulate their wisdom more clearly and gives listeners actionable takeaways.", "You show authentic vulnerability when you relate to your guest's experiences, like acknowledging your own analytical tendencies when discussing the difference between intuitive and logical decision-making approaches.", "Your humor emerges naturally and appropriately, like the Slipknot meditation comment. This lightness balances deeper content without diminishing its impact, creating a more engaging listening experience."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 7.5, "scoreType": "higher", "teaser": "3 guest comfort indicators and 2 opportunities for deeper emotional safety", "unlockedHtml": "Tiffany clearly felt intellectually respected and heard. Your synthesis responses like \"Your process for staying in your authenticity is seeing rejection as redirection\" showed you were actively processing and valuing her insights.", "lockedParagraphsHtml": ["Your guest felt safe to share unconventional ideas, evidenced by her willingness to discuss everything from unschooling to metal music meditation to her sex work experience. This suggests you create an environment where authenticity is genuinely welcomed.", "However, you may have moved too quickly past some emotional content. When she shared about her mother not accepting her pregnancy, your immediate \"Yeah, I love that\" response might have felt like emotional bypassing rather than acknowledgment of the pain she shared.", "Your collaborative approach made her feel like a co-teacher rather than just an interviewee. Your \"I'm building a model here\" and similar phrases positioned her as an expert whose insights were being integrated into something valuable for listeners."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 8.3, "scoreType": "higher", "teaser": "5 collaborative insights and 2 unexplored intellectual territories", "unlockedHtml": "You co-created a complete framework for authenticity work: stillness (even with metal music) \u2192 self-acceptance \u2192 unconditional love for humanity. This progression emerged through your collaborative questioning and her expertise.", "lockedParagraphsHtml": ["The redefinition of meditation was brilliant intellectual collaboration. You took her unconventional approach and immediately expanded it for different audiences, making the concept accessible to people who might reject traditional meditation practices.", "Your \"feeling machines that happen to think\" insight provided the perfect complement to her intuition-focused approach. This collaboration gave listeners both the emotional permission and intellectual framework to trust their gut feelings.", "You missed exploring the intersection of her sex work experience with authenticity insights. This unique perspective could have provided powerful, rarely-heard wisdom about human nature and authentic connection that would have elevated the conversation to another level."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 6.8, "scoreType": "lower", "teaser": "3 growth edges and 2 specific techniques for emotional attunement", "unlockedHtml": "Your primary growth edge is creating more space for emotional processing. You excel at intellectual synthesis but sometimes move too quickly past vulnerable moments, potentially missing deeper insights that emerge from emotional exploration.", "lockedParagraphsHtml": ["Practice the \"emotional pause\" - when guests share difficult experiences, count to three before responding. This creates space for the emotional weight to be acknowledged and often leads to deeper sharing that enriches the conversation.", "Develop your emotional vocabulary for responding to vulnerable shares. Instead of moving immediately to \"I love that,\" try responses like \"That sounds incredibly difficult\" or \"Help me understand what that felt like\" to create emotional safety before intellectual exploration.", "Your strength in framework-building could be enhanced by occasionally asking \"How did that feel?\" before \"What did that teach you?\" This would add emotional depth to your natural systematic approach without losing your intellectual rigor."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 7.9, "scoreType": "higher", "teaser": "4 specific tools and 3 practice exercises for emotional hosting skills", "unlockedHtml": "Your natural collaborative style and framework-building abilities are strong foundations. Focus on developing emotional attunement tools to complement your intellectual strengths and create even deeper conversations.", "lockedParagraphsHtml": ["Create a \"vulnerability response toolkit\" with 5-7 phrases for acknowledging emotional shares before moving to exploration: \"That takes courage to share,\" \"I can hear the pain in that,\" \"That sounds incredibly challenging.\" Practice these until they feel natural.", "Develop transition bridges that honor emotional content: \"That insight about rejection as redirection is powerful, and I imagine it came from real pain. As you've learned to navigate that...\" This acknowledges the emotional journey before moving forward.", "Practice the \"emotional check-in\" technique - after guests share vulnerable content, ask \"How are you feeling right now talking about this?\" This creates space for processing and often leads to deeper insights than immediately moving to the next question."]}], "meta": {"jobId": "cb229944-e4bb-4346-9cea-8d4571f83cf2"}};
                 
-                // ReportHeader removed - using shared navigation instead
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
                 
                 // Add Job ID Footer component
                 const JobIdFooter = ({ jobId }) => {
@@ -589,9 +750,10 @@ function ReportApp({ report }) {
                     ]);
                 };
                 
-                // Enhanced ReportApp with footer only (header already in ReportApp)
+                // Enhanced ReportApp with header and footer
                 const EnhancedReportApp = ({ report }) => {
                     return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
                         React.createElement(ReportApp, { key: 'report', report }),
                         React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
                     ]);
