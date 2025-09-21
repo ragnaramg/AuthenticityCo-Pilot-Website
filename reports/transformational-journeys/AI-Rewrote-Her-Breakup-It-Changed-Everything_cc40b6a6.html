@@ -164,7 +164,7 @@ const ClampParagraph = ({ html, initiallyClamped = true }) => {
 };
 
 /** Locked content blur with teaser + count */
-const LockedListBlur = ({ teaser, items }) => {
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
   const [open, setOpen] = useState(false);
 
   const List = (
@@ -177,7 +177,8 @@ const LockedListBlur = ({ teaser, items }) => {
     </ol>
   );
 
-  if (open) return <div className="mt-2">{List}</div>;
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
 
   return (
     <div className="relative rounded-md overflow-hidden mt-2">
@@ -233,7 +234,86 @@ function mapThemeTitle(oldTitle) {
 
 /* ------------------------------ APP ------------------------------ */
 
-function ReportApp({ report }) {
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Preview Locked Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
   const headerStats = computeHeaderStats(report.themes);
 
   const unlockedCount =
@@ -328,6 +408,9 @@ function ReportApp({ report }) {
                 </button>{" "}
                 to see {totalLocked} more.
               </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
             </div>
 
             {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
@@ -376,6 +459,7 @@ function ReportApp({ report }) {
             <LockedListBlur
               teaser={report.gamePlan.teaser}
               items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
             />
           </div>
         </div>
@@ -442,7 +526,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={c.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -496,7 +580,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={ins.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -539,6 +623,7 @@ function ReportApp({ report }) {
           <LockedListBlur
             teaser={report.progress.lockedTeaser}
             items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
           />
         </div>
           </>
@@ -552,6 +637,84 @@ function ReportApp({ report }) {
                 // Report data from server
                 const reportData = {"header": {"podcast": "Transformational Journeys", "host": "Unknown Host", "episode": "AI Rewrote Her Breakup It Changed Everything!", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your ability to create intimate, vulnerable conversations through personal connection and authentic curiosity. You leveraged your shared Amazon history to establish trust, then guided the conversation through deep themes of authenticity and self-discovery with genuine interest.", "opportunity": "Your questions sometimes lack specificity and follow-up depth. You tend to ask broad, conceptual questions (\"What does that mean to you?\") rather than drilling into specific moments or examples that could unlock richer storytelling.", "freeAction": {"title": "Add One Specific Follow-Up Per Major Topic", "detail": "When your guest shares a profound insight (like Lizzie's AI-revealed patterns), ask for a concrete example: \"Can you walk me through a recent situation where you caught yourself in that rejection pattern?\" This transforms abstract concepts into relatable stories your audience can connect with."}, "teaser": "3 advanced questioning techniques to deepen vulnerability, plus 2 energy management strategies for maintaining intimate conversation flow", "lockedActions": ["Use the \"Moment Microscope\" technique: When guests mention transformative experiences, zoom into the exact moment of realization with sensory details", "Deploy \"Pattern Bridging\" questions that connect past insights to current situations, helping guests discover real-time applications", "Master \"Emotional Archaeology\" by asking guests to describe not just what they learned, but how their body felt during key revelations"]}, "vibeCheck": {"icon": "\ud83e\udd17", "vibeHtml": "<strong>Warm & Intimate</strong><br/>You created a safe space for deep vulnerability through genuine friendship and curiosity. Your tone was consistently supportive and non-judgmental, allowing your guest to share profound personal insights about authenticity, relationships, and self-discovery.", "quoteHtml": "\"I mean, I think you, you mentioned that it's like standing in your values, right? That's, that's sort of like what grounds you when you probably ask yourself, am I doing this from a place of authenticity or something else.\""}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "Analysis of your conversation architecture, pacing decisions, and 3 missed transition opportunities", "unlockedHtml": "You structured this as a journey through authenticity, moving from self-connection to relationships to personal growth. Your opening scale question (\"1 to 10, how much do you feel yourself today?\") immediately established the intimate tone and gave Lizzie permission to be vulnerable.", "lockedParagraphsHtml": ["Your transition from authenticity to the book premise felt slightly abrupt. You jumped from values discussion directly to \"Your book has a really interesting premise\" without bridging how her authenticity work connected to the writing process. A smoother bridge might have been: \"Speaking of living in your values, your book seems like the ultimate authenticity exercise...\"", "You excelled at following emotional threads rather than rigid topic lists. When Lizzie mentioned her \"5-year-old little girl\" reaction to rejection, you stayed with that vulnerability instead of moving on, which deepened the conversation significantly.", "Your pacing allowed for natural pauses and reflection. You didn't rush to fill silence, which gave Lizzie space to process and share deeper insights, particularly around her relationship with her sons and breaking generational cycles."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "4 peak emotional moments you created, plus 2 missed opportunities for even deeper connection", "unlockedHtml": "Your most powerful moment came when you reflected back Lizzie's growth: \"Not nearly\" when she asked how often you'd heard her say she was proud of herself. This simple, honest response validated her transformation and created a beautiful moment of recognition between friends.", "lockedParagraphsHtml": ["The conversation about her sons wanting to thank the person from her book created unexpected emotional depth. Your response (\"Shout out to your son for being so authentic\") honored both the complexity of the situation and the family dynamics, showing sophisticated emotional intelligence.", "When Lizzie shared her \"Type A perfectionist\" struggle, you could have explored this more deeply by asking about specific moments when perfectionism served her versus when it held her back. This would have given listeners more concrete tools for their own perfectionism battles.", "Your acknowledgment of her breaking generational cycles (\"I think you should be proud of yourself for that\") was perfectly timed and genuine, but you moved on quickly. Staying with this topic longer could have unlocked powerful insights about intentional parenting and healing."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "Your energy evolution across 3 conversation phases, plus strategies for maintaining peak engagement", "unlockedHtml": "You started with warm curiosity and maintained consistent supportive energy throughout. Your energy was most engaged when discussing the AI writing process and connection concepts, where your genuine fascination came through in your voice and follow-up questions.", "lockedParagraphsHtml": ["Your energy dipped slightly during the middle section about values and relationships, where your questions became more generic (\"How do you go about realizing what those values are?\"). This suggests you were processing complex information but could have leaned more into your natural curiosity.", "You found your strongest energy when connecting Lizzie's insights to universal experiences (\"I think for a lot of people listening will be thinking about people in their past\"). This shows your gift for making personal stories universally relevant.", "Your closing energy around self-compassion and perfectionism felt slightly rushed, as if you were aware of time constraints. Slowing down in these final moments could have created an even more impactful ending."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "5 thematic threads you developed together, plus 2 unexplored connections that could have deepened the conversation", "unlockedHtml": "You and Lizzie created a beautiful tapestry around authenticity as an ongoing practice rather than a destination. Your shared understanding of this concept (evident in your natural back-and-forth) helped listeners understand authenticity as something requiring \"therapy, hard lessons, reflection\" and ongoing work.", "lockedParagraphsHtml": ["The thread about connection being non-binary was fascinating but underdeveloped. You touched on how people can remain connected without communication, but didn't explore how this applies to other relationships or what this means for listeners navigating their own complex connections.", "Your exploration of AI as a tool for self-discovery opened up intriguing possibilities. You briefly mentioned using Claude for difficult text responses, but could have gone deeper into how technology can serve authentic self-expression rather than replace it.", "The perfectionism thread wove beautifully through multiple topics - from her book writing to parenting to relationships. You helped Lizzie articulate how she's redefining what \"A+\" means, which gives listeners permission to do the same in their own lives."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "Complete breakdown of your question types, response patterns, and 3 specific metrics for improvement", "unlockedHtml": "You asked approximately 15 questions throughout the conversation, with 60% being open-ended exploration questions (\"What does that mean to you?\") and 40% being specific follow-ups. Your average question length was concise at 15-20 words, allowing maximum space for your guest's responses.", "lockedParagraphsHtml": ["Your listening-to-speaking ratio was excellent at roughly 80/20, giving Lizzie ample space to develop her thoughts. However, your follow-up rate was only about 30% - meaning you missed opportunities to go deeper on 7 out of 10 major insights she shared.", "You used validation statements (\"I love it,\" \"Yeah\") 12 times, creating consistent emotional safety. Your transition success rate was 70%, with 3 transitions feeling abrupt and 7 flowing naturally from the previous topic.", "Your question complexity evolved from simple (scale questions) to moderate (values exploration) to complex (connection philosophy), showing good conversation architecture. However, your specificity rate was only 25% - most questions remained conceptual rather than asking for concrete examples or stories."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 8.2, "scoreType": "higher", "teaser": "Analysis of your vocal presence, authority moments, and 3 techniques to amplify your natural hosting style", "unlockedHtml": "Your voice carried genuine warmth and curiosity throughout, creating an intimate atmosphere that invited vulnerability. You spoke with the confidence of someone who truly knows and cares about your guest, which translated into authentic engagement rather than performative interviewing.", "lockedParagraphsHtml": ["Your strongest vocal moments came when you were reflecting back insights (\"It sounds like it was a vehicle for you because it gave you a chance to now look at yourself from the outside in\"). These synthesis moments showed your active listening and helped crystallize key concepts for your audience.", "You occasionally used uptalk at the end of statements, which slightly undermined your authority as a host. When you said \"That's sort of like what grounds you when you probably ask yourself, am I doing this from a place of authenticity or something else,\" the rising intonation made it sound less confident than the insight deserved.", "Your natural conversational rhythm worked beautifully for this intimate format. You allowed for natural pauses and didn't rush to fill silence, which gave both you and Lizzie space to process complex emotional topics. This pacing choice elevated the entire conversation quality."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 7.8, "scoreType": "higher", "teaser": "Your unique hosting fingerprint revealed through 4 signature moves and 2 areas for style refinement", "unlockedHtml": "Your hosting style is characterized by genuine friendship-based curiosity and the ability to make abstract concepts feel accessible. You have a gift for taking complex ideas like authenticity and connection and helping guests break them down into relatable, actionable insights.", "lockedParagraphsHtml": ["Your signature move is the \"bridge and build\" technique - you consistently took your guest's insights and connected them to broader human experiences. When you said \"I think for a lot of people listening will be thinking about people in their past,\" you transformed a personal story into universal wisdom.", "You tend to ask \"what does that mean to you\" frequently, which works well for philosophical topics but can become repetitive. Varying your approach with questions like \"Can you paint a picture of what that looks like?\" or \"Walk me through a moment when you felt that\" would add more texture to your style.", "Your strength lies in creating psychological safety through validation and genuine interest. You never made Lizzie feel judged, even when she shared vulnerable details about relationships and personal struggles. This non-judgmental presence is a rare and valuable hosting quality."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 9.1, "scoreType": "higher", "teaser": "Evidence of your guest's comfort level, vulnerability progression, and 3 specific moments where your approach unlocked deeper sharing", "unlockedHtml": "Lizzie felt completely safe to be vulnerable with you, sharing deeply personal insights about relationships, parenting, and self-discovery. Your existing friendship provided a foundation, but your skillful hosting maintained professional boundaries while preserving emotional intimacy.", "lockedParagraphsHtml": ["The moment when Lizzie said \"Alex, you've known me a long time. How often have you ever heard me say I'm proud of myself?\" showed complete trust in your relationship and the conversation space you'd created. Your honest response (\"Not nearly\") validated her growth journey beautifully.", "You made Lizzie feel heard and understood, particularly when she shared complex emotions about her past relationship. Instead of rushing to advice or judgment, you stayed curious about her experience, which allowed her to process and share even deeper insights about her patterns.", "Your guest felt empowered to be her authentic self throughout the conversation. She shared vulnerable details about rejection patterns, parenting challenges, and personal growth without any apparent self-censoring, indicating she felt completely accepted in your conversational space."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 7.5, "scoreType": "higher", "teaser": "4 breakthrough insights you co-created, plus missed opportunities for even deeper intellectual exploration", "unlockedHtml": "Together, you developed a nuanced understanding of authenticity as an ongoing practice requiring specific tools and support systems. The conversation moved beyond surface-level self-help into practical applications of authentic living, particularly around relationships and self-compassion.", "lockedParagraphsHtml": ["Your exploration of AI as a tool for self-discovery was genuinely innovative. You helped Lizzie articulate how technology can provide objective perspective on subjective experiences, opening up new possibilities for personal growth and self-awareness that many listeners likely hadn't considered.", "The concept of connection being non-binary (you can be connected to someone without communication) was profound but could have been developed further. You touched on this briefly but didn't explore the implications for how people might reframe their relationships with estranged family members, ex-partners, or lost friendships.", "You co-created a powerful reframe around perfectionism - moving from external standards to personal context-based excellence. This insight about doing \"an A+ for me in that moment\" based on all circumstances could be transformative for listeners struggling with similar perfectionist tendencies."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 6.8, "scoreType": "lower", "teaser": "3 specific growth edges identified, plus strategies to address them while maintaining your natural hosting strengths", "unlockedHtml": "Your biggest growth opportunity lies in developing more specific, story-driven follow-up questions. You excel at creating safe spaces for vulnerability, but sometimes miss chances to help guests translate insights into concrete, relatable examples that would serve your audience even better.", "lockedParagraphsHtml": ["You tend to stay at the conceptual level when you could dive into specific moments and stories. When Lizzie mentioned recognizing her rejection patterns, asking \"What did that look like the last time it happened?\" would have given listeners a clearer picture of what to watch for in themselves.", "Your transitions, while generally smooth, occasionally feel like topic changes rather than natural evolution. Developing stronger bridge language that explicitly connects how one insight leads to the next would help listeners follow the deeper logic of personal growth conversations.", "You sometimes accept surface-level answers when deeper exploration would serve both guest and audience. Your natural politeness and friendship with Lizzie may have prevented you from pushing slightly harder on certain topics that could have yielded even richer insights."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 8.0, "scoreType": "higher", "teaser": "5 advanced hosting techniques tailored to your style, plus 3 specific exercises to practice between episodes", "unlockedHtml": "Your natural strengths in creating intimate, vulnerable conversations can be amplified with more structured follow-up techniques. Focus on developing a toolkit of specific question types that help guests move from insight to story to application.", "lockedParagraphsHtml": ["Practice the \"Moment Magnification\" technique: When guests share transformative insights, ask them to zoom into the exact moment of realization. \"What were you doing when that hit you? What did it feel like in your body?\" This creates more vivid, memorable content for listeners.", "Develop your \"Pattern Detective\" skills by asking guests to connect current insights to other areas of their lives. \"Where else do you notice this pattern showing up?\" This helps both guest and audience see broader applications of personal growth insights.", "Create a \"Story Bank\" approach where you collect 3-5 specific follow-up questions that turn concepts into narratives. Questions like \"Paint me a picture of what that looked like\" or \"Walk me through the last time that happened\" will add concrete texture to your already strong conceptual conversations."]}], "meta": {"jobId": "cc40b6a6-e7a3-43d5-ba3f-0c3fed38f1c2"}};
                 
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
+                
                 // Add Job ID Footer component
                 const JobIdFooter = ({ jobId }) => {
                     const copyToClipboard = () => {
@@ -562,10 +725,12 @@ function ReportApp({ report }) {
                     
                     return React.createElement('div', {
                         style: {
-                            marginTop: '40px',
-                            padding: '20px',
+                            marginTop: '0',
+                            padding: '15px 30px',
                             textAlign: 'center',
-                            borderTop: '1px solid rgba(148,163,184,0.18)',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderTop: 'none',
                             color: '#cbd5e1'
                         }
                     }, [
@@ -575,7 +740,9 @@ function ReportApp({ report }) {
                                 fontSize: '12px',
                                 fontFamily: 'monospace, courier',
                                 cursor: 'pointer',
-                                userSelect: 'all'
+                                userSelect: 'all',
+                                color: '#94a3b8',
+                                opacity: '0.8'
                             },
                             onClick: copyToClipboard,
                             title: 'Click to copy Job ID'
@@ -583,9 +750,10 @@ function ReportApp({ report }) {
                     ]);
                 };
                 
-                // Enhanced ReportApp with Job ID footer
+                // Enhanced ReportApp with header and footer
                 const EnhancedReportApp = ({ report }) => {
                     return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
                         React.createElement(ReportApp, { key: 'report', report }),
                         React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
                     ]);
