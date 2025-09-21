@@ -164,7 +164,7 @@ const ClampParagraph = ({ html, initiallyClamped = true }) => {
 };
 
 /** Locked content blur with teaser + count */
-const LockedListBlur = ({ teaser, items }) => {
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
   const [open, setOpen] = useState(false);
 
   const List = (
@@ -177,7 +177,8 @@ const LockedListBlur = ({ teaser, items }) => {
     </ol>
   );
 
-  if (open) return <div className="mt-2">{List}</div>;
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
 
   return (
     <div className="relative rounded-md overflow-hidden mt-2">
@@ -233,7 +234,86 @@ function mapThemeTitle(oldTitle) {
 
 /* ------------------------------ APP ------------------------------ */
 
-function ReportApp({ report }) {
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Preview Locked Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
   const headerStats = computeHeaderStats(report.themes);
 
   const unlockedCount =
@@ -328,6 +408,9 @@ function ReportApp({ report }) {
                 </button>{" "}
                 to see {totalLocked} more.
               </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
             </div>
 
             {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
@@ -376,6 +459,7 @@ function ReportApp({ report }) {
             <LockedListBlur
               teaser={report.gamePlan.teaser}
               items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
             />
           </div>
         </div>
@@ -442,7 +526,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={c.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -496,7 +580,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={ins.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -539,6 +623,7 @@ function ReportApp({ report }) {
           <LockedListBlur
             teaser={report.progress.lockedTeaser}
             items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
           />
         </div>
           </>
@@ -552,6 +637,84 @@ function ReportApp({ report }) {
                 // Report data from server
                 const reportData = {"header": {"podcast": "Ayush Prakash", "host": "Unknown Host", "episode": "Why Modern Society Is So Rude And How To Fix It - Dr. John O'Brien", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your ability to ask layered, multi-part questions that build conceptual depth while maintaining conversational flow", "opportunity": "Managing question complexity - your tendency to pack 3-4 questions into single turns can overwhelm responses and dilute focus", "freeAction": {"title": "Practice the One-Question Rule", "detail": "Based on your pattern of asking compound questions like \\\"What is this reality of political correctness now and this immediate response to just these minor instances of rudeness and incivility? And also, do you think that social media has corrupted our sensitivity?\\\", try limiting yourself to one core question per turn. This will give your guest space to fully explore each concept and create more natural conversation rhythm."}, "teaser": "3 advanced questioning techniques to transform your interview style, plus specific timing strategies for complex topics", "lockedActions": ["Develop a \\\"Question Banking\\\" system to hold follow-up questions until the current response is complete, preventing information overload", "Use the \\\"Acknowledge-Bridge-Ask\\\" technique to validate responses before transitioning to new concepts, creating smoother conversational flow", "Implement strategic pausing after complex responses to allow processing time before introducing new angles"]}, "vibeCheck": {"icon": "\ud83e\udd14", "vibeHtml": "<strong>Intellectually Curious Explorer</strong><br>You brought genuine curiosity and philosophical depth to complex topics, creating space for nuanced discussion while maintaining accessibility.", "quoteHtml": "\\\"It's a theme of this show is I'm gonna ask you 17, and you can pick which 17 you want.\\\" - Your self-aware humor about question complexity shows authentic hosting personality."}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "Analysis of 3 distinct conversation phases and 2 key momentum shifts", "unlockedHtml": "Your conversation moved through three clear phases: foundational concepts (incivility definitions), personal psychology (the marathon story), and cultural applications (social media and political correctness). You maintained strong conceptual threading throughout.", "lockedParagraphsHtml": ["The conversation's momentum shifted noticeably when you introduced the marathon analogy extension, moving from passive listening to active co-creation of meaning. Your question \\\"So I'm Bob. I have the guy on the bicycle who's yelling at me in my head. But who are you in this story?\\\" transformed a simple illustration into a deeper psychological framework.", "Your pacing accelerated in the final third, with question frequency increasing from every 2-3 minutes to every 60-90 seconds. This created urgency around political correctness topics but may have prevented deeper exploration of individual points.", "The flow pattern showed your strength in building conceptual bridges - you consistently connected abstract psychological concepts to concrete cultural examples, making complex ideas accessible to your audience."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "4 standout moments including your most vulnerable question and strongest conceptual bridge", "unlockedHtml": "Your most powerful moment came when you shared personal vulnerability about Tesla and social media influence: \\\"I've noticed this myself where I used to be a really big fan of Tesla... my mind is already warped towards criticizing that.\\\" This authentic self-disclosure elevated the conversation from academic to personal.", "lockedParagraphsHtml": ["Your pushback moment - \\\"Let me just push back to make this conversation more colorful\\\" - showed confident hosting by creating productive tension. This technique transformed a potentially one-sided discussion into dynamic dialogue.", "The table-turning acknowledgment when your guest asked you a question (\\\"The tables have turned\\\") demonstrated graceful flexibility and humor, showing you can adapt when conversations take unexpected directions.", "Your precise measurement of social media consumption (\\\"I'm down to like one or two swipes per day. And I literally measure it in that\\\") provided concrete, relatable detail that grounded abstract discussions in real behavior.", "The moment you acknowledged your own limitations (\\\"I haven't thought deeply about this. I'll just say that at the front because I don't want to seem like a deep thinker where I'm not\\\") showed authentic humility that likely made your audience feel more connected to you."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "3 energy transitions and your peak engagement moment at the 75% mark", "unlockedHtml": "Your energy remained consistently engaged throughout, with a notable peak during the social media discussion where your personal investment became evident. You moved from analytical questioning to passionate exploration when discussing media consumption's psychological impact.", "lockedParagraphsHtml": ["Early energy was methodical and building - you took time to establish foundational understanding before accelerating. Your questions grew more complex as your comfort with the topic increased.", "Mid-conversation energy shifted to collaborative when exploring the marathon metaphor. You became a co-investigator rather than just an interviewer, showing genuine curiosity about psychological frameworks.", "Final third energy became more urgent and personal, particularly around political correctness. Your question density increased significantly, suggesting either time pressure or heightened engagement with controversial topics."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "5 collaborative meaning-making moments and 2 conceptual frameworks you co-created", "unlockedHtml": "You and your guest co-created a powerful framework around internal criticism using the marathon metaphor. Your extension of the analogy (\\\"So I'm Bob... who are you in this story?\\\") helped develop a three-part psychological model: the performer (Bob), the critic (bike guy), and the observer (you).", "lockedParagraphsHtml": ["Together you developed the concept of \\\"rehearsing frustration\\\" through social media, building on your guest's insight with your personal Tesla example. This created a concrete illustration of abstract psychological processes.", "Your collaborative exploration of cultural relativism moved beyond academic discussion to practical application. You pushed the conversation toward actionable understanding with questions about forgiveness and accommodation.", "The political correctness discussion became a genuine dialogue where you both wrestled with definitions and implications. Your willingness to share your own uncertainty (\\\"I haven't thought deeply about this\\\") created space for authentic exploration rather than performative expertise.", "You co-created a nuanced view of social media's impact by offering the \\\"bulletproof\\\" counterargument to your guest's desensitization theory, demonstrating intellectual honesty and collaborative thinking.", "The conversation developed an implicit framework around intention versus impact in communication, threading through cultural differences, social media behavior, and political correctness discussions."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "7 key metrics including question complexity ratio and response acknowledgment patterns", "unlockedHtml": "You asked approximately 15 substantive questions across the conversation, with 60% being compound questions containing multiple parts. Your average question length was 2-3 sentences, showing tendency toward complexity over simplicity.", "lockedParagraphsHtml": ["Question acknowledgment pattern: You directly acknowledged or built upon your guest's responses in 8 out of 15 questions, showing good listening skills but room for improvement in validation frequency.", "Personal disclosure ratio: You shared personal examples or opinions in 4 instances, creating good balance between curiosity and vulnerability without overwhelming the guest's expertise.", "Interruption management: You interrupted or overlapped speech 2 times, both instances being supportive rather than disruptive, showing good conversational awareness.", "Topic transition smoothness: 70% of your topic shifts included explicit bridging language (\\\"So now that we've understood...\\\", \\\"And so this also varies...\\\"), demonstrating strong structural awareness.", "Complexity escalation: Your questions grew 40% more complex from beginning to end, moving from simple definitions to multi-layered cultural analysis, showing good conversation architecture.", "Pushback frequency: You challenged or offered counterarguments 3 times, creating productive tension without becoming adversarial.", "Meta-commentary usage: You made 4 self-referential comments about your questioning style, showing self-awareness but potentially breaking conversational flow."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 7.2, "scoreType": "higher", "teaser": "Analysis of your questioning evolution, 3 signature verbal patterns, and vocal authority moments", "unlockedHtml": "Your voice carried intellectual curiosity as its primary signature. You consistently used phrases like \\\"What precisely is...\\\" and \\\"So now that we've understood...\\\" that demonstrated systematic thinking and helped your audience follow complex concepts step by step.", "lockedParagraphsHtml": ["Your questioning voice evolved from formal (\\\"What is the difference between incivility and rudeness?\\\") to conversational (\\\"It's a theme of this show is I'm gonna ask you 17\\\") to personally invested (\\\"I've noticed this myself\\\"). This progression created intimacy and authenticity.", "You demonstrated vocal authority through strategic pushback: \\\"Let me just push back to make this conversation more colorful\\\" showed confidence in challenging expert perspectives while maintaining respect.", "Your self-deprecating humor (\\\"I'm not a deep thinker at all\\\") balanced intellectual curiosity with approachability, making complex topics feel accessible rather than intimidating to your audience."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 8.1, "scoreType": "higher", "teaser": "Your 4 distinctive hosting signatures and the unique way you blend vulnerability with intellectual rigor", "unlockedHtml": "Your signature style blends systematic inquiry with personal vulnerability. You consistently build conceptual scaffolding (\\\"So now that we've understood kind of where this comes from, what it is, how does this affect...\\\") while injecting authentic personal examples that ground abstract concepts.", "lockedParagraphsHtml": ["Your \\\"compound questioning\\\" style is distinctively yours - packing multiple related questions into single turns. While this can overwhelm, it also demonstrates the interconnected way your mind processes complex topics.", "You have a unique ability to extend metaphors collaboratively. Your expansion of the marathon story into a psychological framework showed creative co-thinking that many hosts lack.", "Your intellectual honesty stands out - admitting limitations (\\\"I haven't thought deeply about this\\\") while maintaining curiosity creates authentic learning moments rather than performative expertise.", "Your cultural bridge-building approach consistently connects individual psychology to broader social phenomena, helping audiences understand how personal and political intersect."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 7.8, "scoreType": "higher", "teaser": "3 moments where you created psychological safety plus your guest's comfort indicators", "unlockedHtml": "Your guest showed increasing comfort throughout the conversation, evidenced by their willingness to share detailed personal stories (the marathon anecdote) and their playful interaction when they turned the tables to ask you questions. Your consistent validation created space for expertise to flourish.", "lockedParagraphsHtml": ["You created psychological safety through phrases like \\\"Apologies if I'm extending this analogy too much\\\" - showing respect for their expertise while pursuing your curiosity. This balance encouraged deeper exploration.", "Your guest felt heard enough to offer additional resources (\\\"I have my little notes here... I'm happy to send to you\\\"), indicating they saw you as a genuine collaborator rather than just an interviewer.", "The moment your guest said \\\"Thank you for letting me ask you a question on your show\\\" revealed their comfort level - they felt safe enough to reverse roles temporarily, showing trust in your flexibility and openness."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 8.4, "scoreType": "higher", "teaser": "4 original frameworks you co-created and the breakthrough moment at minute 18", "unlockedHtml": "Your strongest intellectual chemistry emerged around the marathon metaphor extension, where you transformed a simple story into a three-part psychological framework. This collaborative meaning-making elevated both your understanding and your audience's comprehension of internal criticism.", "lockedParagraphsHtml": ["Together you developed the \\\"rehearsing frustration\\\" concept through social media, combining your guest's psychological insight with your personal Tesla example to create a concrete illustration of abstract processes.", "Your exploration of cultural relativism moved beyond academic discussion to practical application. Your questions about forgiveness and accommodation pushed the conversation toward actionable wisdom rather than theoretical knowledge.", "The political correctness dialogue became genuine collaborative inquiry where you both wrestled with definitions. Your admission of uncertainty created space for authentic exploration rather than performative debate.", "You co-created a nuanced framework around intention versus impact in communication, threading this theme through cultural differences, social media behavior, and political correctness - a sophisticated conceptual architecture."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 6.3, "scoreType": "lower", "teaser": "2 specific blind spots affecting guest responses and 3 timing improvements", "unlockedHtml": "Your primary blind spot is question complexity management. When you asked \\\"What is this reality of political correctness now and this immediate response... And also, do you think that social media has corrupted our sensitivity?\\\", your guest responded \\\"Well, so there's lots of questions, lots of things\\\" - a clear signal of overwhelm.", "lockedParagraphsHtml": ["You sometimes miss opportunities to deepen responses before moving to new topics. After powerful moments like your guest's marathon story, you could pause longer to explore implications before introducing new concepts.", "Your self-referential commentary (\\\"It's a theme of this show\\\", \\\"I'm not a deep thinker\\\") while charming, occasionally breaks conversational flow and shifts focus from guest expertise to your hosting style.", "Time pressure in the final third led to rapid-fire questioning that prevented full exploration of complex topics like political correctness. Slowing down could yield richer insights.", "You occasionally apologize unnecessarily (\\\"Apologies if I'm extending this analogy too much\\\") which, while polite, can undermine your authority as a host and interrupt conversational momentum."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 7.6, "scoreType": "higher", "teaser": "5 specific techniques to enhance your natural strengths plus 2 advanced questioning frameworks", "unlockedHtml": "Your natural strength in building conceptual bridges can be enhanced with the \\\"Spiral Technique\\\" - returning to earlier themes with new depth rather than linear progression. This would leverage your systematic thinking while creating richer exploration.", "lockedParagraphsHtml": ["Implement \\\"Question Banking\\\" - when multiple questions arise, acknowledge them (\\\"I have three directions I want to explore\\\") then tackle them sequentially. This maintains your natural curiosity while improving clarity.", "Develop \\\"Pause Power\\\" - after complex responses, count to three before speaking. This gives processing time and often prompts guests to add valuable details spontaneously.", "Use the \\\"Acknowledge-Bridge-Ask\\\" framework: validate the response, connect to broader themes, then ask your next question. This would enhance your already strong conceptual threading.", "Practice \\\"Vulnerability Timing\\\" - your personal disclosures are powerful but could be more strategically placed to deepen rather than redirect conversations.", "Create \\\"Complexity Ladders\\\" - start with simple questions and build complexity gradually rather than front-loading multiple concepts. This matches your systematic thinking to guest processing capacity."]}], "meta": {"jobId": "1645ba9a-88ab-475d-8367-664b155ea851"}};
                 
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
+                
                 // Add Job ID Footer component
                 const JobIdFooter = ({ jobId }) => {
                     const copyToClipboard = () => {
@@ -562,10 +725,12 @@ function ReportApp({ report }) {
                     
                     return React.createElement('div', {
                         style: {
-                            marginTop: '40px',
-                            padding: '20px',
+                            marginTop: '0',
+                            padding: '15px 30px',
                             textAlign: 'center',
-                            borderTop: '1px solid rgba(148,163,184,0.18)',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderTop: 'none',
                             color: '#cbd5e1'
                         }
                     }, [
@@ -575,7 +740,9 @@ function ReportApp({ report }) {
                                 fontSize: '12px',
                                 fontFamily: 'monospace, courier',
                                 cursor: 'pointer',
-                                userSelect: 'all'
+                                userSelect: 'all',
+                                color: '#94a3b8',
+                                opacity: '0.8'
                             },
                             onClick: copyToClipboard,
                             title: 'Click to copy Job ID'
@@ -583,9 +750,10 @@ function ReportApp({ report }) {
                     ]);
                 };
                 
-                // Enhanced ReportApp with Job ID footer
+                // Enhanced ReportApp with header and footer
                 const EnhancedReportApp = ({ report }) => {
                     return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
                         React.createElement(ReportApp, { key: 'report', report }),
                         React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
                     ]);
