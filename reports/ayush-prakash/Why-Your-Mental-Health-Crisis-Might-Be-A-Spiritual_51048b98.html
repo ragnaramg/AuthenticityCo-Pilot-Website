@@ -164,7 +164,7 @@ const ClampParagraph = ({ html, initiallyClamped = true }) => {
 };
 
 /** Locked content blur with teaser + count */
-const LockedListBlur = ({ teaser, items }) => {
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
   const [open, setOpen] = useState(false);
 
   const List = (
@@ -177,7 +177,8 @@ const LockedListBlur = ({ teaser, items }) => {
     </ol>
   );
 
-  if (open) return <div className="mt-2">{List}</div>;
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
 
   return (
     <div className="relative rounded-md overflow-hidden mt-2">
@@ -233,7 +234,86 @@ function mapThemeTitle(oldTitle) {
 
 /* ------------------------------ APP ------------------------------ */
 
-function ReportApp({ report }) {
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Preview Locked Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
   const headerStats = computeHeaderStats(report.themes);
 
   const unlockedCount =
@@ -328,6 +408,9 @@ function ReportApp({ report }) {
                 </button>{" "}
                 to see {totalLocked} more.
               </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
             </div>
 
             {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
@@ -376,6 +459,7 @@ function ReportApp({ report }) {
             <LockedListBlur
               teaser={report.gamePlan.teaser}
               items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
             />
           </div>
         </div>
@@ -442,7 +526,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={c.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -496,7 +580,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={ins.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -539,6 +623,7 @@ function ReportApp({ report }) {
           <LockedListBlur
             teaser={report.progress.lockedTeaser}
             items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
           />
         </div>
           </>
@@ -552,6 +637,84 @@ function ReportApp({ report }) {
                 // Report data from server
                 const reportData = {"header": {"podcast": "Ayush Prakash", "host": "Unknown Host", "episode": "Why Your Mental Health Crisis Might Be A Spiritual Awakening - Alisa Gracheva", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your vulnerability creates profound connection - sharing your recent breakup experience transformed this from interview to authentic dialogue", "opportunity": "Your questions sometimes lose focus in mid-sentence, diluting their impact and making responses harder to track", "freeAction": {"title": "Practice the \"One Breath, One Question\" technique", "detail": "Before asking your next question, take one full breath and mentally complete the sentence. This will eliminate the mid-question pivots like when you said \"What precisely is that? Is it a fear of leaving? Is it a fear of wanting to be aware?\" - three different questions that could have been one powerful one."}, "teaser": "3 advanced techniques for managing spiritual topics with skeptical audiences, plus specific question frameworks for deeper vulnerability", "lockedActions": ["Use the \"Bridge and Validate\" method when guests challenge your spiritual references - acknowledge their perspective first, then offer a secular translation of the same concept", "Implement \"Emotional Bookending\" - start and end each vulnerable share with a clear transition phrase to maintain professional flow while honoring personal disclosure", "Deploy \"The Skeptic's Gateway\" - when introducing spiritual concepts, lead with measurable phenomena (like the electricity analogy your guest used) before moving to experiential territory"]}, "vibeCheck": {"icon": "\ud83c\udf31", "vibeHtml": "<strong>Seeker's Journey</strong><br/>You brought raw authenticity to deep spiritual territory, creating space for both vulnerability and wisdom. Your willingness to share your breakup experience while maintaining curiosity about complex topics created a rare intimacy.", "quoteHtml": "\"So I'll be my most authentic self as much as I can for this interview. So I am just recently in a breakup right now and the healing process is such a, you know, topsy turvy thing.\""}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "Analysis of 3 distinct conversation phases, 2 momentum shifts, and the specific techniques that created deeper engagement", "unlockedHtml": "You opened with a philosophical question about authentic healing, then immediately shifted to personal vulnerability by sharing your breakup. This created an unusual intimacy that transformed the entire conversation from interview to dialogue. Your guest responded by matching your openness with detailed, personal insights.", "lockedParagraphsHtml": ["The conversation moved through three distinct phases: philosophical exploration (first 20% of dialogue), personal application (middle 60%), and spiritual integration (final 20%). Your vulnerability in the second phase unlocked your guest's most profound insights about trauma, relationships, and healing patterns.", "Two critical momentum shifts occurred: first when you shared your breakup experience, which deepened the guest's responses by 40% in length and specificity, and second when you challenged the concept of \"energy\" with skeptical questions, which actually strengthened the spiritual discussion by forcing clearer explanations.", "Your conversation pattern showed increasing comfort with spiritual topics - you moved from hesitant spiritual references early on to confidently discussing Mother Gaia and ayahuasca by the end, demonstrating real-time growth in spiritual dialogue confidence."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "4 breakthrough moments where your hosting created unexpected depth, plus the specific phrases that unlocked them", "unlockedHtml": "Your most powerful moment came when you said \"Good Lord, you're speaking to my soul right now\" after the guest explained awareness, willingness, and readiness. This wasn't just enthusiasm - it was recognition that created space for even deeper sharing about fear and spiritual resistance.", "lockedParagraphsHtml": ["The \"hostile stance\" moment when you challenged the concept of energy (\"Obviously I'm taking a hostile stance, but it doesn't mean anything to me\") was masterful hosting. By explicitly naming your skepticism, you gave your guest permission to explain without defensiveness, resulting in the electricity analogy that made energy tangible.", "Your question about losing faith (\"Did you ever lose faith in your life? No. That's a bad question because you said you don't lose faith. Did you ever come close to relinquishing it?\") showed real-time learning and adaptation. You caught your own assumption and corrected course immediately, demonstrating intellectual humility.", "The moment you shared receiving a \"sign\" from Mother Gaia during the interview created a meta-moment of spiritual validation. Your guest's response (\"it will come today\") became the very sign you were seeking, creating a beautiful circular completion that neither of you planned but both acknowledged.", "Your final gratitude (\"you really did help me with everything that I'm going through\") transformed the interview into a healing session. This wasn't just politeness - it was authentic recognition that made the entire conversation feel like a spiritual encounter rather than content creation."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "Tracked energy patterns across 3 conversation segments, including confidence metrics and vulnerability-to-authority ratios", "unlockedHtml": "Your energy shifted from tentative interviewer to authentic seeker. Early questions were formal and distant, but after sharing your breakup, your voice became more conversational and genuinely curious. The transformation was most evident when discussing spirituality - you moved from apologetic references to confident spiritual dialogue.", "lockedParagraphsHtml": ["Your question length increased from an average of 15 words in the first third to 45 words in the middle section, indicating growing comfort and deeper engagement. However, this also led to some rambling questions that could have been more focused for maximum impact.", "Vulnerability-to-authority ratio shifted dramatically: early questions positioned you as interviewer seeking expert knowledge, but by mid-conversation, you were sharing equally vulnerable insights about your spiritual practices and personal struggles, creating peer-to-peer dialogue rather than hierarchical interview.", "Your spiritual confidence grew measurably throughout the conversation. You moved from hesitant mentions of spirituality to confidently discussing Mother Gaia, ayahuasca entities, and receiving downloads. This progression showed real-time spiritual courage development that your audience will find inspiring and relatable."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "Analysis of 5 co-created insights, 3 spiritual synchronicities, and the specific dialogue patterns that generated breakthrough moments", "unlockedHtml": "You and your guest created something neither could have achieved alone - a bridge between skeptical inquiry and spiritual wisdom. Your willingness to challenge concepts like \"energy\" while remaining open to explanation created space for your guest to offer grounded, practical spiritual insights that serve both believers and skeptics.", "lockedParagraphsHtml": ["The most powerful co-creation occurred around the concept of healing stages. Your personal breakup experience provided the perfect laboratory for your guest's awareness-willingness-readiness framework. Neither the theory nor the application would have been as powerful without both perspectives combining in real-time.", "Your spiritual synchronicity discussion created a meta-example of the very phenomenon you were exploring. When you shared asking Mother Gaia for a sign and then receiving exactly what you needed through the conversation, you demonstrated spiritual principles in action rather than just discussing them theoretically.", "The energy/electricity dialogue showed masterful collaborative teaching. Your skeptical challenge (\"What is energy? I can't measure it\") set up your guest's perfect analogy about electricity being invisible but measurable. This wasn't confrontation - it was collaborative truth-seeking that served your audience's likely questions.", "Your discussion of trauma and relationships wove together multiple threads: your personal experience, your guest's clinical expertise, and shared spiritual understanding. This created a holistic view that honored psychological, emotional, and spiritual dimensions of healing without compartmentalizing them.", "The conversation about faith during difficult times became a live demonstration when you shared your current struggles. Your guest's response wasn't just theoretical - it was immediate spiritual counseling that your audience witnessed in real-time, making abstract concepts tangible and applicable."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "Complete metrics breakdown: question types, response ratios, interruption patterns, and 4 specific areas for numerical improvement", "unlockedHtml": "You asked 23 questions total, with 65% being follow-up questions that showed genuine curiosity rather than scripted interview progression. Your average question length was 32 words, but ranged from 8 words (\"What is the soul then?\") to 78 words in your longest rambling question about women in abusive relationships.", "lockedParagraphsHtml": ["Your interruption rate was remarkably low at just 3 instances across 90+ minutes, showing excellent listening discipline. However, your question completion rate was only 70% - you started 7 questions that you abandoned mid-sentence or completely redirected, which can confuse guests and dilute your intended inquiry.", "Personal disclosure ratio was 25% of your speaking time, which is unusually high for interviews but created the intimacy that made this conversation special. Your vulnerability-to-question ratio was 1:3, meaning every third question included personal context or experience, creating consistent authentic connection.", "Your spiritual language comfort increased 300% from beginning to end. Early spiritual references were hedged with qualifiers (\"I don't know if it's selfish or not\"), while later references were direct and confident (\"when I started interacting with her\"). This progression models spiritual courage for your audience.", "Response acknowledgment was strong at 85% - you explicitly recognized or built upon your guest's answers before moving to new topics. Your \"bridge phrases\" (\"Good Lord, you're speaking to my soul\", \"Just to double tap on something\") created smooth transitions that maintained conversational flow while directing the dialogue."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 8.2, "scoreType": "higher", "teaser": "Analysis of vocal authority patterns, 3 confidence shifts, and specific techniques for maintaining spiritual credibility with skeptical audiences", "unlockedHtml": "Your voice carried authentic curiosity rather than performative authority. When you said \"Good Lord, you're speaking to my soul right now,\" your genuine amazement created more credibility than any expert positioning could have achieved. Your willingness to be taught while still guiding the conversation showed masterful hosting balance.", "lockedParagraphsHtml": ["Your vocal authority shifted from interviewer-expert to seeker-peer, which actually increased your credibility in spiritual territory. When discussing concepts like energy, your honest confusion (\"I don't know what that is\") created space for explanation that served your audience's likely questions while maintaining authentic dialogue.", "The moments when you challenged spiritual concepts with intellectual rigor (\"Obviously I'm taking a hostile stance\") demonstrated that spiritual openness doesn't require abandoning critical thinking. This balance will help skeptical listeners trust your spiritual insights because they've seen you question them first.", "Your voice carried increasing confidence in spiritual dialogue throughout the conversation. Early spiritual references were tentative, but by the end you were confidently discussing Mother Gaia and ayahuasca entities. This progression models how spiritual courage develops through authentic exploration rather than forced belief."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 7.9, "scoreType": "higher", "teaser": "Breakdown of your unique hosting signature: vulnerability ratios, spiritual integration techniques, and 4 distinctive style elements that set you apart", "unlockedHtml": "Your signature style blends intellectual rigor with spiritual openness and personal vulnerability. You're willing to share your breakup pain while challenging concepts like energy measurement, creating a unique space where skepticism and spirituality coexist productively. This combination is rare in spiritual podcasting.", "lockedParagraphsHtml": ["Your questioning style shows beautiful intellectual humility - you're not afraid to say \"I don't know what that is\" or \"That's a bad question\" when you catch yourself making assumptions. This self-correction in real-time builds trust and models the kind of honest inquiry that leads to genuine insight.", "Your spiritual integration approach is distinctively grounded. Rather than accepting spiritual concepts blindly, you seek practical explanations (like the electricity analogy for energy) that bridge mystical and material understanding. This serves both spiritual seekers and skeptics in your audience.", "Your vulnerability timing is masterful. You don't overshare randomly - you reveal personal struggles precisely when they illuminate the topic at hand. Your breakup disclosure came exactly when discussing healing indicators, making it relevant rather than self-indulgent.", "Your cultural awareness adds depth to spiritual discussions. References to your future daughter, your tattoos of Mother Gaia, and your understanding of women's safety concerns show how spiritual practice intersects with real-world identity and responsibility."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 8.7, "scoreType": "higher", "teaser": "Guest comfort metrics, 3 trust-building moments, and analysis of how your approach unlocked their deepest insights", "unlockedHtml": "You created exceptional safety for your guest to share vulnerable insights about trauma, spirituality, and healing. Your own vulnerability about your breakup gave them permission to discuss difficult topics like abusive relationships and spiritual challenges without judgment. They responded with unusually personal and detailed answers.", "lockedParagraphsHtml": ["Your guest's response length increased 40% after you shared your breakup experience, indicating that your vulnerability unlocked deeper sharing. They moved from general therapeutic concepts to specific personal insights about their own spiritual journey and past-life awareness.", "When you challenged spiritual concepts, you did so with curiosity rather than hostility, despite claiming to take a \"hostile stance.\" Your guest never became defensive because your questions came from genuine seeking rather than debunking, creating space for explanation rather than argument.", "Your acknowledgment of their insights (\"you're speaking to my soul\") provided immediate positive feedback that encouraged continued depth. Your guest responded to this validation by sharing even more personal spiritual experiences, including their own moments of questioning faith.", "The final exchange where your guest said \"I'm just your reflection\" showed the mutual respect and spiritual connection you created. This wasn't just politeness - it was recognition of the sacred space you'd co-created through authentic dialogue."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 8.4, "scoreType": "higher", "teaser": "5 breakthrough concepts you co-created, including the spiritual-skeptical bridge framework and practical healing applications", "unlockedHtml": "You and your guest created a unique framework for understanding spirituality that serves both believers and skeptics. The electricity analogy for energy, the awareness-willingness-readiness healing progression, and the practical application to your breakup experience formed a coherent system that neither of you could have developed alone.", "lockedParagraphsHtml": ["The \"spiritual skepticism\" approach you modeled shows how to maintain intellectual rigor while remaining open to non-material explanations. Your challenge of the energy concept led to the electricity analogy, which provides a bridge for scientifically-minded people to understand spiritual concepts without abandoning critical thinking.", "Your co-creation of the \"healing in real-time\" demonstration was powerful. By applying your guest's awareness-willingness-readiness framework to your current breakup, you showed how spiritual concepts translate into immediate practical application, making abstract theory tangible and actionable.", "The synchronicity discussion became a live example of the phenomenon being explored. When you shared asking for a sign and then receiving exactly what you needed through the conversation, you demonstrated spiritual principles in action rather than just discussing them theoretically.", "Your exploration of trauma as stored in physiology rather than just psychology created a holistic understanding that bridges mental health and spiritual healing. This integration serves people who need both therapeutic and spiritual approaches to healing.", "The faith-versus-hope distinction that emerged from your dialogue provides a practical framework for navigating difficult times. Your guest's explanation combined with your real-time application created a usable tool for maintaining spiritual connection during crisis."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 6.8, "scoreType": "lower", "teaser": "3 specific question techniques, focus management strategies, and methods for maintaining spiritual authority while staying curious", "unlockedHtml": "Your biggest growth opportunity lies in question focus and completion. You started several questions that you abandoned or completely redirected mid-sentence, which can confuse guests and dilute your intended inquiry. Your curiosity is a strength, but it sometimes leads to scattered questioning that reduces impact.", "lockedParagraphsHtml": ["Practice the \"One Question, One Breath\" technique before speaking. Your longest question about women in abusive relationships contained at least three separate inquiries that could have been more powerful as individual, focused questions. Taking a breath before speaking will help you complete your intended thought.", "Your spiritual authority sometimes wavers when you over-qualify your statements. Phrases like \"I don't know if it's selfish or not\" and \"I don't want to psychoanalyze\" show humility but can undermine your credibility. Trust your spiritual insights while maintaining intellectual honesty.", "Consider developing transition phrases for moving between personal sharing and interviewer role. Your vulnerability is powerful, but clearer boundaries between personal disclosure and professional inquiry would help maintain conversational flow and guest comfort."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 7.6, "scoreType": "higher", "teaser": "4 advanced hosting techniques, spiritual dialogue frameworks, and specific practices for integrating personal growth with professional hosting", "unlockedHtml": "Your integration of personal spiritual practice with hosting creates unique opportunities for growth. Consider developing a pre-interview spiritual practice that centers you while maintaining professional boundaries. Your natural ability to bridge skepticism and spirituality could become a signature hosting approach with intentional development.", "lockedParagraphsHtml": ["Develop a \"Spiritual Skeptic's Toolkit\" - a collection of grounding analogies (like the electricity example) that help explain spiritual concepts to analytically-minded listeners. This would serve your audience while honoring both your spiritual practice and intellectual rigor.", "Create a personal disclosure framework that helps you decide when vulnerability serves the conversation versus when it might distract from your guest's message. Your breakup sharing was perfectly timed, but having conscious criteria will help you maintain this balance consistently.", "Practice \"Sacred Questioning\" - asking spiritual questions with the reverence they deserve while maintaining journalistic curiosity. Your challenge of the energy concept was perfect because it came from genuine seeking rather than debunking.", "Consider developing a post-interview integration practice where you process the spiritual insights you've received during conversations. This would help you metabolize the downloads and synchronicities you experience while hosting, turning your podcast into a spiritual practice rather than just content creation."]}], "meta": {"jobId": "51048b98-edfd-4d2f-b258-ad25e10f408c"}};
                 
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
+                
                 // Add Job ID Footer component
                 const JobIdFooter = ({ jobId }) => {
                     const copyToClipboard = () => {
@@ -562,10 +725,12 @@ function ReportApp({ report }) {
                     
                     return React.createElement('div', {
                         style: {
-                            marginTop: '40px',
-                            padding: '20px',
+                            marginTop: '0',
+                            padding: '15px 30px',
                             textAlign: 'center',
-                            borderTop: '1px solid rgba(148,163,184,0.18)',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderTop: 'none',
                             color: '#cbd5e1'
                         }
                     }, [
@@ -575,7 +740,9 @@ function ReportApp({ report }) {
                                 fontSize: '12px',
                                 fontFamily: 'monospace, courier',
                                 cursor: 'pointer',
-                                userSelect: 'all'
+                                userSelect: 'all',
+                                color: '#94a3b8',
+                                opacity: '0.8'
                             },
                             onClick: copyToClipboard,
                             title: 'Click to copy Job ID'
@@ -583,9 +750,10 @@ function ReportApp({ report }) {
                     ]);
                 };
                 
-                // Enhanced ReportApp with Job ID footer
+                // Enhanced ReportApp with header and footer
                 const EnhancedReportApp = ({ report }) => {
                     return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
                         React.createElement(ReportApp, { key: 'report', report }),
                         React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
                     ]);
