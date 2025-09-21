@@ -164,7 +164,7 @@ const ClampParagraph = ({ html, initiallyClamped = true }) => {
 };
 
 /** Locked content blur with teaser + count */
-const LockedListBlur = ({ teaser, items }) => {
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
   const [open, setOpen] = useState(false);
 
   const List = (
@@ -177,7 +177,8 @@ const LockedListBlur = ({ teaser, items }) => {
     </ol>
   );
 
-  if (open) return <div className="mt-2">{List}</div>;
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
 
   return (
     <div className="relative rounded-md overflow-hidden mt-2">
@@ -233,7 +234,86 @@ function mapThemeTitle(oldTitle) {
 
 /* ------------------------------ APP ------------------------------ */
 
-function ReportApp({ report }) {
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Preview Locked Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
   const headerStats = computeHeaderStats(report.themes);
 
   const unlockedCount =
@@ -328,6 +408,9 @@ function ReportApp({ report }) {
                 </button>{" "}
                 to see {totalLocked} more.
               </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
             </div>
 
             {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
@@ -376,6 +459,7 @@ function ReportApp({ report }) {
             <LockedListBlur
               teaser={report.gamePlan.teaser}
               items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
             />
           </div>
         </div>
@@ -442,7 +526,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={c.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -496,7 +580,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={ins.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -539,6 +623,7 @@ function ReportApp({ report }) {
           <LockedListBlur
             teaser={report.progress.lockedTeaser}
             items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
           />
         </div>
           </>
@@ -552,6 +637,84 @@ function ReportApp({ report }) {
                 // Report data from server
                 const reportData = {"header": {"podcast": "I:AM", "host": "Unknown Host", "episode": "Authenticity, Ego & Spiritual Bypassing: The Real Inner Work | The I:AM Experience Ep. 4", "guest": "The I:AM Experience Ep. 4", "tone": "Professional"}, "gamePlan": {"strength": "Your vulnerability creates instant connection - admitting \"I still had a pang of fear before we hit record\" shows authentic humanity that draws listeners in.", "opportunity": "Your responses are often minimal (\"Yeah, man\" appears 3 times) - you're missing chances to dig deeper into the rich material your guest offers.", "freeAction": {"title": "The 3-Second Pause Technique", "detail": "Before responding with agreement phrases like \"Yeah, man,\" count to three. This creates space for your guest to continue or for you to formulate a more substantive response. In this episode, 40% of your responses were single-word agreements - reducing this by half would create more dynamic exchanges."}, "teaser": "3 advanced techniques for transforming minimal responses into conversation gold, plus the specific question framework that turns surface-level chat into podcast magic.", "lockedActions": ["Use the \"Tell me more about...\" bridge to transform agreement moments into deeper exploration - especially when guests mention transformative experiences like your guest's spiritual awakening", "Deploy the \"Contrast Question\" technique: when your guest mentions change (like their commitment to authenticity), ask \"What would the old version of you have done differently in this situation?\"", "Implement the \"Emotional Archaeology\" method: when vulnerability surfaces (like your fear admission), dig into the layers - \"What does that fear tell you about what this podcast means to you?\""]}, "vibeCheck": {"icon": "\ud83e\udd1d", "vibeHtml": "<strong>Intimate & Exploratory</strong><br/>This felt like eavesdropping on two friends doing real inner work together. There's a beautiful balance of spiritual curiosity and grounded authenticity.", "quoteHtml": "\"I'm done with suffering. And if I really am the one, like Neo from the Matrix, there's nothing to fear.\" - Your willingness to share this vulnerable moment set the tone for genuine connection."}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "3 specific flow patterns that shaped this episode, plus the exact moments where momentum shifted", "unlockedHtml": "The conversation moved in organic waves - starting with podcast logistics, flowing into personal transformation, then meandering through authenticity and spiritual exploration. Your guest led the directional shifts while you provided supportive anchoring.", "lockedParagraphsHtml": ["The strongest flow occurred during the authenticity discussion (minutes 2-4), where your guest's question about your Monday commitment created a 6-exchange deep dive. This represents your longest sustained exploration in the episode.", "Flow breaks happened when topics shifted abruptly - the jump from spiritual discussion to clothing/Norway created a 40% reduction in response depth, suggesting you're more comfortable with certain subject matter.", "Your conversation recovery technique involves returning to shared experiences (like the cabin trip), which successfully re-established connection but may indicate a pattern of avoiding unfamiliar territory."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "4 standout moments that defined this episode, including the vulnerability breakthrough and missed opportunity analysis", "unlockedHtml": "Your Matrix reference moment was pure gold - \"I'm done with suffering. And if I really am the one, like Neo from the Matrix, there's nothing to fear.\" This vulnerability created the episode's emotional peak and showed your authentic spiritual journey.", "lockedParagraphsHtml": ["The exposure therapy story about wearing trackies to work revealed your growth mindset and willingness to challenge social conditioning. This practical spirituality approach makes complex concepts accessible to listeners.", "Your guest's spiritual goblet moment could have been explored deeper - they were clearly testing boundaries between authentic practice and spiritual performance, but you moved past it with surface-level validation.", "The \"moist\" word play at the end showed your playful side emerging after serious topics, demonstrating natural conversation rhythm and the ability to shift energy when needed."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "3 distinct energy phases mapped across the episode, plus the triggers that caused each transition", "unlockedHtml": "You started with nervous energy (\"pang of fear\"), shifted into philosophical confidence during the Matrix discussion, then settled into comfortable storytelling mode during the personal anecdotes section.", "lockedParagraphsHtml": ["Your confidence peaked during the authenticity discussion - response length increased from 3-5 words to 15-20 words, and you introduced complex concepts like \"emotional guidance system\" with natural authority.", "Energy dipped during the Norway/clothing tangent where your responses became more reactive than proactive, suggesting you're most energized by psychological and spiritual topics rather than lifestyle content.", "The final third showed relaxed engagement - your willingness to play with words like \"moist\" indicated comfort and trust had been established, creating space for lighter moments."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "4 thematic threads that emerged, plus analysis of which ones you developed vs. which ones you let slip", "unlockedHtml": "The authenticity vs. performance theme ran throughout - from your spiritual commitment to your guest's crystal joke to the clothing exposure therapy story. This became your strongest collaborative thread.", "lockedParagraphsHtml": ["The \"emotional guidance system\" concept emerged as shared language - you introduced it, your guest adopted it, creating a mini-framework that could become signature content for your podcast brand.", "The comfort zone exploration thread (fear, exposure therapy, authentic expression) showed natural chemistry in your approaches to personal growth, suggesting this could be a recurring theme worth developing.", "The spiritual authenticity thread was partially developed - your guest's playful skepticism about spiritual fashion could have been explored deeper to create more nuanced discussion about genuine vs. performative spirituality."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "5 key metrics that reveal your hosting patterns, plus comparison benchmarks for growth tracking", "unlockedHtml": "You spoke 47% of the time with an average response length of 12 words. Your agreement-to-question ratio was 3:1, showing strong supportive hosting but limited curiosity-driven exploration.", "lockedParagraphsHtml": ["Question frequency: 2 direct questions in 25 speaking turns (8% question rate). Industry benchmark for interview-style podcasts is 15-25%, indicating significant growth opportunity in curiosity-driven hosting.", "Response depth variation: Your longest response was 31 words (Matrix discussion), shortest was 1 word (\"Cool\"). The 30:1 ratio suggests you have the capacity for depth but default to minimal responses.", "Topic introduction rate: You initiated 2 new topics vs. your guest's 6, showing a 1:3 ratio. This reactive hosting style works for intimate conversations but may limit your ability to guide discussions toward specific outcomes."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 6.8, "scoreType": "higher", "teaser": "3 vocal patterns that define your hosting presence, plus specific techniques to amplify your natural authority", "unlockedHtml": "Your voice carries quiet authority mixed with genuine curiosity. When you said \"I'm done with suffering,\" there was conviction that commanded attention, but your default mode tends toward supportive murmurs rather than confident guidance.", "lockedParagraphsHtml": ["Your philosophical voice emerges strongest during spiritual discussions - the \"emotional guidance system\" explanation showed natural teaching ability that could become a signature element of your hosting style.", "Vocal energy drops during transitional moments - when topics shift unexpectedly, your responses become more hesitant, suggesting you're most powerful when operating in your zone of expertise and passion.", "Your storytelling voice (exposure therapy example) demonstrates natural narrative ability that engages listeners, but you tend to rush through these moments rather than fully developing them for maximum impact."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 7.5, "scoreType": "higher", "teaser": "4 unique hosting traits that set you apart, plus strategies to lean into your authentic style", "unlockedHtml": "Your hosting style blends vulnerable authenticity with practical spirituality. You're willing to admit fear while discussing Matrix-level consciousness - this paradox creates compelling listening because it's genuinely human.", "lockedParagraphsHtml": ["Your \"supportive explorer\" approach creates safety for guests to share deeply, but sometimes at the expense of challenging them to go even deeper - finding this balance could elevate your interviews significantly.", "You naturally weave personal experience into discussions (exposure therapy, cabin trip) without making it about you - this skill creates relatability while maintaining focus on the guest's journey.", "Your philosophical curiosity paired with practical application (\"what's the fear here to tell me\") suggests you could develop a signature framework for translating spiritual concepts into actionable insights."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 8.2, "scoreType": "higher", "teaser": "3 specific ways you created safety for authentic sharing, plus advanced techniques for deeper guest connection", "unlockedHtml": "Your guest felt safe enough to joke about spiritual performance while also sharing genuine insights about authenticity. Your non-judgmental responses (\"Yeah, cool, cool. Is that authentic though?\") created space for honest self-reflection.", "lockedParagraphsHtml": ["Your vulnerability modeling (admitting pre-recording fear) gave your guest permission to be equally open, creating a reciprocal authenticity that elevated the entire conversation beyond surface-level chat.", "You demonstrated active listening through building on their concepts - when they mentioned \"emotional guidance system,\" you immediately integrated it into your own framework, showing genuine engagement rather than waiting for your turn to speak.", "Your gentle challenging approach (\"Is that authentic though, or are you performing?\") showed you can push for depth while maintaining warmth, though you could deploy this technique more frequently for greater impact."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 7.1, "scoreType": "higher", "teaser": "4 collaborative insights that emerged, plus analysis of your idea-building patterns", "unlockedHtml": "The \"emotional guidance system\" concept became shared language that both of you built upon. Your guest expanded it to include anxiety as signpost, while you connected it to alignment and authenticity - true collaborative thinking.", "lockedParagraphsHtml": ["Your Matrix metaphor sparked a deeper exploration of fear and spiritual identity that neither of you could have reached alone - this shows your ability to introduce frameworks that unlock new thinking.", "The authenticity vs. performance theme evolved through multiple examples (spiritual fashion, clothing choices, exposure therapy) showing how you build ideas through practical application rather than abstract discussion.", "You missed opportunities to synthesize emerging insights - the connection between exposure therapy, authenticity, and spiritual practice could have been explicitly drawn together to create a memorable takeaway for listeners."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 6.3, "scoreType": "lower", "teaser": "3 growth edges that could transform your hosting, plus specific practices to address each one", "unlockedHtml": "Your biggest blind spot is underestimating the value of your own insights. When you shared the exposure therapy story, you rushed through it rather than recognizing it as podcast gold that deserved deeper exploration.", "lockedParagraphsHtml": ["You tend to deflect from your own wisdom - the \"emotional guidance system\" concept was profound but you moved past it quickly instead of developing it into a teachable framework that could help listeners.", "Your comfort with silence needs development - several moments where your guest paused (potentially to go deeper) were filled with agreement sounds rather than allowing space for emergence of new insights.", "You sometimes prioritize harmony over curiosity - when your guest made the spiritual goblet joke, gentle probing could have revealed interesting insights about their relationship with spiritual practice without creating conflict."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 8.0, "scoreType": "higher", "teaser": "5 specific resources and 3 practice techniques tailored to your hosting style and growth areas", "unlockedHtml": "Your natural philosophical bent suggests studying \"The Art of Conversation\" by Catherine Blyth for techniques to deepen dialogue without losing the intimate feel you've already mastered.", "lockedParagraphsHtml": ["Practice the \"Golden Thread\" technique: identify one theme per episode and weave back to it 3-4 times. Your authenticity theme was perfect for this but could have been more intentionally developed throughout the conversation.", "Develop your \"Wisdom Recognition\" skill by recording yourself explaining concepts you mentioned briefly (like emotional guidance system) in 2-minute solo segments - this will help you recognize when you're onto something valuable.", "Study Krista Tippett's \"On Being\" for examples of how to ask follow-up questions that honor both the guest's sharing and the listener's need for clarity - her technique of \"say more about that\" could transform your minimal responses into conversation catalysts."]}], "meta": {"jobId": "12464bd5-b451-4c8f-8fe6-48cfe1a7ecb9"}};
                 
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
+                
                 // Add Job ID Footer component
                 const JobIdFooter = ({ jobId }) => {
                     const copyToClipboard = () => {
@@ -562,10 +725,12 @@ function ReportApp({ report }) {
                     
                     return React.createElement('div', {
                         style: {
-                            marginTop: '40px',
-                            padding: '20px',
+                            marginTop: '0',
+                            padding: '15px 30px',
                             textAlign: 'center',
-                            borderTop: '1px solid rgba(148,163,184,0.18)',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderTop: 'none',
                             color: '#cbd5e1'
                         }
                     }, [
@@ -575,7 +740,9 @@ function ReportApp({ report }) {
                                 fontSize: '12px',
                                 fontFamily: 'monospace, courier',
                                 cursor: 'pointer',
-                                userSelect: 'all'
+                                userSelect: 'all',
+                                color: '#94a3b8',
+                                opacity: '0.8'
                             },
                             onClick: copyToClipboard,
                             title: 'Click to copy Job ID'
@@ -583,9 +750,10 @@ function ReportApp({ report }) {
                     ]);
                 };
                 
-                // Enhanced ReportApp with Job ID footer
+                // Enhanced ReportApp with header and footer
                 const EnhancedReportApp = ({ report }) => {
                     return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
                         React.createElement(ReportApp, { key: 'report', report }),
                         React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
                     ]);
