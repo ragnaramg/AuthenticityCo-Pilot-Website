@@ -207,13 +207,19 @@ class AuthenticityCoPilotNav {
     autoInit() {
         const currentPath = window.location.pathname;
         const { headerNav, footerNav } = this.createNavigation(currentPath);
-        
-        // Insert header navigation
+
+        // Insert header navigation - prefer dedicated div if available
+        const navHeaderDiv = document.getElementById('authenticity-nav-header');
         const body = document.body;
-        if (body) {
+
+        if (navHeaderDiv) {
+            // Use dedicated nav div for reports with explicit nav container
+            navHeaderDiv.innerHTML = headerNav;
+        } else if (body) {
+            // Fallback to body injection for pages without dedicated div
             body.insertAdjacentHTML('afterbegin', headerNav);
         }
-        
+
         // Insert footer navigation
         if (body) {
             body.insertAdjacentHTML('beforeend', footerNav);
