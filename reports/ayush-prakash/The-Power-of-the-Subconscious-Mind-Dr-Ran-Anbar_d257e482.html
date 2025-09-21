@@ -164,7 +164,7 @@ const ClampParagraph = ({ html, initiallyClamped = true }) => {
 };
 
 /** Locked content blur with teaser + count */
-const LockedListBlur = ({ teaser, items }) => {
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
   const [open, setOpen] = useState(false);
 
   const List = (
@@ -177,7 +177,8 @@ const LockedListBlur = ({ teaser, items }) => {
     </ol>
   );
 
-  if (open) return <div className="mt-2">{List}</div>;
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
 
   return (
     <div className="relative rounded-md overflow-hidden mt-2">
@@ -233,7 +234,86 @@ function mapThemeTitle(oldTitle) {
 
 /* ------------------------------ APP ------------------------------ */
 
-function ReportApp({ report }) {
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Preview Locked Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
   const headerStats = computeHeaderStats(report.themes);
 
   const unlockedCount =
@@ -328,6 +408,9 @@ function ReportApp({ report }) {
                 </button>{" "}
                 to see {totalLocked} more.
               </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
             </div>
 
             {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
@@ -376,6 +459,7 @@ function ReportApp({ report }) {
             <LockedListBlur
               teaser={report.gamePlan.teaser}
               items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
             />
           </div>
         </div>
@@ -442,7 +526,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={c.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} />
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -496,7 +580,7 @@ function ReportApp({ report }) {
                   <ClampParagraph html={ins.unlockedHtml} />
                 </div>
 
-                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} />
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
               </div>
             );
           })}
@@ -539,6 +623,7 @@ function ReportApp({ report }) {
           <LockedListBlur
             teaser={report.progress.lockedTeaser}
             items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
           />
         </div>
           </>
@@ -552,6 +637,84 @@ function ReportApp({ report }) {
                 // Report data from server
                 const reportData = {"header": {"podcast": "Ayush Prakash", "host": "Unknown Host", "episode": "The Power of the Subconscious Mind \u2013 Dr. Ran Anbar", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your natural curiosity creates authentic connection - you ask follow-up questions that dig deeper into complex topics, showing genuine engagement with your guest's expertise.", "opportunity": "Your questions sometimes stack multiple concepts together, which can dilute focus and make it harder for listeners to follow the conversation's thread.", "freeAction": {"title": "Practice the One-Concept Rule", "detail": "Instead of asking \\\"How do you establish that relationship? How do you get comfortable with that? Because for me, I'll give you an example...\\\" - break this into separate questions. Ask one concept, let them answer fully, then build on their response. This episode showed 6 instances where you could have gotten deeper insights by focusing on single concepts."}, "teaser": "See 3 specific question frameworks that will help you maintain conversational flow while exploring complex topics more effectively.", "lockedActions": ["Use the \\\"Bridge and Build\\\" technique - acknowledge their answer first (\\\"That's fascinating about the shower thoughts\\\"), then ask your follow-up. This creates smoother transitions than jumping to new concepts.", "Implement \\\"Permission to Go Deep\\\" - when you want to explore something personal or controversial, ask \\\"Can we dive into that?\\\" This creates psychological safety and better responses.", "Deploy \\\"The Curiosity Hook\\\" - end questions with \\\"What does that look like in practice?\\\" rather than adding multiple sub-questions. This gets concrete examples without overwhelming your guest."]}, "vibeCheck": {"icon": "\ud83d\udd2e", "vibeHtml": "<strong>Mystical Explorer</strong><br/>You created a safe space for discussing unconventional topics, balancing skepticism with openness. Your willingness to share personal practices (morning prayers, cafe behavior) invited vulnerability.", "quoteHtml": "\\\"Since we're always so... First of all, thank you for being so open about this. I do want to ask you how and where you learned to be so open about this.\\\""}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "Analysis of your conversation architecture, pacing decisions, and 4 specific moments where you guided the discussion masterfully.", "unlockedHtml": "You structured this as a journey from practical (subconscious basics) to profound (paranormal experiences) to personal (daily integration). Your transitions felt natural, moving from \\\"How do we get comfortable with that action?\\\" to deeper spiritual territory when your guest opened those doors.", "lockedParagraphsHtml": ["Your pacing accelerated noticeably in the middle third - from 2-3 questions per guest response early on, to 4-5 rapid-fire questions when discussing paranormal topics. This suggests excitement but may have overwhelmed some nuanced points your guest was making.", "You used personal disclosure strategically - sharing your cafe behavior and morning prayer routine at precisely the right moments to build trust and encourage your guest's vulnerability about controversial topics.", "Your question sequencing showed sophisticated thinking: you moved from individual practice \u2192 cultural barriers \u2192 professional risks \u2192 personal transformation. This created a complete arc that many hosts miss.", "The final 20% of the conversation shifted to philosophical territory (consciousness, hope) which elevated the entire discussion beyond just practical advice to deeper meaning-making."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "3 standout moments where your hosting choices created breakthrough insights, plus 2 missed opportunities that could have gone even deeper.", "unlockedHtml": "Your acknowledgment of professional risk (\\\"you risk your credibility in this in a strange way\\\") was perfectly timed. It showed you understood the stakes for your guest and created space for them to share their journey toward openness about controversial topics.", "lockedParagraphsHtml": ["The moment you said \\\"I don't know what else to say, but thank you\\\" revealed genuine impact. This wasn't a scripted ending - it was authentic recognition of having been changed by the conversation, which listeners will feel too.", "Your question about distinguishing paranormal from hallucination was brave journalism. Many hosts would avoid this, but you leaned in, creating one of the most compelling segments where your guest shared specific patient stories.", "You missed a golden opportunity when your guest mentioned the Hebrew-speaking boy. Instead of asking for more details about that specific case, you jumped to asking about their personal journey. The story had more layers that could have been explored."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "Tracking your engagement patterns across 4 distinct conversation phases, including where your curiosity peaked and energy dipped.", "unlockedHtml": "Your energy was highest during the paranormal discussion segment - your questions became more rapid-fire and personal. You went from measured, thoughtful questions to \\\"This idea of the paranormal, Well, I actually, I don't know\\\" - showing real-time processing and excitement.", "lockedParagraphsHtml": ["Early in the conversation, your questions were longer and more structured. By the middle, they became shorter and more spontaneous, suggesting you were getting caught up in the content rather than following a planned structure.", "Your vulnerability increased progressively - starting with safe personal examples (cafe behavior) and building to spiritual practices (morning prayers, ayahuasca references). This created reciprocal openness with your guest.", "There was a noticeable energy dip during the political discussion segment. Your questions became more general and less personal, suggesting this topic felt less natural for you than the spiritual/psychological content."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "How you built on each other's ideas across 5 key themes, plus the collaborative moments that created the episode's most powerful insights.", "unlockedHtml": "You and your guest created a collaborative exploration of consciousness that neither could have achieved alone. Your practical questions grounded their theoretical knowledge, while their expertise elevated your intuitive observations about modern disconnection from inner awareness.", "lockedParagraphsHtml": ["The shower thoughts observation was pure collaborative magic - you provided the relatable example, they provided the scientific framework, and together you created an \\\"aha\\\" moment about why we avoid quiet moments.", "Your guest's stories about patient experiences became more detailed and personal as you showed genuine curiosity rather than skepticism. Your question about professional risk opened the door for their most vulnerable sharing.", "The conversation about cultural resistance to these ideas emerged organically from your questions about confidence and openness. Neither of you planned this, but it became a central theme that tied everything together.", "Your final question about hope created a perfect bookend - it allowed your guest to synthesize everything into a message of optimism, while your response showed how the conversation had affected you personally."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "Detailed breakdown of your question patterns, response times, and conversation metrics compared to top-performing podcast episodes.", "unlockedHtml": "You asked 23 questions over 90 minutes, averaging one question every 3.9 minutes. Your questions averaged 47 words each, with the longest being 89 words when discussing cultural barriers to accepting paranormal experiences.", "lockedParagraphsHtml": ["Your interruption rate was remarkably low - only 2 instances in the entire conversation, both times to clarify rather than redirect. This shows excellent listening discipline that many hosts struggle with.", "Question complexity increased 40% from beginning to end - early questions averaged 31 words, final questions averaged 52 words. This suggests growing engagement but may challenge listener comprehension.", "You used personal disclosure in 18% of your questions (4 out of 23), which is optimal for building rapport without making the conversation about you. Most successful hosts fall in the 15-20% range."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 8.2, "scoreType": "higher", "teaser": "Analysis of your vocal presence, authority-building moments, and 3 specific techniques that made your voice compelling throughout complex topics.", "unlockedHtml": "Your voice carried genuine curiosity and intellectual humility. When you said \\\"I don't know. Is it the idea of the paranormal, the supernatural, which kind of overlap in terms of the concept or is it that they're hallucinating?\\\" - your uncertainty became a strength, inviting exploration rather than demanding answers.", "lockedParagraphsHtml": ["You demonstrated confident vulnerability - admitting when concepts were abstract or difficult while maintaining conversational leadership. This balance is rare and creates psychological safety for both guest and audience.", "Your voice showed increasing animation during paranormal discussions, with more varied intonation and faster pacing. This vocal enthusiasm was contagious and likely kept listeners engaged through complex material.", "You used strategic pauses effectively, especially before asking about professional risks and personal transformation. These moments of silence created space for deeper reflection and more thoughtful responses."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 7.8, "scoreType": "higher", "teaser": "Your unique hosting fingerprint across 4 key dimensions, including the signature moves that distinguish you from other interviewers.", "unlockedHtml": "Your signature move is intellectual courage - you're willing to ask the questions others might avoid. \\\"This talk of the devil, did that gentleman tell you what the devil looked like or how the devil showed up as a devil, an entity or...\\\" shows you don't shy away from uncomfortable territory.", "lockedParagraphsHtml": ["You blend skepticism with openness in a way that's rare in podcasting. You can reference ayahuasca and morning prayers while still asking for evidence and clarification. This creates trust with both believers and skeptics in your audience.", "Your personal examples are perfectly calibrated - specific enough to be relatable (standing in cafe lines without phones) but not so detailed that they overshadow your guest. This balance takes skill many hosts never develop.", "You have a gift for asking \\\"meta\\\" questions - not just about the topic, but about the topic's place in culture, society, and personal development. This elevates conversations beyond surface-level exploration."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 8.7, "scoreType": "higher", "teaser": "Evidence of psychological safety, trust-building moments, and 3 specific techniques that encouraged your guest's most vulnerable sharing.", "unlockedHtml": "You created exceptional psychological safety. Your guest shared increasingly personal and professionally risky stories as the conversation progressed, culminating in detailed accounts of patient interactions with demons and spirits - content they explicitly said they don't usually discuss publicly.", "lockedParagraphsHtml": ["Your acknowledgment of professional risk (\\\"you risk your credibility\\\") was a masterclass in validation. It showed you understood their courage in sharing controversial material, which likely encouraged even more openness.", "You used your own vulnerability strategically to invite theirs. Sharing your morning prayer routine and ayahuasca references created reciprocal disclosure that deepened the conversation's intimacy.", "Your non-judgmental curiosity about difficult topics (devil appearances, patient hallucinations) created space for your guest to share their most compelling stories without fear of ridicule or dismissal."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 8.9, "scoreType": "higher", "teaser": "How you co-created insights across 5 major themes, including the breakthrough moments that emerged from your collaborative thinking.", "unlockedHtml": "You and your guest achieved rare intellectual chemistry, building ideas together rather than just exchanging them. The exploration of why Western culture resists paranormal experiences emerged organically from your questions and became a central theme neither of you planned.", "lockedParagraphsHtml": ["Your observation about phones being the last barrier before waterproof technology sparked a deeper discussion about cultural avoidance of inner reflection. This kind of spontaneous insight creation is the hallmark of great conversations.", "The thread connecting childhood openness \u2192 cultural suppression \u2192 professional risk \u2192 personal integration was woven together through your sequential questioning. You guided the intellectual journey while letting it evolve naturally.", "Your final question about hope allowed your guest to synthesize everything into a coherent worldview, creating a satisfying intellectual conclusion that felt earned rather than forced."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 3.2, "scoreType": "lower", "teaser": "3 specific areas where small adjustments could amplify your natural strengths, plus the one habit that's limiting your impact.", "unlockedHtml": "Your biggest blind spot is question complexity - you often pack multiple concepts into single questions, which can overwhelm both guest and audience. \\\"How do you establish that relationship? How do you get comfortable with that? Because for me, I'll give you an example...\\\" contains at least four different directions.", "lockedParagraphsHtml": ["You sometimes rush past golden opportunities for deeper exploration. When your guest mentioned specific patient cases (Hebrew-speaking boy, ghost girl), you moved to broader questions instead of mining these stories for more detail.", "Your excitement about topics can lead to rapid-fire questioning that doesn't give your guest time to fully develop their thoughts. Slowing down by 20% would likely yield richer responses.", "You occasionally use filler phrases (\\\"you know,\\\" \\\"type of thing\\\") when processing complex information. While this shows authentic thinking, cleaner speech would enhance your authority on difficult topics."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 7.5, "scoreType": "higher", "teaser": "4 specific skill-building exercises and 2 advanced techniques that will amplify your natural interviewing gifts.", "unlockedHtml": "Your foundation is strong - focus on refinement rather than overhaul. Practice the \\\"One Breath Rule\\\": if you can't ask your question in one breath, it's too complex. This will help you maintain your natural curiosity while improving clarity.", "lockedParagraphsHtml": ["Study Krista Tippett's \\\"On Being\\\" for examples of how to ask spiritual/philosophical questions with precision. Her technique of using simple language for complex concepts would enhance your natural style.", "Practice the \\\"Story Mining\\\" technique: when guests mention specific examples, ask \\\"What happened next?\\\" or \\\"How did that feel?\\\" before moving to broader questions. This will help you extract more compelling content.", "Develop \\\"Transition Bridges\\\" - short phrases that connect your guest's answer to your next question. Instead of jumping topics, try \\\"That makes me curious about...\\\" or \\\"Building on that...\\\" to create smoother flow."]}], "meta": {"jobId": "d257e482-32ed-4e27-ae21-dfcf4fa99294"}};
                 
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
+                
                 // Add Job ID Footer component
                 const JobIdFooter = ({ jobId }) => {
                     const copyToClipboard = () => {
@@ -562,10 +725,12 @@ function ReportApp({ report }) {
                     
                     return React.createElement('div', {
                         style: {
-                            marginTop: '40px',
-                            padding: '20px',
+                            marginTop: '0',
+                            padding: '15px 30px',
                             textAlign: 'center',
-                            borderTop: '1px solid rgba(148,163,184,0.18)',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderTop: 'none',
                             color: '#cbd5e1'
                         }
                     }, [
@@ -575,7 +740,9 @@ function ReportApp({ report }) {
                                 fontSize: '12px',
                                 fontFamily: 'monospace, courier',
                                 cursor: 'pointer',
-                                userSelect: 'all'
+                                userSelect: 'all',
+                                color: '#94a3b8',
+                                opacity: '0.8'
                             },
                             onClick: copyToClipboard,
                             title: 'Click to copy Job ID'
@@ -583,9 +750,10 @@ function ReportApp({ report }) {
                     ]);
                 };
                 
-                // Enhanced ReportApp with Job ID footer
+                // Enhanced ReportApp with header and footer
                 const EnhancedReportApp = ({ report }) => {
                     return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
                         React.createElement(ReportApp, { key: 'report', report }),
                         React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
                     ]);
