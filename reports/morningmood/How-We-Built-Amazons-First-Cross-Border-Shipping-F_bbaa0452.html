@@ -307,9 +307,12 @@ function EnhancedReportApp({ report }) {
     setIsContentLocked(!isContentLocked);
   };
 
-  // Pass toggle state and handler to ReportApp
+  // Pass toggle state and handler to ReportApp, and include JobIdFooter
   return (
-    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+    <div>
+      <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+      <JobIdFooter jobId={report.meta?.jobId || 'Unknown'} />
+    </div>
   );
 }
 
