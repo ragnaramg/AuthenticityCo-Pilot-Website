@@ -47,155 +47,248 @@
         .feedback-drills { list-style: none; padding: 0; margin: 8px 0 0 0; }
         .feedback-drills li { padding: 4px 0; color: #555; }
         .feedback-drills li:before { content: '🎯 '; }
+
+        /* Vibe Tag Styles */
+        .vibe-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        .vibe-tag .vibe-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .vibe-tag .vibe-item:not(:last-child):after {
+            content: '•';
+            margin-left: 8px;
+            opacity: 0.6;
+        }
+
+        /* Next Episode Checklist Styles */
+        .next-episode-checklist {
+            background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
+            border: 2px solid #ff9800;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .next-episode-checklist h3 {
+            margin-top: 0;
+            color: #e65100;
+            font-size: 18px;
+        }
+        .checklist-items {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+        .checklist-items li {
+            padding: 8px 0;
+            padding-left: 28px;
+            position: relative;
+            line-height: 1.5;
+        }
+        .checklist-items li:before {
+            content: '☐';
+            position: absolute;
+            left: 0;
+            font-size: 18px;
+            color: #ff9800;
+        }
+
+        /* Engagement Placeholder Styles */
+        .engagement-placeholder {
+            background: rgba(255,255,255,0.9);
+            border: 1px dashed #999;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #666;
+        }
+        .engagement-placeholder-title {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 4px;
+            font-size: 12px;
+        }
+        .engagement-placeholder-note {
+            font-style: italic;
+            font-size: 12px;
+        }
+
+        /* Rich Episode Preview Styles */
+        .episode-list {
+            list-style: none;
+            padding: 0;
+        }
+        .episode-item {
+            background: #fff;
+            border: 1px solid #dee2e6;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 6px;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .episode-item:hover {
+            background: #f8f9fa;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .episode-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: #007bff;
+            text-decoration: none;
+            display: block;
+        }
+        .episode-title:hover {
+            text-decoration: underline;
+        }
+        .episode-scores {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+        .episode-score-badge {
+            background: #e7f3ff;
+            border: 1px solid #007bff;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+            color: #0056b3;
+        }
+        .episode-highlight {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+            margin-top: 4px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Transformational Journeys</h1>
+        
+        <div class="vibe-tag">
+            <span class="vibe-item">🧘 Grounded</span><span class="vibe-item">💭 Reflective</span><span class="vibe-item">🎯 Coaching</span>
+        </div>
+        
 
         <div class="header-info">
             <p><strong>Channel ID:</strong> transformational-journeys</p>
-            <p><strong>Episodes Analyzed:</strong> 3</p>
-            <p><strong>Report Generated:</strong> 2025-10-03 08:35:00</p>
+            <p><strong>Episodes Analyzed:</strong> 7</p>
+            <p><strong>Report Generated:</strong> 2025-10-03 12:55:39</p>
         </div>
+
+        
+        <div class="next-episode-checklist">
+            <h3>📋 Next Episode Checklist</h3>
+            <ul class="checklist-items">
+                <li>Review previous episode feedback before recording</li><li>Set intention for one specific improvement this episode</li><li>Track one measurable metric during conversation</li>
+            </ul>
+        </div>
+        
 
         <h2>✅ Overall Strengths</h2>
         <div class="strengths-section">
-            <div class='strengths-grid'>
-        <div class="strength-card">
-            <div class="strength-icon">⭐</div>
-            <div class="strength-title">The Ideas You Cooked Up Together</div>
-            <div class="strength-score">8.7/10</div>
-
-            <div class="feedback-headline">Your authentic presence sparks genuine dialogue.</div>
-
-            <div class="feedback-evidence">
-                <div class="feedback-evidence-title">Evidence:</div>
-                <span class='feedback-quantified'>↑ from 7.9 → 8.7 (+10%)</span><br>Appears consistently in 2/3 episodes (67%)
-            </div>
-
-            <div class="feedback-why-matters">
-                <strong>Why it matters:</strong> Authentic dialogue creates memorable moments that listeners cite as life-changing insights.
-            </div>
-
-            <div class="feedback-action">
-                <div class="feedback-action-title">Keep Doing:</div>
-                • Keep authenticity score ≥8.0<br>• Maintain natural conversation flow<ul class='feedback-drills'><li>Authenticity Anchor: Share one personal connection to each major topic</li><li>Flow Check: Notice and acknowledge when conversations feel forced vs natural</li></ul>
-            </div>
-        </div>
-        
-        <div class="strength-card">
-            <div class="strength-icon">⭐</div>
-            <div class="strength-title">How You Made Them Feel</div>
-            <div class="strength-score">8.6/10</div>
-
-            <div class="feedback-headline">You're creating exceptional psychological safety for your guests.</div>
-
-            <div class="feedback-evidence">
-                <div class="feedback-evidence-title">Evidence:</div>
-                <span class='feedback-quantified'>↑ from 7.8 → 8.6 (+10%)</span><br>Appears consistently in 3/3 episodes (100%)
-            </div>
-
-            <div class="feedback-why-matters">
-                <strong>Why it matters:</strong> Psychological safety keeps guests in flow state and encourages listeners to stay engaged throughout the conversation.
-            </div>
-
-            <div class="feedback-action">
-                <div class="feedback-action-title">Keep Doing:</div>
-                • Maintain 95%+ psychological safety across episodes<br>• Continue 2-second pause technique<ul class='feedback-drills'><li>Safety Check Drill: Ask "How comfortable do you feel sharing this?" when exploring sensitive topics</li><li>Energy Matching: Mirror guest's emotional tone in first 30 seconds</li></ul>
-            </div>
-        </div>
-        
-        <div class="strength-card">
-            <div class="strength-icon">⭐</div>
-            <div class="strength-title">How Your Voice Carried the Room</div>
-            <div class="strength-score">8.2/10</div>
-
-            <div class="feedback-headline">Your intellectual curiosity drives meaningful conversations.</div>
-
-            <div class="feedback-evidence">
-                <div class="feedback-evidence-title">Evidence:</div>
-                <span class='feedback-quantified'>↑ from 7.4 → 8.2 (+11%)</span><br>Appears consistently in 3/3 episodes (100%)
-            </div>
-
-            <div class="feedback-why-matters">
-                <strong>Why it matters:</strong> Genuine curiosity models deep thinking and encourages listeners to reflect more deeply on their own lives.
-            </div>
-
-            <div class="feedback-action">
-                <div class="feedback-action-title">Keep Doing:</div>
-                • Maintain follow-up ratio ≥40%<br>• Keep questions to one breath (8-12 words)<ul class='feedback-drills'><li>Curiosity Ladder: Practice moving from Clarify → Contrast → Consequence</li><li>One-Breath Questions: Practice phrasing complex questions in single breath</li></ul>
-            </div>
-        </div>
-        </div>
+            <p>No consistent strengths identified yet</p>
         </div>
 
         <h2>🎯 Growth Opportunities</h2>
         <div class="opportunities-section">
-            <div class='opportunities-grid'>
-            <div class="opportunity-card">
-                <div class="opportunity-icon">🎯</div>
-                <div class="opportunity-title">Content Accessibility & Clarity</div>
-                <div class="opportunity-score">4.4/10</div>
-                <div class="opportunity-note">Across all episodes, focus on making complex concepts more accessible through simpler language, clearer examples, and step-by-step explanations.</div>
-            </div>
-            </div>
+            <p>No specific growth opportunities identified - all areas performing well!</p>
         </div>
 
         <h2>💡 Action Plan</h2>
         <div class="recommendations-section">
-            <h3>✅ Keep doing</h3><ul><li>Continue creating psychological safety where guests feel comfortable sharing vulnerable insights - this remains your strongest skill.</li><li>Maintain your authentic presence that encourages genuine dialogue and meaningful connections.</li><li>Keep demonstrating genuine intellectual curiosity that goes beyond surface-level questions.</li><li>Preserve your natural ability to guide conversations to meaningful philosophical depth.</li></ul><h3>🎯 Quick Wins</h3><ul><li>Focus on developing your questioning technique - this pattern appeared across 6 episodes. Practice transitioning from surface-level to deeper inquiry through follow-up questions.</li><li>Continue strengthening your ability to guide conversations to meaningful depth - evident across 8 episodes. Consider developing specific techniques for philosophical exploration.</li><li>Build on your natural ability to create psychological safety - shown across 5 episodes. Consider specific methods for establishing rapid rapport with diverse guests.</li></ul><h3>🚀 Long-term Improvements</h3><ul><li>Based on 3 episodes analyzed, focus on scaling your natural coaching abilities. Your consistency in creating psychological safety suggests readiness for advanced facilitation training.</li><li>Consider developing a signature coaching methodology that leverages your philosophical approach. Your ability to find deeper meaning in conversations could become a distinctive hosting framework.</li></ul>
+            <p>No recommendations available</p>
         </div>
 
         <h2>📊 Detailed Metrics</h2>
         <div class="metrics-section">
             
                 <div class="metric-card">
-                    <div class="metric-name">How Your Voice Carried The Room</div>
-                    <div class="metric-value">8.20</div>
-                    <div>Consistent across episodes (8.2 to 8.2) | n = 3</div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-name">What Makes You You</div>
-                    <div class="metric-value">7.80</div>
-                    <div>Consistent across episodes (7.8 to 7.9) | n = 3</div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-name">How You Made Them Feel</div>
-                    <div class="metric-value">8.60</div>
-                    <div>Consistent across episodes (8.5 to 8.7) | n = 3</div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-name">The Ideas You Cooked Up Together</div>
-                    <div class="metric-value">8.70</div>
-                    <div>Consistent across episodes (8.4 to 9.1) | n = 3</div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-name">Places To Grow Without Losing Yourself</div>
-                    <div class="metric-value">4.40</div>
-                    <div>Varies significantly between episodes (3.2 to 6.8) | n = 3</div>
-                </div>
-                
-                <div class="metric-card">
-                    <div class="metric-name">Extra Tools For Your Growth</div>
+                    <div class="metric-name">Authenticity Score</div>
                     <div class="metric-value">7.50</div>
-                    <div>Consistent across episodes (7.5 to 7.6) | n = 3</div>
+                    <div>Moderately variable between episodes  | n = 7</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-name">Facilitation Quality</div>
+                    <div class="metric-value">7.80</div>
+                    <div>Moderately variable between episodes  | n = 7</div>
+                </div>
+                
+                <div class="metric-card">
+                    <div class="metric-name">Emotional Intelligence</div>
+                    <div class="metric-value">8.20</div>
+                    <div>Moderately variable between episodes  | n = 7</div>
                 </div>
                 
         </div>
 
         <h2>📈 Trends Analysis</h2>
         <div class="trends-section">
-            <p><strong>Overall Trajectory:</strong> <span class='trend-consistent_coaching_excellence'>Consistent Coaching Excellence</span></p>
+            <p>No trend data available</p>
         </div>
 
         <h2>📚 Episode Reports</h2>
         <div class="episode-directory">
-            <p>No published reports available</p>
+            <ul class='episode-list'>
+            <li class='episode-item'>
+                <a href='Jamie-Meyer-on-How-to-Stop-Performing-and-Reclaim-_430a4daa.html' class='episode-title'>Jamie Meyer on How to Stop Performing and Reclaim Your Authentic Identity</a>
+                
+                
+            </li>
+            
+            <li class='episode-item'>
+                <a href='Kimberly-Reuter-Choosing-Freedom-Changed-Everythin_1990b5c8.html' class='episode-title'>Kimberly Reuter: Choosing Freedom Changed Everything for Her</a>
+                
+                
+            </li>
+            
+            <li class='episode-item'>
+                <a href='The-Truth-About-Authentic-Living-No-One-Tells-You_fc34a310.html' class='episode-title'>The Truth About Authentic Living No One Tells You!</a>
+                
+                
+            </li>
+            
+            <li class='episode-item'>
+                <a href='How-Self-Sabotage-Nearly-Cost-Him-Everything_002868f5.html' class='episode-title'>How Self-Sabotage Nearly Cost Him Everything</a>
+                
+                
+            </li>
+            
+            <li class='episode-item'>
+                <a href='How-Did-She-Go-From-Baseball-to-the-Cockpit_4536ff1e.html' class='episode-title'>How Did She Go From Baseball to the Cockpit?</a>
+                
+                
+            </li>
+            
+            <li class='episode-item'>
+                <a href='AI-Rewrote-Her-Breakup-It-Changed-Everything_cc40b6a6.html' class='episode-title'>AI Rewrote Her Breakup It Changed Everything!</a>
+                
+                
+            </li>
+            
+            <li class='episode-item'>
+                <a href='His-Generation-is-Drowning-Hes-Trying-to-Save-it_06783913.html' class='episode-title'>His Generation is Drowning. He's Trying to Save it.</a>
+                
+                
+            </li>
+            </ul>
         </div>
     </div>
 </body>
