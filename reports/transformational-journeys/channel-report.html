@@ -175,7 +175,21 @@
             font-style: italic;
             margin-top: 4px;
         }
+
+        /* Chart Container Styles */
+        .chart-container {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .chart-canvas {
+            max-height: 400px;
+            width: 100%;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <div class="container">
@@ -189,7 +203,7 @@
         <div class="header-info">
             <p><strong>Channel ID:</strong> transformational-journeys</p>
             <p><strong>Episodes Analyzed:</strong> 13</p>
-            <p><strong>Report Generated:</strong> 2025-10-04 08:12:39</p>
+            <p><strong>Report Generated:</strong> 2025-10-04 09:03:01</p>
         </div>
 
         
@@ -199,6 +213,133 @@
                 <li>Practice 3-layer follow-up questioning on key topics</li><li>Review previous episode feedback before recording</li><li>Set intention for one specific improvement this episode</li>
             </ul>
         </div>
+        
+
+        <h2>📈 Performance Trends</h2>
+        
+        <div class="chart-container">
+            <canvas id="longitudinalChart" class="chart-canvas"></canvas>
+        </div>
+        <script>
+            const ctx = document.getElementById('longitudinalChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ["His Generation is Drowning. He's Tryi...", 'AI Rewrote Her Breakup It Changed Eve...', 'How Did She Go From Baseball to the C...', 'How Self-Sabotage Nearly Cost Him Eve...', 'The Truth About Authentic Living No O...', 'Kimberly Reuter: Choosing Freedom Cha...', 'Jamie Meyer on How to Stop Performing...'],
+                    datasets: [
+                        {
+                label: 'How Your Voice Carried the Room',
+                data: [8.2, 8.2, 8.2, 7.2, 8.2, 8.2, 8.2],
+                borderColor: '#007bff',
+                backgroundColor: '#007bff20',
+                borderWidth: 2,
+                fill: false,
+                tension: 0.1
+            },
+                {
+                label: 'What Makes You, You',
+                data: [7.8, 7.8, 7.8, 8.1, 7.9, 7.8, 7.8],
+                borderColor: '#fd7e14',
+                backgroundColor: '#fd7e1420',
+                borderWidth: 2,
+                fill: false,
+                tension: 0.1
+            },
+                {
+                label: 'How You Made Them Feel',
+                data: [8.5, 9.1, 9.1, 8.7, 8.7, 8.7, 8.5],
+                borderColor: '#28a745',
+                backgroundColor: '#28a74520',
+                borderWidth: 2,
+                fill: false,
+                tension: 0.1
+            },
+                {
+                label: 'The Ideas You Cooked Up Together',
+                data: [9.1, 7.5, 8.5, 7.8, 8.4, 8.5, 9.1],
+                borderColor: '#6f42c1',
+                backgroundColor: '#6f42c120',
+                borderWidth: 2,
+                fill: false,
+                tension: 0.1
+            },
+                {
+                label: 'Content Accessibility & Clarity',
+                data: [6.8, 6.8, 6.8, 6.4, 6.8, 3.2, 3.2],
+                borderColor: '#dc3545',
+                backgroundColor: '#dc354520',
+                borderWidth: 2,
+                fill: false,
+                tension: 0.1
+            },
+                {
+                label: 'Extra Tools for Your Growth',
+                data: [7.5, 8.0, 7.3, 7.5, 7.6, 7.5, 7.5],
+                borderColor: '#17a2b8',
+                backgroundColor: '#17a2b820',
+                borderWidth: 2,
+                fill: false,
+                tension: 0.1
+            }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 2.5,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Theme Performance Across Episodes',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        legend: {
+                            display: true,
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: {
+                                stepSize: 1
+                            },
+                            title: {
+                                display: true,
+                                text: 'Score (out of 10)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45
+                            }
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false
+                    }
+                }
+            });
+        </script>
         
 
         <h2>✅ Overall Strengths</h2>
