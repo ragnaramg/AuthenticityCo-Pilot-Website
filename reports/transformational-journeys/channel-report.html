@@ -282,8 +282,8 @@
             padding: 0;
         }
         .episode-item {
-            background: #fff;
-            border: 1px solid #dee2e6;
+            background: linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
+            border: 1px solid rgba(148,163,184,0.14);
             padding: 16px;
             margin: 12px 0;
             border-radius: 6px;
@@ -291,20 +291,23 @@
             display: flex;
             flex-direction: column;
             gap: 8px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 24px rgba(2,6,23,0.45);
         }
         .episode-item:hover {
-            background: #f8f9fa;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: linear-gradient(180deg, rgba(30,41,59,0.98) 0%, rgba(15,23,42,0.98) 100%);
+            box-shadow: 0 12px 28px rgba(2,6,23,0.55);
         }
         .episode-title {
             font-weight: 600;
             font-size: 16px;
-            color: #007bff;
+            color: #3B82F6;
             text-decoration: none;
             display: block;
         }
         .episode-title:hover {
             text-decoration: underline;
+            color: #60A5FA;
         }
         .episode-scores {
             display: flex;
@@ -313,12 +316,12 @@
             margin-top: 4px;
         }
         .episode-score-badge {
-            background: #e7f3ff;
-            border: 1px solid #007bff;
+            background: rgba(59,130,246,0.2);
+            border: 1px solid rgba(59,130,246,0.4);
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 13px;
-            color: #0056b3;
+            color: #60A5FA;
         }
         .episode-highlight {
             font-size: 14px;
@@ -329,11 +332,13 @@
 
         /* Chart Container Styles */
         .chart-container {
-            background: white;
+            background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%);
+            border: 1px solid rgba(148,163,184,0.18);
             padding: 20px;
             margin: 20px 0;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(2,6,23,0.5);
+            backdrop-filter: blur(12px);
         }
         .chart-canvas {
             max-height: 400px;
@@ -348,14 +353,18 @@
             margin: 20px 0;
         }
         .action-plan-box {
-            background: #f8f9fa;
+            background: linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
+            border: 1px solid rgba(148,163,184,0.14);
             padding: 20px;
-            border-radius: 8px;
-            border-left: 4px solid #007bff;
+            border-radius: 12px;
+            border-left: 4px solid #3B82F6;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 24px rgba(2,6,23,0.45);
         }
         .action-plan-box h3 {
             margin-top: 0;
-            color: #333;
+            color: #e2e8f0;
+            font-weight: 700;
         }
         .action-plan-box ul {
             list-style: none;
@@ -364,11 +373,11 @@
         }
         .action-plan-box li {
             padding: 8px 0;
-            color: #555;
+            color: #cbd5e1;
         }
         .action-plan-box li:before {
             content: '• ';
-            color: #007bff;
+            color: #3B82F6;
             font-weight: bold;
         }
 
@@ -395,15 +404,18 @@
 
         /* Teaser Next Moves */
         .teaser-section {
-            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-            border-left: 4px solid #28a745;
+            background: linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
+            border: 1px solid rgba(148,163,184,0.14);
+            border-left: 4px solid #22C55E;
             padding: 20px;
             margin: 20px 0;
-            border-radius: 8px;
+            border-radius: 12px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 24px rgba(2,6,23,0.45);
         }
         .teaser-intro {
             font-weight: 600;
-            color: #333;
+            color: #e2e8f0;
             margin-bottom: 12px;
         }
         .teaser-list {
@@ -413,24 +425,27 @@
         }
         .teaser-list li {
             padding: 8px 0;
-            color: #555;
+            color: #cbd5e1;
         }
         .teaser-list li:before {
             content: '→ ';
-            color: #28a745;
+            color: #22C55E;
             font-weight: bold;
         }
 
         /* Playbook Section */
         .playbook-section {
-            background: #f8f9fa;
+            background: linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
+            border: 1px solid rgba(148,163,184,0.14);
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 12px;
             margin: 20px 0;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 24px rgba(2,6,23,0.45);
         }
         .playbook-section p {
             line-height: 1.6;
-            color: #444;
+            color: #cbd5e1;
         }
         .playbook-section ul {
             margin-top: 15px;
@@ -465,23 +480,30 @@
             margin: 20px 0;
         }
         .episode-preview-card {
-            background: white;
-            border: 1px solid #dee2e6;
-            border-radius: 8px;
+            background: linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
+            border: 1px solid rgba(148,163,184,0.14);
+            border-radius: 12px;
             padding: 15px;
             transition: all 0.2s;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 24px rgba(2,6,23,0.45);
         }
         .episode-preview-card:hover {
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 12px 28px rgba(2,6,23,0.55);
             transform: translateY(-2px);
+            background: linear-gradient(180deg, rgba(30,41,59,0.98) 0%, rgba(15,23,42,0.98) 100%);
         }
         .episode-preview-card h4 {
             margin: 0 0 10px 0;
             font-size: 14px;
         }
         .episode-preview-card a {
-            color: #007bff;
+            color: #3B82F6;
             text-decoration: none;
+            font-weight: 600;
+        }
+        .episode-preview-card a:hover {
+            color: #60A5FA;
         }
         .episode-scores {
             display: flex;
@@ -490,7 +512,9 @@
         }
         .episode-score-badge {
             font-size: 11px;
-            background: #e9ecef;
+            background: rgba(59,130,246,0.2);
+            border: 1px solid rgba(59,130,246,0.4);
+            color: #60A5FA;
             padding: 4px 8px;
             border-radius: 4px;
             display: inline-block;
@@ -547,7 +571,7 @@
         <div class="header-info">
             <p><strong>Channel ID:</strong> transformational-journeys</p>
             <p><strong>Episodes Analyzed:</strong> 13</p>
-            <p><strong>Report Generated:</strong> 2025-10-05 09:25:48</p>
+            <p><strong>Report Generated:</strong> 2025-10-05 09:38:09</p>
         </div>
 
         <h2>📊 Performance Overview</h2>
@@ -1263,7 +1287,7 @@
         </div>
 
         <footer>
-            <p>Generated on October 05, 2025 at 09:25 AM</p>
+            <p>Generated on October 05, 2025 at 09:38 AM</p>
             <nav>
                 <a href="/">Home</a>
                 <a href="/channels">All Channels</a>
