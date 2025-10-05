@@ -188,6 +188,38 @@
             max-height: 400px;
             width: 100%;
         }
+
+        /* Action Plan 3-Column Layout */
+        .action-plan-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .action-plan-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        .action-plan-box h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .action-plan-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+        .action-plan-box li {
+            padding: 8px 0;
+            color: #555;
+        }
+        .action-plan-box li:before {
+            content: '• ';
+            color: #007bff;
+            font-weight: bold;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
@@ -203,7 +235,7 @@
         <div class="header-info">
             <p><strong>Channel ID:</strong> transformational-journeys</p>
             <p><strong>Episodes Analyzed:</strong> 13</p>
-            <p><strong>Report Generated:</strong> 2025-10-04 09:03:01</p>
+            <p><strong>Report Generated:</strong> 2025-10-04 15:54:58</p>
         </div>
 
         
@@ -215,82 +247,44 @@
         </div>
         
 
+        <h2>💡 Action Plan</h2>
+        <div class="recommendations-section">
+            <div class="action-plan-grid"><div class="action-plan-box"><h3>✅ Keep Doing</h3><ul><li>Continue creating psychological safety where guests feel comfortable sharing vulnerable insights - this remains your strongest skill.</li><li>Maintain your authentic presence that encourages genuine dialogue and meaningful connections.</li><li>Keep demonstrating genuine intellectual curiosity that goes beyond surface-level questions.</li><li>Preserve your natural ability to guide conversations to meaningful philosophical depth.</li></ul></div><div class="action-plan-box"><h3>🎯 Quick Wins</h3><ul><li>Practice one-breath questions in your next episode (ask, then pause)</li><li>Use 'define-then-dive' structure: explain term, then explore depth</li><li>Review top-performing episode and identify one technique to replicate</li></ul></div><div class="action-plan-box"><h3>🔨 Long-term Improvements</h3><ul><li>Develop a content simplification system: create analogies library for complex topics</li><li>Build audience jargon glossary: maintain definitions for recurring technical terms</li></ul></div></div>
+        </div>
+
         <h2>📈 Performance Trends</h2>
         
         <div class="chart-container">
-            <canvas id="longitudinalChart" class="chart-canvas"></canvas>
+            <canvas id="chart_voice" class="chart-canvas"></canvas>
         </div>
         <script>
-            const ctx = document.getElementById('longitudinalChart').getContext('2d');
-            new Chart(ctx, {
+            const ctx_voice = document.getElementById('chart_voice').getContext('2d');
+            new Chart(ctx_voice, {
                 type: 'line',
                 data: {
                     labels: ["His Generation is Drowning. He's Tryi...", 'AI Rewrote Her Breakup It Changed Eve...', 'How Did She Go From Baseball to the C...', 'How Self-Sabotage Nearly Cost Him Eve...', 'The Truth About Authentic Living No O...', 'Kimberly Reuter: Choosing Freedom Cha...', 'Jamie Meyer on How to Stop Performing...'],
                     datasets: [
                         {
-                label: 'How Your Voice Carried the Room',
-                data: [8.2, 8.2, 8.2, 7.2, 8.2, 8.2, 8.2],
-                borderColor: '#007bff',
-                backgroundColor: '#007bff20',
-                borderWidth: 2,
-                fill: false,
-                tension: 0.1
-            },
-                {
-                label: 'What Makes You, You',
-                data: [7.8, 7.8, 7.8, 8.1, 7.9, 7.8, 7.8],
-                borderColor: '#fd7e14',
-                backgroundColor: '#fd7e1420',
-                borderWidth: 2,
-                fill: false,
-                tension: 0.1
-            },
-                {
-                label: 'How You Made Them Feel',
-                data: [8.5, 9.1, 9.1, 8.7, 8.7, 8.7, 8.5],
-                borderColor: '#28a745',
-                backgroundColor: '#28a74520',
-                borderWidth: 2,
-                fill: false,
-                tension: 0.1
-            },
-                {
-                label: 'The Ideas You Cooked Up Together',
-                data: [9.1, 7.5, 8.5, 7.8, 8.4, 8.5, 9.1],
-                borderColor: '#6f42c1',
-                backgroundColor: '#6f42c120',
-                borderWidth: 2,
-                fill: false,
-                tension: 0.1
-            },
-                {
-                label: 'Content Accessibility & Clarity',
-                data: [6.8, 6.8, 6.8, 6.4, 6.8, 3.2, 3.2],
-                borderColor: '#dc3545',
-                backgroundColor: '#dc354520',
-                borderWidth: 2,
-                fill: false,
-                tension: 0.1
-            },
-                {
-                label: 'Extra Tools for Your Growth',
-                data: [7.5, 8.0, 7.3, 7.5, 7.6, 7.5, 7.5],
-                borderColor: '#17a2b8',
-                backgroundColor: '#17a2b820',
-                borderWidth: 2,
-                fill: false,
-                tension: 0.1
-            }
+                            label: 'How Your Voice Carried the Room',
+                            data: [8.2, 8.2, 8.2, 7.2, 8.2, 8.2, 8.2],
+                            borderColor: '#007bff',
+                            backgroundColor: '#007bff20',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.1,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }
                     ]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: true,
-                    aspectRatio: 2.5,
+                    aspectRatio: 3,
                     plugins: {
                         title: {
                             display: true,
-                            text: 'Theme Performance Across Episodes',
+                            text: 'How Your Voice Carried the Room',
                             font: {
                                 size: 16,
                                 weight: 'bold'
@@ -300,17 +294,13 @@
                             mode: 'index',
                             intersect: false,
                             callbacks: {
-                                title: function(context) {
-                                    return context[0].label;
-                                },
                                 label: function(context) {
-                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '/10';
+                                    return context.parsed.y.toFixed(1) + '/10';
                                 }
                             }
                         },
                         legend: {
-                            display: true,
-                            position: 'bottom'
+                            display: false
                         }
                     },
                     scales: {
@@ -322,25 +312,327 @@
                             },
                             title: {
                                 display: true,
-                                text: 'Score (out of 10)'
+                                text: 'Score'
                             }
                         },
                         x: {
                             ticks: {
                                 maxRotation: 45,
-                                minRotation: 45
+                                minRotation: 45,
+                                font: {
+                                    size: 11
+                                }
                             }
                         }
-                    },
-                    interaction: {
-                        mode: 'nearest',
-                        axis: 'x',
-                        intersect: false
                     }
                 }
             });
         </script>
-        
+            
+
+        <div class="chart-container">
+            <canvas id="chart_style" class="chart-canvas"></canvas>
+        </div>
+        <script>
+            const ctx_style = document.getElementById('chart_style').getContext('2d');
+            new Chart(ctx_style, {
+                type: 'line',
+                data: {
+                    labels: ["His Generation is Drowning. He's Tryi...", 'AI Rewrote Her Breakup It Changed Eve...', 'How Did She Go From Baseball to the C...', 'How Self-Sabotage Nearly Cost Him Eve...', 'The Truth About Authentic Living No O...', 'Kimberly Reuter: Choosing Freedom Cha...', 'Jamie Meyer on How to Stop Performing...'],
+                    datasets: [
+                        {
+                            label: 'What Makes You, You',
+                            data: [7.8, 7.8, 7.8, 8.1, 7.9, 7.8, 7.8],
+                            borderColor: '#fd7e14',
+                            backgroundColor: '#fd7e1420',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.1,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 3,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'What Makes You, You',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: {
+                                stepSize: 1
+                            },
+                            title: {
+                                display: true,
+                                text: 'Score'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+            
+
+        <div class="chart-container">
+            <canvas id="chart_guest" class="chart-canvas"></canvas>
+        </div>
+        <script>
+            const ctx_guest = document.getElementById('chart_guest').getContext('2d');
+            new Chart(ctx_guest, {
+                type: 'line',
+                data: {
+                    labels: ["His Generation is Drowning. He's Tryi...", 'AI Rewrote Her Breakup It Changed Eve...', 'How Did She Go From Baseball to the C...', 'How Self-Sabotage Nearly Cost Him Eve...', 'The Truth About Authentic Living No O...', 'Kimberly Reuter: Choosing Freedom Cha...', 'Jamie Meyer on How to Stop Performing...'],
+                    datasets: [
+                        {
+                            label: 'How You Made Them Feel',
+                            data: [8.5, 9.1, 9.1, 8.7, 8.7, 8.7, 8.5],
+                            borderColor: '#28a745',
+                            backgroundColor: '#28a74520',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.1,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 3,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'How You Made Them Feel',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: {
+                                stepSize: 1
+                            },
+                            title: {
+                                display: true,
+                                text: 'Score'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+            
+
+        <div class="chart-container">
+            <canvas id="chart_intelchem" class="chart-canvas"></canvas>
+        </div>
+        <script>
+            const ctx_intelchem = document.getElementById('chart_intelchem').getContext('2d');
+            new Chart(ctx_intelchem, {
+                type: 'line',
+                data: {
+                    labels: ["His Generation is Drowning. He's Tryi...", 'AI Rewrote Her Breakup It Changed Eve...', 'How Did She Go From Baseball to the C...', 'How Self-Sabotage Nearly Cost Him Eve...', 'The Truth About Authentic Living No O...', 'Kimberly Reuter: Choosing Freedom Cha...', 'Jamie Meyer on How to Stop Performing...'],
+                    datasets: [
+                        {
+                            label: 'The Ideas You Cooked Up Together',
+                            data: [9.1, 7.5, 8.5, 7.8, 8.4, 8.5, 9.1],
+                            borderColor: '#6f42c1',
+                            backgroundColor: '#6f42c120',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.1,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 3,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'The Ideas You Cooked Up Together',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: {
+                                stepSize: 1
+                            },
+                            title: {
+                                display: true,
+                                text: 'Score'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+            
+
+        <div class="chart-container">
+            <canvas id="chart_blind" class="chart-canvas"></canvas>
+        </div>
+        <script>
+            const ctx_blind = document.getElementById('chart_blind').getContext('2d');
+            new Chart(ctx_blind, {
+                type: 'line',
+                data: {
+                    labels: ["His Generation is Drowning. He's Tryi...", 'AI Rewrote Her Breakup It Changed Eve...', 'How Did She Go From Baseball to the C...', 'How Self-Sabotage Nearly Cost Him Eve...', 'The Truth About Authentic Living No O...', 'Kimberly Reuter: Choosing Freedom Cha...', 'Jamie Meyer on How to Stop Performing...'],
+                    datasets: [
+                        {
+                            label: 'Content Accessibility & Clarity',
+                            data: [6.8, 6.8, 6.8, 6.4, 6.8, 3.2, 3.2],
+                            borderColor: '#dc3545',
+                            backgroundColor: '#dc354520',
+                            borderWidth: 3,
+                            fill: false,
+                            tension: 0.1,
+                            pointRadius: 4,
+                            pointHoverRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 3,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Content Accessibility & Clarity',
+                            font: {
+                                size: 16,
+                                weight: 'bold'
+                            }
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: {
+                                stepSize: 1
+                            },
+                            title: {
+                                display: true,
+                                text: 'Score'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+            
 
         <h2>✅ Overall Strengths</h2>
         <div class="strengths-section">
@@ -458,11 +750,6 @@
             </div>
         </div>
         </div>
-        </div>
-
-        <h2>💡 Action Plan</h2>
-        <div class="recommendations-section">
-            <h3>✅ Keep doing</h3><ul><li>Continue creating psychological safety where guests feel comfortable sharing vulnerable insights - this remains your strongest skill.</li><li>Maintain your authentic presence that encourages genuine dialogue and meaningful connections.</li><li>Keep demonstrating genuine intellectual curiosity that goes beyond surface-level questions.</li><li>Preserve your natural ability to guide conversations to meaningful philosophical depth.</li></ul><h3>🎯 Quick Wins</h3><ul><li>Practice one-breath questions in your next episode (ask, then pause)</li><li>Use 'define-then-dive' structure: explain term, then explore depth</li><li>Review top-performing episode and identify one technique to replicate</li></ul><h3>🔨 Long-term Improvements</h3><ul><li>Develop a content simplification system: create analogies library for complex topics</li><li>Build audience jargon glossary: maintain definitions for recurring technical terms</li></ul>
         </div>
 
         <h2>📊 Detailed Metrics</h2>
