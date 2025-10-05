@@ -5,103 +5,254 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transformational Journeys - Channel Analysis</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        h1 { color: #333; border-bottom: 3px solid #007bff; padding-bottom: 10px; }
-        h2 { color: #555; margin-top: 30px; }
-        .metric-card { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #007bff; }
-        .metric-name { font-weight: bold; color: #333; }
-        .metric-value { font-size: 24px; color: #007bff; }
-        .trend-up { color: #28a745; }
-        .trend-down { color: #dc3545; }
-        .trend-stable { color: #6c757d; }
-        .pattern-list { list-style: none; padding: 0; }
-        .pattern-item { background: #fff; border: 1px solid #dee2e6; padding: 10px; margin: 5px 0; border-radius: 4px; }
-        .header-info { background: #e9ecef; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-        .episode-list { list-style: none; padding: 0; }
-        .episode-item { background: #fff; border: 1px solid #dee2e6; padding: 12px; margin: 8px 0; border-radius: 4px; transition: background 0.2s; }
-        .episode-item:hover { background: #f8f9fa; }
-        .episode-item a { color: #007bff; text-decoration: none; font-weight: 500; }
-        .episode-item a:hover { text-decoration: underline; }
+        /* Dark Neon Theme - Matching Episode Reports */
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(120% 120% at 0% 0%, #0B1220 0%, #0B1220 12%, #0F172A 40%, #0F172A 100%);
+            color: #e2e8f0;
+            min-height: 100vh;
+        }
 
-        /* Strengths and Opportunities Grid Styles */
-        .strengths-grid, .opportunities-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin: 15px 0; }
-        .strength-card, .opportunity-card { text-align: center; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .strength-card { background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%); border: 1px solid #28a745; }
-        .opportunity-card { background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%); border: 1px solid #ffc107; }
-        .strength-icon, .opportunity-icon { font-size: 32px; margin-bottom: 10px; }
-        .strength-title, .opportunity-title { font-weight: bold; font-size: 16px; margin: 8px 0; color: #333; }
-        .strength-score, .opportunity-score { font-size: 24px; font-weight: bold; margin: 8px 0; }
-        .strength-score { color: #28a745; }
-        .opportunity-score { color: #856404; }
-        .strength-note, .opportunity-note { font-size: 14px; color: #666; font-style: italic; }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
 
-        /* Layered Feedback Card Styles */
-        .feedback-headline { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 12px; line-height: 1.3; }
-        .feedback-evidence { background: rgba(255,255,255,0.7); padding: 12px; border-radius: 6px; margin-bottom: 10px; }
-        .feedback-evidence-title { font-weight: 600; color: #555; margin-bottom: 6px; }
-        .feedback-quantified { color: #007bff; font-weight: 500; }
-        .feedback-why-matters { background: rgba(255,255,255,0.5); padding: 10px; border-radius: 6px; margin-bottom: 10px; font-style: italic; color: #666; }
-        .feedback-action { background: rgba(255,255,255,0.7); padding: 12px; border-radius: 6px; }
-        .feedback-action-title { font-weight: 600; color: #333; margin-bottom: 8px; }
-        .feedback-drills { list-style: none; padding: 0; margin: 8px 0 0 0; }
-        .feedback-drills li { padding: 4px 0; color: #555; }
-        .feedback-drills li:before { content: '🎯 '; }
+        h1 {
+            color: #ffffff;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-shadow: 0 0 14px rgba(255,255,255,0.7), 0 0 28px rgba(59,130,246,0.4);
+        }
 
-        /* Vibe Tag Styles */
+        h2 {
+            color: #e2e8f0;
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 48px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        /* Translucent Cards with Backdrop Blur */
+        .card {
+            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%),
+                        linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
+            border: 1px solid rgba(148,163,184,0.14);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 24px rgba(2,6,23,0.45);
+            backdrop-filter: blur(12px);
+        }
+
+        .header-info {
+            background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%);
+            border: 1px solid rgba(148,163,184,0.18);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 30px rgba(2,6,23,0.5);
+            backdrop-filter: blur(12px);
+        }
+
+        .header-info p {
+            color: #cbd5e1;
+            font-size: 14px;
+            margin: 8px 0;
+        }
+
+        .header-info strong {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        /* Trend indicators */
+        .trend-up { color: #22C55E; }
+        .trend-down { color: #EF4444; }
+        .trend-stable { color: #94a3b8; }
+
+        /* Strengths and Opportunities Grid Styles - Dark Theme */
+        .strengths-grid, .opportunities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 24px 0;
+        }
+
+        .strength-card, .opportunity-card {
+            padding: 24px;
+            border-radius: 12px;
+            background: linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
+            border: 1px solid rgba(148,163,184,0.14);
+            box-shadow: 0 10px 24px rgba(2,6,23,0.45);
+            backdrop-filter: blur(12px);
+        }
+
+        .strength-icon, .opportunity-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+        }
+
+        .strength-title, .opportunity-title {
+            font-weight: 600;
+            font-size: 16px;
+            margin: 12px 0;
+            color: #e2e8f0;
+        }
+
+        .strength-score {
+            font-size: 28px;
+            font-weight: 800;
+            color: #22C55E;
+            text-shadow: 0 0 12px rgba(34,197,94,0.5);
+            margin: 8px 0;
+        }
+
+        .opportunity-score {
+            font-size: 28px;
+            font-weight: 800;
+            color: #FACC15;
+            text-shadow: 0 0 12px rgba(250,204,21,0.5);
+            margin: 8px 0;
+        }
+
+        .strength-note, .opportunity-note {
+            font-size: 14px;
+            color: #cbd5e1;
+            font-style: italic;
+        }
+
+        /* Layered Feedback Card Styles - Dark Theme */
+        .feedback-headline {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .feedback-evidence {
+            background: rgba(2,6,23,0.35);
+            border: 1px solid rgba(148,163,184,0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .feedback-evidence-title {
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+        }
+
+        .feedback-quantified {
+            color: #3B82F6;
+            font-weight: 500;
+        }
+
+        .feedback-why-matters {
+            background: rgba(2,6,23,0.25);
+            border: 1px solid rgba(148,163,184,0.08);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-style: italic;
+            color: #94a3b8;
+        }
+
+        .feedback-action {
+            background: rgba(2,6,23,0.35);
+            border: 1px solid rgba(148,163,184,0.1);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .feedback-action-title {
+            font-weight: 600;
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+
+        .feedback-drills {
+            list-style: none;
+            padding: 0;
+            margin: 8px 0 0 0;
+        }
+
+        .feedback-drills li {
+            padding: 4px 0;
+            color: #cbd5e1;
+        }
+
+        .feedback-drills li:before {
+            content: '🎯 ';
+        }
+
+        /* Vibe Tag Styles - Dark Theme */
         .vibe-tag {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
+            gap: 12px;
+            background: linear-gradient(180deg, rgba(59,130,246,0.15) 0%, rgba(139,92,246,0.15) 100%);
+            border: 1px solid rgba(148,163,184,0.2);
+            color: #e2e8f0;
+            padding: 10px 20px;
+            border-radius: 24px;
             font-size: 14px;
             font-weight: 500;
-            margin-top: 10px;
+            margin-top: 16px;
+            box-shadow: 0 4px 12px rgba(2,6,23,0.3);
         }
         .vibe-tag .vibe-item {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
         .vibe-tag .vibe-item:not(:last-child):after {
             content: '•';
-            margin-left: 8px;
-            opacity: 0.6;
+            margin-left: 12px;
+            opacity: 0.5;
         }
 
-        /* Next Episode Checklist Styles */
+        /* Next Episode Checklist Styles - Dark Theme */
         .next-episode-checklist {
-            background: linear-gradient(135deg, #fff5e6 0%, #ffe8cc 100%);
-            border: 2px solid #ff9800;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
+            background: linear-gradient(180deg, rgba(251,191,36,0.12) 0%, rgba(245,158,11,0.08) 100%);
+            border: 1px solid rgba(251,191,36,0.25);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+            box-shadow: 0 8px 20px rgba(2,6,23,0.4);
         }
         .next-episode-checklist h3 {
             margin-top: 0;
-            color: #e65100;
+            color: #FCD34D;
             font-size: 18px;
+            font-weight: 600;
         }
         .checklist-items {
             list-style: none;
             padding: 0;
-            margin: 10px 0;
+            margin: 16px 0;
         }
         .checklist-items li {
-            padding: 8px 0;
-            padding-left: 28px;
+            padding: 10px 0;
+            padding-left: 32px;
             position: relative;
-            line-height: 1.5;
+            line-height: 1.6;
+            color: #cbd5e1;
         }
         .checklist-items li:before {
             content: '☐';
             position: absolute;
             left: 0;
             font-size: 18px;
-            color: #ff9800;
+            color: #FCD34D;
         }
 
         /* Engagement Placeholder Styles */
@@ -396,7 +547,7 @@
         <div class="header-info">
             <p><strong>Channel ID:</strong> transformational-journeys</p>
             <p><strong>Episodes Analyzed:</strong> 13</p>
-            <p><strong>Report Generated:</strong> 2025-10-05 08:55:36</p>
+            <p><strong>Report Generated:</strong> 2025-10-05 09:19:09</p>
         </div>
 
         <h2>📊 Performance Overview</h2>
@@ -1117,7 +1268,7 @@
         </div>
 
         <footer>
-            <p>Generated on October 05, 2025 at 08:55 AM</p>
+            <p>Generated on October 05, 2025 at 09:19 AM</p>
             <nav>
                 <a href="/">Home</a>
                 <a href="/channels">All Channels</a>
