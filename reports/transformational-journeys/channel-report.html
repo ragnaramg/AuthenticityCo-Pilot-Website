@@ -581,21 +581,21 @@
             <p style="font-size: 13px; color: #94a3b8; font-weight: 400; margin-top: 8px;">Vibes derived from dominant tonal themes across episodes.</p>
         </div>
 
-        <div class="teaser-section">
-            <div class="teaser-intro">Here are your top 3 moves for your next episode:</div>
-            <ul class="teaser-list">
-                <li>Simplify your explanations - aim for grade 10 readability</li><li>Create a 'safe space' toolkit from your best moments</li><li>Document your question frameworks for repeatable depth</li>
-            </ul>
+        <h2>🎯 Your Next Episode Playbook</h2>
+        <div class="playbook-section">
+            <p>Your <strong>How You Made Them Feel</strong> is your superpower - that's where you naturally shine. The biggest lever for your next episode? Focus on <strong>Content Accessibility & Clarity</strong>. Small improvements here will create outsized impact.</p><ul><li>Simplify your explanations - aim for grade 10 readability</li><li>Create a 'safe space' toolkit from your best moments</li><li>Document your question frameworks for repeatable depth</li></ul>
         </div>
 
-        
-        <div class="next-episode-checklist">
-            <h3>📋 Next Episode Checklist</h3>
-            <ul class="checklist-items">
-                <li>Practice 3-layer follow-up questioning on key topics</li><li>Review previous episode feedback before recording</li><li>Set intention for one specific improvement this episode</li>
-            </ul>
+        <h2>💡 Action Plan</h2>
+        <div class="recommendations-section">
+            <div class="action-plan-grid"><div class="action-plan-box"><h3>✅ Keep Doing</h3><ul><li>Continue creating psychological safety where guests feel comfortable sharing vulnerable insights - this remains your strongest skill.<br><small style="color: #94a3b8; margin-left: 20px;">✅ Start with "How comfortable do you feel sharing this?" before deep topics</small></li><li>Maintain your authentic presence that encourages genuine dialogue and meaningful connections.<br><small style="color: #94a3b8; margin-left: 20px;">✅ Share one personal connection to each major topic</small></li><li>Keep demonstrating genuine intellectual curiosity that goes beyond surface-level questions.</li><li>Preserve your natural ability to guide conversations to meaningful philosophical depth.</li></ul></div><div class="action-plan-box"><h3>🎯 Quick Wins</h3><ul><li>Practice one-breath questions in your next episode (ask, then pause)<br><small style="color: #94a3b8; margin-left: 20px;">
+                🚫 Not: "So, I mean, like, what I'm really curious about here is, and correct me if I'm wrong, but how do you think about..."<br>
+                ✅ Do: "How did that feel?" (7 words, one breath)
+            </small></li><li>Use 'define-then-dive' structure: explain term, then explore depth<br><small style="color: #94a3b8; margin-left: 20px;">
+                🚫 Not: "Let's talk about psychological safety" (assumes everyone knows the term)<br>
+                ✅ Do: "Psychological safety means feeling safe to speak up. Why does that matter in your work?"
+            </small></li><li>Review top-performing episode and identify one technique to replicate</li></ul></div><div class="action-plan-box"><h3>🔨 Long-term Improvements</h3><ul><li>Develop a content simplification system: create analogies library for complex topics<br><small style="color: #94a3b8; margin-left: 20px;">✅ "What changed in how you see the world?"</small></li><li>Build audience jargon glossary: maintain definitions for recurring technical terms</li></ul></div></div>
         </div>
-        
 
         <h2>✅ Overall Strengths</h2>
         <div class="strengths-section">
@@ -607,23 +607,23 @@
 
             
         <div style="position: relative; height: 24px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_guest_4452321856"></canvas>
+            <canvas id="sparkline_guest_4425845376"></canvas>
             <div style="position: absolute; top: -2px; right: 4px; font-size: 11px; color: #10b981; font-weight: 600;">
                 +0.0%
             </div>
         </div>
         <script>
-            const ctx_sparkline_guest_4452321856 = document.getElementById('sparkline_guest_4452321856').getContext('2d');
-            const data_sparkline_guest_4452321856 = [8.5, 9.1, 9.1, 8.7, 8.7, 8.7, 8.5];
-            const minVal_sparkline_guest_4452321856 = Math.min(...data_sparkline_guest_4452321856);
-            const maxVal_sparkline_guest_4452321856 = Math.max(...data_sparkline_guest_4452321856);
+            const ctx_sparkline_guest_4425845376 = document.getElementById('sparkline_guest_4425845376').getContext('2d');
+            const data_sparkline_guest_4425845376 = [8.5, 9.1, 9.1, 8.7, 8.7, 8.7, 8.5];
+            const minVal_sparkline_guest_4425845376 = Math.min(...data_sparkline_guest_4425845376);
+            const maxVal_sparkline_guest_4425845376 = Math.max(...data_sparkline_guest_4425845376);
 
-            new Chart(ctx_sparkline_guest_4452321856, {
+            new Chart(ctx_sparkline_guest_4425845376, {
                 type: 'line',
                 data: {
                     labels: ['His Generation is Drowning....', 'AI Rewrote Her Breakup It C...', 'How Did She Go From Basebal...', 'How Self-Sabotage Nearly Co...', 'The Truth About Authentic L...', 'Kimberly Reuter: Choosing F...', 'Jamie Meyer on How to Stop ...'],
                     datasets: [{
-                        data: data_sparkline_guest_4452321856,
+                        data: data_sparkline_guest_4425845376,
                         borderColor: '#10b981',
                         backgroundColor: '#10b98140',
                         borderWidth: 2,
@@ -633,10 +633,10 @@
                             const idx = context.dataIndex;
                             const val = context.parsed.y;
                             // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_guest_4452321856.length - 1) {
+                            if (idx === 0 || idx === data_sparkline_guest_4425845376.length - 1) {
                                 return 4;
                             }
-                            if (val === minVal_sparkline_guest_4452321856 || val === maxVal_sparkline_guest_4452321856) {
+                            if (val === minVal_sparkline_guest_4425845376 || val === maxVal_sparkline_guest_4425845376) {
                                 return 5;  // Slightly larger for min/max
                             }
                             return 0;
@@ -644,8 +644,8 @@
                         pointBackgroundColor: function(context) {
                             const val = context.parsed.y;
                             // Highlight min/max with different color
-                            if (val === minVal_sparkline_guest_4452321856) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_guest_4452321856) return '#10b981';  // Green for max
+                            if (val === minVal_sparkline_guest_4425845376) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_guest_4425845376) return '#10b981';  // Green for max
                             return '#10b981';
                         },
                         pointBorderColor: '#ffffff',
@@ -730,23 +730,23 @@
 
             
         <div style="position: relative; height: 24px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_intelchem_4452321856"></canvas>
+            <canvas id="sparkline_intelchem_4425845376"></canvas>
             <div style="position: absolute; top: -2px; right: 4px; font-size: 11px; color: #8b5cf6; font-weight: 600;">
                 +0.0%
             </div>
         </div>
         <script>
-            const ctx_sparkline_intelchem_4452321856 = document.getElementById('sparkline_intelchem_4452321856').getContext('2d');
-            const data_sparkline_intelchem_4452321856 = [9.1, 7.5, 8.5, 7.8, 8.4, 8.5, 9.1];
-            const minVal_sparkline_intelchem_4452321856 = Math.min(...data_sparkline_intelchem_4452321856);
-            const maxVal_sparkline_intelchem_4452321856 = Math.max(...data_sparkline_intelchem_4452321856);
+            const ctx_sparkline_intelchem_4425845376 = document.getElementById('sparkline_intelchem_4425845376').getContext('2d');
+            const data_sparkline_intelchem_4425845376 = [9.1, 7.5, 8.5, 7.8, 8.4, 8.5, 9.1];
+            const minVal_sparkline_intelchem_4425845376 = Math.min(...data_sparkline_intelchem_4425845376);
+            const maxVal_sparkline_intelchem_4425845376 = Math.max(...data_sparkline_intelchem_4425845376);
 
-            new Chart(ctx_sparkline_intelchem_4452321856, {
+            new Chart(ctx_sparkline_intelchem_4425845376, {
                 type: 'line',
                 data: {
                     labels: ['His Generation is Drowning....', 'AI Rewrote Her Breakup It C...', 'How Did She Go From Basebal...', 'How Self-Sabotage Nearly Co...', 'The Truth About Authentic L...', 'Kimberly Reuter: Choosing F...', 'Jamie Meyer on How to Stop ...'],
                     datasets: [{
-                        data: data_sparkline_intelchem_4452321856,
+                        data: data_sparkline_intelchem_4425845376,
                         borderColor: '#8b5cf6',
                         backgroundColor: '#8b5cf640',
                         borderWidth: 2,
@@ -756,10 +756,10 @@
                             const idx = context.dataIndex;
                             const val = context.parsed.y;
                             // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_intelchem_4452321856.length - 1) {
+                            if (idx === 0 || idx === data_sparkline_intelchem_4425845376.length - 1) {
                                 return 4;
                             }
-                            if (val === minVal_sparkline_intelchem_4452321856 || val === maxVal_sparkline_intelchem_4452321856) {
+                            if (val === minVal_sparkline_intelchem_4425845376 || val === maxVal_sparkline_intelchem_4425845376) {
                                 return 5;  // Slightly larger for min/max
                             }
                             return 0;
@@ -767,8 +767,8 @@
                         pointBackgroundColor: function(context) {
                             const val = context.parsed.y;
                             // Highlight min/max with different color
-                            if (val === minVal_sparkline_intelchem_4452321856) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_intelchem_4452321856) return '#10b981';  // Green for max
+                            if (val === minVal_sparkline_intelchem_4425845376) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_intelchem_4425845376) return '#10b981';  // Green for max
                             return '#8b5cf6';
                         },
                         pointBorderColor: '#ffffff',
@@ -853,23 +853,23 @@
 
             
         <div style="position: relative; height: 24px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_voice_4452321856"></canvas>
+            <canvas id="sparkline_voice_4425845376"></canvas>
             <div style="position: absolute; top: -2px; right: 4px; font-size: 11px; color: #3b82f6; font-weight: 600;">
                 +0.0%
             </div>
         </div>
         <script>
-            const ctx_sparkline_voice_4452321856 = document.getElementById('sparkline_voice_4452321856').getContext('2d');
-            const data_sparkline_voice_4452321856 = [8.2, 8.2, 8.2, 7.2, 8.2, 8.2, 8.2];
-            const minVal_sparkline_voice_4452321856 = Math.min(...data_sparkline_voice_4452321856);
-            const maxVal_sparkline_voice_4452321856 = Math.max(...data_sparkline_voice_4452321856);
+            const ctx_sparkline_voice_4425845376 = document.getElementById('sparkline_voice_4425845376').getContext('2d');
+            const data_sparkline_voice_4425845376 = [8.2, 8.2, 8.2, 7.2, 8.2, 8.2, 8.2];
+            const minVal_sparkline_voice_4425845376 = Math.min(...data_sparkline_voice_4425845376);
+            const maxVal_sparkline_voice_4425845376 = Math.max(...data_sparkline_voice_4425845376);
 
-            new Chart(ctx_sparkline_voice_4452321856, {
+            new Chart(ctx_sparkline_voice_4425845376, {
                 type: 'line',
                 data: {
                     labels: ['His Generation is Drowning....', 'AI Rewrote Her Breakup It C...', 'How Did She Go From Basebal...', 'How Self-Sabotage Nearly Co...', 'The Truth About Authentic L...', 'Kimberly Reuter: Choosing F...', 'Jamie Meyer on How to Stop ...'],
                     datasets: [{
-                        data: data_sparkline_voice_4452321856,
+                        data: data_sparkline_voice_4425845376,
                         borderColor: '#3b82f6',
                         backgroundColor: '#3b82f640',
                         borderWidth: 2,
@@ -879,10 +879,10 @@
                             const idx = context.dataIndex;
                             const val = context.parsed.y;
                             // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_voice_4452321856.length - 1) {
+                            if (idx === 0 || idx === data_sparkline_voice_4425845376.length - 1) {
                                 return 4;
                             }
-                            if (val === minVal_sparkline_voice_4452321856 || val === maxVal_sparkline_voice_4452321856) {
+                            if (val === minVal_sparkline_voice_4425845376 || val === maxVal_sparkline_voice_4425845376) {
                                 return 5;  // Slightly larger for min/max
                             }
                             return 0;
@@ -890,8 +890,8 @@
                         pointBackgroundColor: function(context) {
                             const val = context.parsed.y;
                             // Highlight min/max with different color
-                            if (val === minVal_sparkline_voice_4452321856) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_voice_4452321856) return '#10b981';  // Green for max
+                            if (val === minVal_sparkline_voice_4425845376) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_voice_4425845376) return '#10b981';  // Green for max
                             return '#3b82f6';
                         },
                         pointBorderColor: '#ffffff',
@@ -981,23 +981,23 @@
 
             
         <div style="position: relative; height: 24px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_blind_4452321856"></canvas>
+            <canvas id="sparkline_blind_4425845376"></canvas>
             <div style="position: absolute; top: -2px; right: 4px; font-size: 11px; color: #ef4444; font-weight: 600;">
                 -52.9%
             </div>
         </div>
         <script>
-            const ctx_sparkline_blind_4452321856 = document.getElementById('sparkline_blind_4452321856').getContext('2d');
-            const data_sparkline_blind_4452321856 = [6.8, 6.8, 6.8, 6.4, 6.8, 3.2, 3.2];
-            const minVal_sparkline_blind_4452321856 = Math.min(...data_sparkline_blind_4452321856);
-            const maxVal_sparkline_blind_4452321856 = Math.max(...data_sparkline_blind_4452321856);
+            const ctx_sparkline_blind_4425845376 = document.getElementById('sparkline_blind_4425845376').getContext('2d');
+            const data_sparkline_blind_4425845376 = [6.8, 6.8, 6.8, 6.4, 6.8, 3.2, 3.2];
+            const minVal_sparkline_blind_4425845376 = Math.min(...data_sparkline_blind_4425845376);
+            const maxVal_sparkline_blind_4425845376 = Math.max(...data_sparkline_blind_4425845376);
 
-            new Chart(ctx_sparkline_blind_4452321856, {
+            new Chart(ctx_sparkline_blind_4425845376, {
                 type: 'line',
                 data: {
                     labels: ['His Generation is Drowning....', 'AI Rewrote Her Breakup It C...', 'How Did She Go From Basebal...', 'How Self-Sabotage Nearly Co...', 'The Truth About Authentic L...', 'Kimberly Reuter: Choosing F...', 'Jamie Meyer on How to Stop ...'],
                     datasets: [{
-                        data: data_sparkline_blind_4452321856,
+                        data: data_sparkline_blind_4425845376,
                         borderColor: '#ef4444',
                         backgroundColor: '#ef444440',
                         borderWidth: 2,
@@ -1007,10 +1007,10 @@
                             const idx = context.dataIndex;
                             const val = context.parsed.y;
                             // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_blind_4452321856.length - 1) {
+                            if (idx === 0 || idx === data_sparkline_blind_4425845376.length - 1) {
                                 return 4;
                             }
-                            if (val === minVal_sparkline_blind_4452321856 || val === maxVal_sparkline_blind_4452321856) {
+                            if (val === minVal_sparkline_blind_4425845376 || val === maxVal_sparkline_blind_4425845376) {
                                 return 5;  // Slightly larger for min/max
                             }
                             return 0;
@@ -1018,8 +1018,8 @@
                         pointBackgroundColor: function(context) {
                             const val = context.parsed.y;
                             // Highlight min/max with different color
-                            if (val === minVal_sparkline_blind_4452321856) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_blind_4452321856) return '#10b981';  // Green for max
+                            if (val === minVal_sparkline_blind_4425845376) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_blind_4425845376) return '#10b981';  // Green for max
                             return '#ef4444';
                         },
                         pointBorderColor: '#ffffff',
@@ -1097,22 +1097,6 @@
 
         </div>
         </div>
-        </div>
-
-        <h2>🎯 Your Next Episode Playbook</h2>
-        <div class="playbook-section">
-            <p>Your <strong>How You Made Them Feel</strong> is your superpower - that's where you naturally shine. The biggest lever for your next episode? Focus on <strong>Content Accessibility & Clarity</strong>. Small improvements here will create outsized impact.</p><ul><li>Simplify your explanations - aim for grade 10 readability</li><li>Create a 'safe space' toolkit from your best moments</li><li>Document your question frameworks for repeatable depth</li></ul>
-        </div>
-
-        <h2>💡 Action Plan</h2>
-        <div class="recommendations-section">
-            <div class="action-plan-grid"><div class="action-plan-box"><h3>✅ Keep Doing</h3><ul><li>Continue creating psychological safety where guests feel comfortable sharing vulnerable insights - this remains your strongest skill.<br><small style="color: #94a3b8; margin-left: 20px;">✅ Start with "How comfortable do you feel sharing this?" before deep topics</small></li><li>Maintain your authentic presence that encourages genuine dialogue and meaningful connections.<br><small style="color: #94a3b8; margin-left: 20px;">✅ Share one personal connection to each major topic</small></li><li>Keep demonstrating genuine intellectual curiosity that goes beyond surface-level questions.</li><li>Preserve your natural ability to guide conversations to meaningful philosophical depth.</li></ul></div><div class="action-plan-box"><h3>🎯 Quick Wins</h3><ul><li>Practice one-breath questions in your next episode (ask, then pause)<br><small style="color: #94a3b8; margin-left: 20px;">
-                🚫 Not: "So, I mean, like, what I'm really curious about here is, and correct me if I'm wrong, but how do you think about..."<br>
-                ✅ Do: "How did that feel?" (7 words, one breath)
-            </small></li><li>Use 'define-then-dive' structure: explain term, then explore depth<br><small style="color: #94a3b8; margin-left: 20px;">
-                🚫 Not: "Let's talk about psychological safety" (assumes everyone knows the term)<br>
-                ✅ Do: "Psychological safety means feeling safe to speak up. Why does that matter in your work?"
-            </small></li><li>Review top-performing episode and identify one technique to replicate</li></ul></div><div class="action-plan-box"><h3>🔨 Long-term Improvements</h3><ul><li>Develop a content simplification system: create analogies library for complex topics<br><small style="color: #94a3b8; margin-left: 20px;">✅ "What changed in how you see the world?"</small></li><li>Build audience jargon glossary: maintain definitions for recurring technical terms</li></ul></div></div>
         </div>
 
         <h2>📊 Detailed Metrics</h2>
@@ -1257,7 +1241,7 @@
         </div>
 
         <footer>
-            <p>Generated on October 05, 2025 at 01:34 PM</p>
+            <p>Generated on October 05, 2025 at 01:50 PM</p>
             <p><strong>Channel ID:</strong> transformational-journeys • <strong>Episodes Analyzed:</strong> 13</p>
             <nav>
                 <a href="/">Home</a>
