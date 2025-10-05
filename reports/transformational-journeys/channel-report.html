@@ -553,14 +553,15 @@
         
 
         <div class="header-info">
-            <p><strong>Report Generated:</strong> 2025-10-05 12:19:08</p>
+            <p><strong>Report Generated:</strong> 2025-10-05 12:34:17</p>
         </div>
 
         <h2>📊 Performance Overview</h2>
         <div class="mini-visual-row">
             <div class="chart-container">
-                
-        <div class="chart-container" style="height: 50px; max-height: 50px;">
+                <div class="charts-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin: 16px 0;">
+
+        <div class="chart-container" style="height: 60px; max-height: 60px;">
             <canvas id="chart_voice" class="chart-canvas"></canvas>
         </div>
         <script>
@@ -599,6 +600,10 @@
                         },
                         tooltip: {
                             enabled: true,
+                            position: 'nearest',
+                            yAlign: 'bottom',
+                            xAlign: 'center',
+                            displayColors: false,
                             mode: 'index',
                             intersect: false,
                             callbacks: {
@@ -638,7 +643,7 @@
         </script>
             
 
-        <div class="chart-container" style="height: 50px; max-height: 50px;">
+        <div class="chart-container" style="height: 60px; max-height: 60px;">
             <canvas id="chart_style" class="chart-canvas"></canvas>
         </div>
         <script>
@@ -677,6 +682,10 @@
                         },
                         tooltip: {
                             enabled: true,
+                            position: 'nearest',
+                            yAlign: 'bottom',
+                            xAlign: 'center',
+                            displayColors: false,
                             mode: 'index',
                             intersect: false,
                             callbacks: {
@@ -716,7 +725,7 @@
         </script>
             
 
-        <div class="chart-container" style="height: 50px; max-height: 50px;">
+        <div class="chart-container" style="height: 60px; max-height: 60px;">
             <canvas id="chart_guest" class="chart-canvas"></canvas>
         </div>
         <script>
@@ -755,6 +764,10 @@
                         },
                         tooltip: {
                             enabled: true,
+                            position: 'nearest',
+                            yAlign: 'bottom',
+                            xAlign: 'center',
+                            displayColors: false,
                             mode: 'index',
                             intersect: false,
                             callbacks: {
@@ -794,7 +807,7 @@
         </script>
             
 
-        <div class="chart-container" style="height: 50px; max-height: 50px;">
+        <div class="chart-container" style="height: 60px; max-height: 60px;">
             <canvas id="chart_intelchem" class="chart-canvas"></canvas>
         </div>
         <script>
@@ -833,6 +846,10 @@
                         },
                         tooltip: {
                             enabled: true,
+                            position: 'nearest',
+                            yAlign: 'bottom',
+                            xAlign: 'center',
+                            displayColors: false,
                             mode: 'index',
                             intersect: false,
                             callbacks: {
@@ -872,7 +889,7 @@
         </script>
             
 
-        <div class="chart-container" style="height: 50px; max-height: 50px;">
+        <div class="chart-container" style="height: 60px; max-height: 60px;">
             <canvas id="chart_blind" class="chart-canvas"></canvas>
         </div>
         <script>
@@ -911,6 +928,10 @@
                         },
                         tooltip: {
                             enabled: true,
+                            position: 'nearest',
+                            yAlign: 'bottom',
+                            xAlign: 'center',
+                            displayColors: false,
                             mode: 'index',
                             intersect: false,
                             callbacks: {
@@ -949,6 +970,7 @@
             });
         </script>
             
+</div>
             </div>
             <div class="pie-chart-container">
                 
@@ -1276,7 +1298,7 @@
         </div>
 
         <footer>
-            <p>Generated on October 05, 2025 at 12:19 PM</p>
+            <p>Generated on October 05, 2025 at 12:34 PM</p>
             <p><strong>Channel ID:</strong> transformational-journeys • <strong>Episodes Analyzed:</strong> 13</p>
             <nav>
                 <a href="/">Home</a>
