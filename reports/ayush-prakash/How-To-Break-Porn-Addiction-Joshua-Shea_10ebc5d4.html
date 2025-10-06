@@ -1,0 +1,770 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <script src="../../shared-nav.js"></script>
+        
+            <title>Podcast Analysis - Ayush Prakash</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+            <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+            <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+            <script src="https://cdn.tailwindcss.com"></script>
+            <style>
+                /* Dark neon theme overrides to ensure compatibility */
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+            </style>
+        </head>
+        <body>
+            
+        <div id="authenticity-nav-header"></div>
+        <div id="root"></div>
+            
+            <script type="text/babel">
+                /**
+ * Podcast Interviewer Co-Pilot — Report Template
+ * - Dark neon theme preserved
+ * - Expects a `report` prop (JSON) that matches the schema below
+ * - First-insight-free + teaser + locked everywhere
+ * - Conversational headers mapped at render
+ */
+
+// Available via global React
+const { useState } = React;
+
+/** ==== JSON prop schema (matches your latest report format) ==== */
+// Expected report structure with various sections for podcast analysis
+
+/* ---------- helpers ---------- */
+
+const iconForTitle = (title) => {
+  const t = title.toLowerCase();
+  if (t.includes("episode arc") || t.includes("conversation")) return "📈";
+  if (t.includes("quote") || t.includes("highlight") || t.includes("remembering")) return "💬";
+  if (t.includes("tone") || t.includes("energy")) return "🌊";
+  if (t.includes("theme") || t.includes("threads")) return "🧵";
+  if (t.includes("style") || t.includes("habits")) return "✨";
+  if (t.includes("voice")) return "🎙️";
+  if (t.includes("guest") || t.includes("rapport") || t.includes("feel")) return "🤝";
+  if (t.includes("chem") || t.includes("co-creation") || t.includes("ideas")) return "🧪";
+  if (t.includes("blind")) return "🙈";
+  if (t.includes("resource") || t.includes("tools")) return "📚";
+  return "•";
+};
+
+function effectiveScore(score, scoreType) {
+  if (score == null) return null;
+  if (scoreType === "lower") return 10 - score;
+  return score;
+}
+
+function computeHeaderStats(themes) {
+  const scored = themes
+    .map((d) => ({ d, eff: effectiveScore(d.score, d.scoreType) }))
+    .filter((x) => x.eff !== null);
+
+  const overall =
+    scored.length > 0
+      ? +(scored.reduce((s, x) => s + x.eff, 0) / scored.length).toFixed(1)
+      : 0;
+
+  const strength = scored.reduce((best, x) => (x.eff > best.eff ? x : best), scored[0]);
+  const opportunity = scored.reduce((worst, x) => (x.eff < worst.eff ? x : worst), scored[0]);
+
+  return {
+    overall,
+    strengthTitle: strength?.d?.title ?? "",
+    strengthScoreLabel: strength?.d?.score != null ? `${strength.d.score}/10` : "",
+    strengthColor: "#22C55E", // always green
+    opportunityTitle: opportunity?.d?.title ?? "",
+    opportunityScoreLabel: opportunity?.d?.score != null ? `${opportunity.d.score}/10` : "",
+    opportunityColor: "#FACC15", // always amber
+  };
+}
+
+/* ---------- sparkline ---------- */
+
+const Sparkline = ({ values, color }) => {
+  if (!values || values.length < 2) return null;
+  const W = 360, H = 64, pad = 6;
+  const clamp01 = (v) => Math.min(1, Math.max(0, v));
+  const pts = values.map((v, i) => {
+    const x = pad + (i * (W - pad * 2)) / (values.length - 1);
+    const y = pad + (H - pad * 2) * (1 - clamp01(v));
+    return [x, y];
+  });
+  const path = pts.map(([x, y], i) => `${i ? "L" : "M"} ${x} ${y}`).join(" ");
+  const area = `${path} L ${pts[pts.length - 1][0]} ${H - pad} L ${pts[0][0]} ${H - pad} Z`;
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="64" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id={`g-${color.replace("#", "")}`} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.22" />
+          <stop offset="100%" stopColor={color} stopOpacity="0.04" />
+        </linearGradient>
+      </defs>
+      <path d={area} fill={`url(#g-${color.replace("#", "")})`} />
+      <path d={path} fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" />
+      {pts.map(([x, y], i) => <circle key={i} cx={x} cy={y} r={2} fill={color} />)}
+    </svg>
+  );
+};
+
+/* ---------- small UI bits ---------- */
+
+const SectionLabel = ({ children }) => (
+  <h3 className="mb-3 text-slate-300 uppercase tracking-widest text-xl text-center">{children}</h3>
+);
+
+const PillScore = ({ value, color }) => (
+  <span
+    className="text-[13px] font-bold px-2 py-1 rounded-full border"
+    style={{
+      borderColor: color,
+      color,
+      boxShadow: `0 0 12px ${color}33`,
+      background: "rgba(2,6,23,0.4)",
+    }}
+  >
+    {value}
+  </span>
+);
+
+const ClampParagraph = ({ html, initiallyClamped = true }) => {
+  const [clamped, setClamped] = useState(initiallyClamped);
+  return (
+    <div>
+      <div
+        style={
+          clamped
+            ? {
+                display: "-webkit-box",
+                WebkitLineClamp: 5,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }
+            : {}
+        }
+        className="text-[14px] text-slate-200 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      <button
+        onClick={() => setClamped((v) => !v)}
+        className="mt-1 text-[12px] text-blue-300 hover:text-blue-200 underline"
+      >
+        {clamped ? "See more" : "See less"}
+      </button>
+    </div>
+  );
+};
+
+/** Locked content blur with teaser + count */
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
+  const [open, setOpen] = useState(false);
+
+  const List = (
+    <ol className="list-decimal pl-5 space-y-3">
+      {items.map((p, i) => (
+        <li key={i} className="text-[14px] text-slate-300">
+          <span dangerouslySetInnerHTML={{ __html: p }} />
+        </li>
+      ))}
+    </ol>
+  );
+
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
+
+  return (
+    <div className="relative rounded-md overflow-hidden mt-2">
+      <div className="p-3 space-y-2">{List}</div>
+      <div
+        className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
+        style={{
+          background: "rgba(2,6,23,0.55)",
+          backdropFilter: "blur(8px)",
+          borderTop: "1px solid rgba(255,255,255,0.04)",
+          borderBottom: "1px solid rgba(255,255,255,0.04)",
+        }}
+      >
+        {teaser && (
+          <span className="text-[13px] font-medium text-slate-100 mb-2">
+            {teaser}
+          </span>
+        )}
+        <span className="text-[11px] text-slate-300 mb-3">
+          Includes <strong>{items.length}</strong> insights
+        </span>
+        <button
+          className="text-[12px] text-blue-300 hover:text-blue-200 underline"
+          onClick={() => setOpen(true)}
+        >
+          Upgrade to unlock
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/* ---------- title mapping to conversational headers ---------- */
+
+function mapDigestTitle(oldTitle) {
+  if (/episode arc/i.test(oldTitle)) return "How the Conversation Flowed";
+  if (/quotable|highlight/i.test(oldTitle)) return "Moments Worth Remembering";
+  if (/tone snapshot|shifts? in your energy/i.test(oldTitle)) return "Shifts in Your Energy";
+  if (/emergent theme|threads?/i.test(oldTitle)) return "The Threads You and Your Guest Wove Together";
+  if (/conversation(al)? style|habits/i.test(oldTitle)) return "Your Hosting Habits in Numbers";
+  return oldTitle;
+}
+
+function mapThemeTitle(oldTitle) {
+  if (/voice reflection/i.test(oldTitle)) return "How Your Voice Carried the Room";
+  if (/style.*differentiation/i.test(oldTitle)) return "What Makes You, You";
+  if (/guest.*connection/i.test(oldTitle)) return "How You Made Them Feel";
+  if (/intellectual.*chem|co-creation|ideas/i.test(oldTitle)) return "The Ideas You Cooked Up Together";
+  if (/blind/i.test(oldTitle)) return "Places to Grow (Without Losing Yourself)";
+  if (/resource|tools/i.test(oldTitle)) return "Extra Tools for Your Growth";
+  return oldTitle;
+}
+
+/* ------------------------------ APP ------------------------------ */
+
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Lock Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
+  const headerStats = computeHeaderStats(report.themes);
+
+  const unlockedCount =
+    report.digest.length + report.themes.length + 1 /* game plan */;
+
+  const totalLocked =
+    report.digest.reduce((n, i) => n + i.lockedParagraphsHtml.length, 0) +
+    report.themes.reduce((n, i) => n + i.lockedParagraphsHtml.length, 0) +
+    report.gamePlan.lockedActions.length +
+    (report.progress ? report.progress.lockedItemsHtml.length : 0);
+
+  return (
+    <div
+      className="min-h-screen text-slate-100"
+      style={{
+        background:
+          "radial-gradient(120% 120% at 0% 0%, #0B1220 0%, #0B1220 12%, #0F172A 40%, #0F172A 100%)",
+        fontFamily: "Inter, system-ui, sans-serif",
+      }}
+    >
+      <div className="max-w-[1200px] mx-auto px-6 py-10">
+        {/* Header */}
+        <div
+          className="mb-8 rounded-2xl p-6 md:p-8"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+            boxShadow: "0 10px 30px rgba(2,6,23,0.5)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(148,163,184,0.18)",
+          }}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+            {/* Overall */}
+            <div
+              className="rounded-xl p-4 h-full flex flex-col items-center justify-center text-center"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(2,6,23,0.35) 0%, rgba(2,6,23,0.2) 100%)",
+                border: "1px solid rgba(148,163,184,0.14)",
+              }}
+            >
+              <div className="text-slate-200 text-[18px] uppercase tracking-wider font-semibold">
+                Overall Score
+              </div>
+              <div
+                className="mt-1 font-extrabold"
+                style={{
+                  fontSize: "36px",
+                  color: "#22C55E",
+                  textShadow: "0 0 12px rgba(34,197,94,0.5)",
+                  lineHeight: 1.1,
+                }}
+              >
+                {headerStats.overall.toFixed(1)}/10
+              </div>
+            </div>
+
+            {/* Title Block */}
+            <div className="flex flex-col items-center justify-center text-center">
+              <h2
+                className="text-[24px] font-semibold text-white"
+                style={{
+                  textShadow:
+                    "0 0 14px rgba(255,255,255,0.7), 0 0 28px rgba(59,130,246,0.4)",
+                }}
+              >
+                Episode Insights For:
+              </h2>
+              
+              <div className="mt-3 text-slate-300">
+                <div className="italic text-slate-200">
+                  <span className="font-medium">Podcast:</span> {report.header.podcast}
+                </div>
+                <div className="italic text-slate-200 mt-1">
+                  <span className="font-medium">Episode:</span> {report.header.episode}
+                </div>
+                {report.header.guest && (
+                  <div className="italic text-slate-200 mt-1">
+                    <span className="font-medium">Guest:</span> {report.header.guest}
+                  </div>
+                )}
+              </div>
+
+              <p className="mt-3 text-slate-300">
+                {unlockedCount} insights unlocked.{" "}
+                <button
+                  className="underline text-blue-300 hover:text-blue-200"
+                  onClick={() => console.log("open upgrade")}
+                >
+                  Upgrade
+                </button>{" "}
+                to see {totalLocked} more.
+              </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
+            </div>
+
+            {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
+            <div
+              className="rounded-xl p-4 h-full flex flex-col items-start justify-center text-left"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(2,6,23,0.35) 0%, rgba(2,6,23,0.2) 100%)",
+                border: "1px solid rgba(148,163,184,0.14)",
+              }}
+            >
+              <div className="text-white text-[18px] uppercase tracking-wider font-semibold">
+                Strength
+              </div>
+              <div className="mt-1 text-[14px] text-slate-200">
+                {report.gamePlan.strength}
+              </div>
+
+              <div className="mt-4 text-white text-[18px] uppercase tracking-wider font-semibold">
+                Opportunity
+              </div>
+              <div className="mt-1 text-[14px] text-slate-200">
+                {report.gamePlan.opportunity}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Your Game Plan at a Glance */}
+        <SectionLabel>Your Game Plan at a Glance</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10"
+          style={{
+            background:
+              "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+            border: "1px solid rgba(148,163,184,0.14)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div className="text-[14px] text-slate-200 leading-relaxed">
+            <p className="mb-3">
+              <span className="font-semibold">Free:</span>{" "}
+              <span className="text-slate-100">{report.gamePlan.freeAction.title}</span>{" "}
+              — {report.gamePlan.freeAction.detail}
+            </p>
+            <LockedListBlur
+              teaser={report.gamePlan.teaser}
+              items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
+            />
+          </div>
+        </div>
+
+        {/* The Vibe Check */}
+        <SectionLabel>The Vibe Check</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10 text-center"
+          style={{
+            background:
+              "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+            border: "1px solid rgba(148,163,184,0.14)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div style={{ fontSize: "24px" }} className="mb-2">
+            {report.vibeCheck.icon}
+          </div>
+          <div
+            style={{ fontSize: "16px" }}
+            className="text-slate-200 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: report.vibeCheck.vibeHtml }}
+          />
+          <div
+            style={{ fontSize: "16px" }}
+            className="mt-2 text-slate-200 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: report.vibeCheck.quoteHtml }}
+          />
+        </div>
+
+        {/* Digest */}
+        <SectionLabel>Digest</SectionLabel>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {report.digest.map((c, idx) => {
+            const mappedTitle = mapDigestTitle(c.title);
+            return (
+              <div
+                key={idx}
+                className="rounded-2xl p-5"
+                style={{
+                  background:
+                    "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+                  border: "1px solid rgba(148,163,184,0.14)",
+                  boxShadow:
+                    "0 10px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.04)",
+                }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-[16px]" style={{ color: c.iconColor }}>
+                    {iconForTitle(mappedTitle)}
+                  </span>
+                  <div
+                    className="text-[15px] font-semibold"
+                    style={{ color: c.iconColor, textShadow: `0 0 6px ${c.iconColor}55` }}
+                  >
+                    {mappedTitle}
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+                    Unlocked Insight
+                  </p>
+                  <ClampParagraph html={c.unlockedHtml} />
+                </div>
+
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Scored Themes */}
+        <SectionLabel>Scored Themes</SectionLabel>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {report.themes.map((ins, idx) => {
+            const mappedTitle = mapThemeTitle(ins.title);
+            return (
+              <div
+                key={idx}
+                className="rounded-2xl p-5"
+                style={{
+                  background:
+                    "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+                  border: "1px solid rgba(148,163,184,0.14)",
+                  boxShadow:
+                    "0 10px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.04)",
+                }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[16px]" style={{ color: ins.iconColor }}>
+                      {iconForTitle(mappedTitle)}
+                    </span>
+                    <h4
+                      className="text-[15px] font-semibold"
+                      style={{ color: ins.iconColor, textShadow: `0 0 6px ${ins.iconColor}55` }}
+                    >
+                      {mappedTitle}
+                    </h4>
+                  </div>
+                  {ins.score != null && <PillScore value={`${ins.score}/10`} color={ins.color} />}
+                </div>
+
+                {ins.trend && ins.trend.length > 1 && (
+                  <div
+                    className="rounded-md px-2 py-1 mb-3"
+                    style={{ background: "linear-gradient(180deg, #0B1220 0%, #0F172A 100%)" }}
+                  >
+                    <Sparkline values={ins.trend} color={ins.color} />
+                  </div>
+                )}
+
+                <div className="space-y-1">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+                    Unlocked Insight
+                  </p>
+                  <ClampParagraph html={ins.unlockedHtml} />
+                </div>
+
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Progress Over Time - only show if progress data exists */}
+        {report.progress && (
+          <>
+            <SectionLabel>Tracking Your Progress Over Time</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+            border: "1px solid rgba(148,163,184,0.18)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div className="mb-3">
+            <p
+              className="text-[14px] text-slate-200 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: report.progress.summaryHtml }}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {report.progress.series.map((s, i) => (
+              <div key={i}>
+                <div className="text-xs text-slate-300 mb-1">{s.label}</div>
+                <div
+                  className="rounded-md px-2 py-1"
+                  style={{ background: "linear-gradient(180deg, #0B1220 0%, #0F172A 100%)" }}
+                >
+                  <Sparkline values={s.values} color={s.color} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <LockedListBlur
+            teaser={report.progress.lockedTeaser}
+            items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
+          />
+        </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+                
+                // Report data from server
+                const reportData = {"header": {"podcast": "Ayush Prakash", "host": "Unknown Host", "episode": "How To Break Porn Addiction \u2013 Joshua Shea", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your ability to ask direct, uncomfortable questions without flinching demonstrates exceptional courage as a host. You opened with \"This episode is going to be quite uncomfortable\" and consistently followed through with challenging inquiries about sensitive topics.", "opportunity": "Your questions, while brave, often lack follow-up depth. You tend to move to new topics rather than drilling deeper into fascinating responses, missing opportunities to uncover more nuanced insights from your guest's expertise.", "freeAction": {"title": "Practice the 3-Layer Follow-Up Technique", "detail": "After asking your initial question, commit to asking 2-3 follow-up questions before moving on. When Joshua mentioned that 35-40% of Gen Z adults haven't had sex, you moved to a new topic instead of exploring the implications. Practice: Initial question \u2192 Clarifying question \u2192 Impact question \u2192 Personal application question."}, "teaser": "Unlock 3 advanced techniques for deeper questioning, plus specific strategies for managing difficult conversations and maintaining audience engagement during sensitive topics.", "lockedActions": ["Develop transition phrases that acknowledge discomfort while maintaining momentum, helping both guest and audience stay engaged with challenging material", "Create a pre-interview framework for sensitive topics that establishes boundaries while encouraging vulnerability and authentic sharing", "Master the art of summarizing complex responses before asking follow-ups, ensuring your audience can follow dense or technical information"]}, "vibeCheck": {"icon": "\ud83c\udfaf", "vibeHtml": "<strong>Direct & Purposeful</strong><br/>You brought focused intensity to a challenging topic, creating space for important conversations that most hosts would avoid.", "quoteHtml": "\"This episode is going to be quite uncomfortable, but very important to talk about. This is a subject that basically everybody has experience with, but not many people talk about in the explicit and detailed way that we're going to for this episode.\""}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "See 4 specific flow patterns, including your question-to-response ratios and topic transition analysis.", "unlockedHtml": "You maintained excellent forward momentum throughout the conversation, with your questions becoming progressively more specific and challenging. Your opening question about skeptics set a strong foundation, and you consistently built complexity as the discussion progressed.", "lockedParagraphsHtml": ["Your question length averaged 2-3 sentences, creating clear, focused inquiries that gave Joshua specific direction without overwhelming him. This contrasts favorably with hosts who ask rambling, multi-part questions.", "You demonstrated strong topic bridging, using phrases like \"So what's happening in the brain\" and \"What I mean, we should definitely talk about\" to create logical connections between complex subjects.", "Your conversation architecture moved from broad concepts (addiction definition) to specific mechanisms (brain chemistry) to practical applications (recovery strategies), showing sophisticated interview planning.", "You maintained consistent energy throughout the 45-minute conversation, with your final questions about hope and magic wands showing the same engagement level as your opening, indicating strong stamina and genuine interest."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "Discover 3 standout moments where your hosting choices created breakthrough insights, plus analysis of your most impactful questions.", "unlockedHtml": "Your question about the difference between male and female pornography use opened up an entirely new dimension of the conversation. Joshua's response revealed that 75% of his female clients watch exclusively female pornography, a statistic that surprised even experienced listeners.", "lockedParagraphsHtml": ["When you asked \"What happens when a young person finds this?\" you created space for Joshua to reveal that nobody becomes addicted at 25 - they start much younger. This question unlocked crucial information about the timeline of addiction development.", "Your inquiry about the \"pipeline\" to pornography through social media and advertising demonstrated sophisticated understanding of modern digital culture, prompting Joshua to discuss how the landscape has changed dramatically even since 2015.", "The moment you asked about porn-induced erectile dysfunction showed your willingness to address the most uncomfortable aspects of the topic, leading to Joshua's powerful explanation of how addiction literally changes brain chemistry and function."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "Track 3 distinct energy phases in your hosting, including specific moments where your engagement peaked and dipped.", "unlockedHtml": "Your energy remained remarkably consistent throughout this challenging conversation, with slight increases during the most technical discussions about brain chemistry and behavioral psychology. You showed particular engagement when asking about cultural implications and societal changes.", "lockedParagraphsHtml": ["Your opening energy was purposeful and slightly tense, appropriate for the subject matter. You used phrases like \"let's just get right into it\" to signal your readiness to tackle difficult topics head-on.", "Mid-conversation, your energy shifted to more analytical and curious, particularly when exploring the neuroscience aspects. Your questions became more technical and specific, showing growing confidence with the material.", "Your closing energy returned to broader, more philosophical territory with questions about hope and magic wands, demonstrating your ability to end heavy conversations on a more uplifting note while maintaining authenticity."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "Explore 4 collaborative moments where your questions and Joshua's expertise created unique insights not found elsewhere.", "unlockedHtml": "You and Joshua created a unique exploration of how hypersexualized culture paradoxically leads to less actual sexual activity. Your observation that \"it doesn't make any sense\" because culture is so hypersexualized prompted Joshua to explain the inward-turning energy phenomenon.", "lockedParagraphsHtml": ["Your question about the \"shadow addiction\" concept led Joshua to contrast visible addictions (alcohol) with hidden ones (pornography), creating a framework that made the topic more accessible to skeptical listeners.", "When you explored the pipeline from social media to pornography, you and Joshua co-created an understanding of how modern digital exposure differs fundamentally from previous generations' experiences.", "Your inquiry about sexual violence connections allowed Joshua to address controversial research while maintaining nuance, showing how skilled hosting can navigate sensitive territory without sensationalizing.", "The thread about Gen Z having less sex despite hypersexualized culture became a collaborative exploration of unintended consequences, with your genuine confusion prompting Joshua's most insightful explanations."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "Get detailed metrics on your question patterns, speaking ratios, and conversation control techniques across 5 key areas.", "unlockedHtml": "You asked approximately 15 substantive questions during the conversation, maintaining a healthy 20% speaking time while allowing Joshua 80% for detailed responses. Your questions averaged 25-30 words each, showing good balance between clarity and completeness.", "lockedParagraphsHtml": ["Your follow-up question rate was 30%, meaning you asked follow-up questions after roughly one-third of Joshua's responses. This is below optimal levels - top hosts follow up 60-70% of the time for deeper insights.", "You used transition phrases 8 times throughout the conversation, including \"So what's happening,\" \"What I mean, we should definitely talk about,\" and \"Also in your practice.\" This shows good conversational flow management.", "Your question complexity increased 40% from beginning to end, starting with broad concepts and progressing to specific technical and cultural applications, demonstrating strong interview architecture.", "You maintained topic focus for an average of 3-4 exchanges per subject before moving on, which is appropriate for this format but could be extended for certain high-value topics that deserved deeper exploration."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 8.2, "scoreType": "higher", "teaser": "Discover 3 vocal patterns that established authority, plus specific techniques for managing difficult conversations.", "unlockedHtml": "Your voice carried remarkable steadiness throughout this challenging conversation. You never wavered or showed discomfort, even when discussing explicit topics like erectile dysfunction or sexual violence. This consistency gave Joshua permission to be equally direct and clinical in his responses.", "lockedParagraphsHtml": ["Your opening declaration that the episode would be \"quite uncomfortable, but very important\" established your authority to guide difficult conversations. This vocal confidence set the tone for the entire discussion and likely influenced Joshua's willingness to be completely candid.", "You used strategic vocal emphasis on key phrases like \"shadow addiction\" and \"pipeline to pornography,\" helping listeners track important concepts in dense material. This technique is particularly valuable in educational content where audiences need clear signposts.", "Your vocal pacing remained consistent even during the most sensitive topics, never rushing through uncomfortable material or slowing down awkwardly. This professional handling likely made the content more accessible to listeners who might otherwise tune out during difficult discussions."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 7.6, "scoreType": "higher", "teaser": "Uncover 4 signature hosting moves that distinguish your approach, including your unique question construction methods.", "unlockedHtml": "Your hosting style blends journalistic directness with genuine curiosity. You're willing to ask the questions others avoid, but you do so from a place of learning rather than sensationalism. Your phrase \"it doesn't make any sense\" when discussing cultural contradictions shows authentic confusion rather than performative shock.", "lockedParagraphsHtml": ["You have a distinctive way of acknowledging complexity before asking questions, using phrases like \"What I mean, we should definitely talk about\" and \"it feels like.\" This shows intellectual humility while maintaining conversational momentum.", "Your question construction often includes context-setting before the actual inquiry, such as explaining why young people's exposure differs from adults with developed prefrontal cortexes. This educational approach helps listeners follow complex topics.", "You demonstrate a signature move of connecting abstract concepts to concrete cultural observations, like linking pornography addiction to broader consent culture discussions. This shows sophisticated thinking about interconnected social issues.", "Your style includes strategic vulnerability, admitting when something doesn't make sense to you rather than pretending to understand everything. This authenticity likely makes guests more comfortable sharing difficult truths."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 8.7, "scoreType": "higher", "teaser": "See 3 specific techniques that created psychological safety for sensitive topics, plus analysis of guest response patterns.", "unlockedHtml": "Joshua clearly felt safe to share extremely personal and professional insights with you. His willingness to discuss his own 24-year addiction, specific client statistics, and controversial research suggests you created an environment of trust and professional respect rather than judgment or sensationalism.", "lockedParagraphsHtml": ["Your clinical, educational approach to sensitive topics gave Joshua permission to be equally professional and detailed. When you asked about erectile dysfunction, you used medical terminology and framed it as a health issue, which likely made him comfortable providing specific physiological explanations.", "You demonstrated active listening by building on Joshua's responses with increasingly sophisticated questions. When he mentioned process vs. substance addictions, you later connected this to cultural patterns, showing you were genuinely processing his expertise.", "Your non-judgmental tone throughout discussions of addiction, sexual behavior, and controversial research created space for Joshua to share nuanced perspectives without defensive hedging. This is particularly valuable when discussing topics that often generate moral rather than scientific responses."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 8.4, "scoreType": "higher", "teaser": "Explore 4 breakthrough insights that emerged from your collaborative thinking, including unique cultural observations.", "unlockedHtml": "You and Joshua co-created a fascinating paradox exploration: how hypersexualized culture leads to less actual sexual activity. Your genuine confusion about this contradiction prompted Joshua's most insightful explanation about energy turning inward rather than outward, creating a unique framework for understanding modern sexual behavior.", "lockedParagraphsHtml": ["Your concept of a \"shadow addiction\" that people don't recognize sparked Joshua's comparison to visible addictions like alcoholism, creating a new way to understand hidden behavioral patterns that could apply beyond pornography.", "Together you developed the idea of a \"pipeline\" from social media hypersexualization to pornography addiction, mapping how modern digital exposure creates pathways that didn't exist in previous generations.", "Your exploration of the generational divide in sexual behavior led to the insight that current young adults are having less sex than any generation in 110 years, despite unprecedented access to sexual content - a counterintuitive finding with broad cultural implications.", "The collaborative discussion of how pornography serves as a \"coping technique\" rather than just entertainment reframed addiction as a mental health issue rather than a moral failing, potentially changing how listeners understand their own or others' behaviors."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 6.3, "scoreType": "lower", "teaser": "Identify 3 missed opportunities for deeper exploration, plus strategies for maximizing expert guest insights.", "unlockedHtml": "Your biggest growth opportunity lies in follow-up questioning. When Joshua revealed that 35-40% of Gen Z adults have never had sex with a partner, you moved to a new topic instead of exploring this shocking statistic's implications for relationships, mental health, and society. This pattern repeated several times throughout the conversation.", "lockedParagraphsHtml": ["You sometimes accepted complex answers without asking for clarification that would help your audience. When Joshua explained the difference between process and substance addictions, a follow-up asking for specific examples would have made this crucial distinction clearer for listeners.", "You missed opportunities to connect Joshua's expertise to practical listener applications. After learning about porn-induced erectile dysfunction affecting 80% of his young male clients, you could have asked what signs people should watch for in themselves or partners.", "Your tendency to move quickly between topics, while maintaining good pace, sometimes left valuable insights underdeveloped. Joshua's mention of working with recognizable porn stars who validate his message deserved deeper exploration for its unique perspective on the industry."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 7.9, "scoreType": "higher", "teaser": "Access 4 specific skill-building exercises, including advanced questioning techniques and sensitive topic management strategies.", "unlockedHtml": "Your foundation for handling difficult conversations is strong, but you can build on it with structured follow-up techniques. Practice the \"ladder method\": after each substantial guest response, ask yourself if you can go one level deeper before moving to your next planned question.", "lockedParagraphsHtml": ["Develop a \"clarification bank\" of phrases like \"Help me understand what that means for someone listening\" or \"Can you give us a concrete example of that?\" These tools will help you translate expert knowledge into accessible insights for your audience.", "Create a pre-interview sensitivity protocol for controversial topics. Establish with guests which areas they're comfortable exploring deeply versus those they prefer to address more generally. This preparation can unlock even more candid discussions.", "Practice the \"impact question\" technique: after learning about a problem or phenomenon, always ask \"What does this mean for [specific audience group]?\" This helps transform interesting information into actionable insights.", "Build your expertise in transition management for heavy topics. Develop a toolkit of phrases that acknowledge the weight of difficult subjects while maintaining forward momentum, helping both guests and audiences stay engaged with challenging material."]}], "meta": {"jobId": "10ebc5d4-17e1-4b19-b5ac-456e7591a7fa"}};
+                
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
+                
+                // Add Job ID Footer component
+                const JobIdFooter = ({ jobId }) => {
+                    const copyToClipboard = () => {
+                        navigator.clipboard.writeText(jobId).then(() => {
+                            alert('Job ID copied to clipboard!');
+                        });
+                    };
+                    
+                    return React.createElement('div', {
+                        style: {
+                            marginTop: '0',
+                            padding: '15px 30px',
+                            textAlign: 'center',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderTop: 'none',
+                            color: '#cbd5e1'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'job-id',
+                            style: {
+                                fontSize: '12px',
+                                fontFamily: 'monospace, courier',
+                                cursor: 'pointer',
+                                userSelect: 'all',
+                                color: '#94a3b8',
+                                opacity: '0.8'
+                            },
+                            onClick: copyToClipboard,
+                            title: 'Click to copy Job ID'
+                        }, `Job ID: ${jobId}`)
+                    ]);
+                };
+                
+                // Enhanced ReportApp with header and footer
+                const MainReportApp = ({ report }) => {
+                    return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
+                        React.createElement(EnhancedReportApp, { key: 'report', report }),
+                        React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
+                    ]);
+                };
+                
+                // Render the app
+                const root = ReactDOM.createRoot(document.getElementById('root'));
+                root.render(React.createElement(MainReportApp, { report: reportData }));
+            </script>
+        
+        <div id="authenticity-nav-footer"></div>
+        </body>
+        </html>
+        
