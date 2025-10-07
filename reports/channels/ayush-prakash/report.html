@@ -606,6 +606,106 @@
             <div class="strength-score">8.6/10</div>
 
             
+        <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
+            <canvas id="sparkline_guest_4458277312"></canvas>
+            <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #10b981; font-weight: 600;">
+                +0.0%
+            </div>
+        </div>
+        <script>
+            const ctx_sparkline_guest_4458277312 = document.getElementById('sparkline_guest_4458277312').getContext('2d');
+            const data_sparkline_guest_4458277312 = [8.7, 8.7, 8.5, 7.8, 8.7, 8.7, 8.7, 8.7, 8.7, 8.7, 8.5, 8.7, 8.7, 8.7, 8.7, 8.7, 8.5, 9.1, 8.7];
+            const minVal_sparkline_guest_4458277312 = Math.min(...data_sparkline_guest_4458277312);
+            const maxVal_sparkline_guest_4458277312 = Math.max(...data_sparkline_guest_4458277312);
+
+            new Chart(ctx_sparkline_guest_4458277312, {
+                type: 'line',
+                data: {
+                    labels: ['Why Your Mental Health Cris...', '10 Truths Every Teen Must K...', 'Is Paid Intimacy the Future...', 'Why Modern Society Is So Ru...', 'Why Adults Fail to Hear Chi...', 'The Power of the Subconscio...', 'From Sex Work to Self-Disco...', 'Where AI and Automation Are...', 'PayPal’s Former Innovation ...', 'Why Managing Gen Z Is Diffe...', 'Everything About Work Is Ch...', 'Why Hinduism’s Teachings Ar...', 'Why Social Media Is Breakin...', 'Everything Wrong With Artif...', 'The Power of Astronomy in t...', 'Have We Lost Human Touch? -...', 'Is AI Raising Entrepreneurs...', 'What Grief Teaches Us About...', 'How To Break Porn Addiction...'],
+                    datasets: [{
+                        data: data_sparkline_guest_4458277312,
+                        borderColor: '#10b981',
+                        backgroundColor: '#10b98140',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.2,
+                        pointRadius: function(context) {
+                            const idx = context.dataIndex;
+                            const val = context.parsed.y;
+                            // Show markers on: first, last, min, max
+                            if (idx === 0 || idx === data_sparkline_guest_4458277312.length - 1) {
+                                return 4;
+                            }
+                            if (val === minVal_sparkline_guest_4458277312 || val === maxVal_sparkline_guest_4458277312) {
+                                return 5;  // Slightly larger for min/max
+                            }
+                            return 0;
+                        },
+                        pointBackgroundColor: function(context) {
+                            const val = context.parsed.y;
+                            // Highlight min/max with different color
+                            if (val === minVal_sparkline_guest_4458277312) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_guest_4458277312) return '#10b981';  // Green for max
+                            return '#10b981';
+                        },
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 6,
+                        pointStyle: 'circle'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 20,
+                            right: 8,
+                            bottom: 8,
+                            left: 2
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    return 'Score: ' + context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                baseline: {
+                                    type: 'line',
+                                    yMin: 7.0,
+                                    yMax: 7.0,
+                                    borderColor: '#64748b',
+                                    borderWidth: 1,
+                                    borderDash: [3, 3],
+                                    label: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            display: false,
+                            min: 0,
+                            max: 10
+                        },
+                        x: { display: false }
+                    }
+                }
+            });
+        </script>
+        
 
             <div class="feedback-headline">You're creating exceptional psychological safety for your guests.</div>
 
@@ -631,6 +731,106 @@
             <div class="strength-score">8.5/10</div>
 
             
+        <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
+            <canvas id="sparkline_intelchem_4458277312"></canvas>
+            <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #8b5cf6; font-weight: 600;">
+                +0.0%
+            </div>
+        </div>
+        <script>
+            const ctx_sparkline_intelchem_4458277312 = document.getElementById('sparkline_intelchem_4458277312').getContext('2d');
+            const data_sparkline_intelchem_4458277312 = [8.4, 8.4, 8.0, 8.4, 8.9, 8.9, 8.4, 9.1, 7.8, 8.4, 8.7, 8.4, 7.8, 8.4, 8.9, 9.1, 8.0, 8.9, 8.4];
+            const minVal_sparkline_intelchem_4458277312 = Math.min(...data_sparkline_intelchem_4458277312);
+            const maxVal_sparkline_intelchem_4458277312 = Math.max(...data_sparkline_intelchem_4458277312);
+
+            new Chart(ctx_sparkline_intelchem_4458277312, {
+                type: 'line',
+                data: {
+                    labels: ['Why Your Mental Health Cris...', '10 Truths Every Teen Must K...', 'Is Paid Intimacy the Future...', 'Why Modern Society Is So Ru...', 'Why Adults Fail to Hear Chi...', 'The Power of the Subconscio...', 'From Sex Work to Self-Disco...', 'Where AI and Automation Are...', 'PayPal’s Former Innovation ...', 'Why Managing Gen Z Is Diffe...', 'Everything About Work Is Ch...', 'Why Hinduism’s Teachings Ar...', 'Why Social Media Is Breakin...', 'Everything Wrong With Artif...', 'The Power of Astronomy in t...', 'Have We Lost Human Touch? -...', 'Is AI Raising Entrepreneurs...', 'What Grief Teaches Us About...', 'How To Break Porn Addiction...'],
+                    datasets: [{
+                        data: data_sparkline_intelchem_4458277312,
+                        borderColor: '#8b5cf6',
+                        backgroundColor: '#8b5cf640',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.2,
+                        pointRadius: function(context) {
+                            const idx = context.dataIndex;
+                            const val = context.parsed.y;
+                            // Show markers on: first, last, min, max
+                            if (idx === 0 || idx === data_sparkline_intelchem_4458277312.length - 1) {
+                                return 4;
+                            }
+                            if (val === minVal_sparkline_intelchem_4458277312 || val === maxVal_sparkline_intelchem_4458277312) {
+                                return 5;  // Slightly larger for min/max
+                            }
+                            return 0;
+                        },
+                        pointBackgroundColor: function(context) {
+                            const val = context.parsed.y;
+                            // Highlight min/max with different color
+                            if (val === minVal_sparkline_intelchem_4458277312) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_intelchem_4458277312) return '#10b981';  // Green for max
+                            return '#8b5cf6';
+                        },
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 6,
+                        pointStyle: 'circle'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 20,
+                            right: 8,
+                            bottom: 8,
+                            left: 2
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    return 'Score: ' + context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                baseline: {
+                                    type: 'line',
+                                    yMin: 7.0,
+                                    yMax: 7.0,
+                                    borderColor: '#64748b',
+                                    borderWidth: 1,
+                                    borderDash: [3, 3],
+                                    label: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            display: false,
+                            min: 0,
+                            max: 10
+                        },
+                        x: { display: false }
+                    }
+                }
+            });
+        </script>
+        
 
             <div class="feedback-headline">Your authentic presence sparks genuine dialogue.</div>
 
@@ -656,6 +856,106 @@
             <div class="strength-score">8.0/10</div>
 
             
+        <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
+            <canvas id="sparkline_voice_4458277312"></canvas>
+            <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #3b82f6; font-weight: 600;">
+                +0.0%
+            </div>
+        </div>
+        <script>
+            const ctx_sparkline_voice_4458277312 = document.getElementById('sparkline_voice_4458277312').getContext('2d');
+            const data_sparkline_voice_4458277312 = [8.2, 8.2, 8.2, 7.2, 8.2, 8.2, 8.2, 7.2, 7.2, 8.2, 8.2, 8.2, 7.2, 8.2, 8.2, 8.2, 8.2, 8.7, 8.2];
+            const minVal_sparkline_voice_4458277312 = Math.min(...data_sparkline_voice_4458277312);
+            const maxVal_sparkline_voice_4458277312 = Math.max(...data_sparkline_voice_4458277312);
+
+            new Chart(ctx_sparkline_voice_4458277312, {
+                type: 'line',
+                data: {
+                    labels: ['Why Your Mental Health Cris...', '10 Truths Every Teen Must K...', 'Is Paid Intimacy the Future...', 'Why Modern Society Is So Ru...', 'Why Adults Fail to Hear Chi...', 'The Power of the Subconscio...', 'From Sex Work to Self-Disco...', 'Where AI and Automation Are...', 'PayPal’s Former Innovation ...', 'Why Managing Gen Z Is Diffe...', 'Everything About Work Is Ch...', 'Why Hinduism’s Teachings Ar...', 'Why Social Media Is Breakin...', 'Everything Wrong With Artif...', 'The Power of Astronomy in t...', 'Have We Lost Human Touch? -...', 'Is AI Raising Entrepreneurs...', 'What Grief Teaches Us About...', 'How To Break Porn Addiction...'],
+                    datasets: [{
+                        data: data_sparkline_voice_4458277312,
+                        borderColor: '#3b82f6',
+                        backgroundColor: '#3b82f640',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.2,
+                        pointRadius: function(context) {
+                            const idx = context.dataIndex;
+                            const val = context.parsed.y;
+                            // Show markers on: first, last, min, max
+                            if (idx === 0 || idx === data_sparkline_voice_4458277312.length - 1) {
+                                return 4;
+                            }
+                            if (val === minVal_sparkline_voice_4458277312 || val === maxVal_sparkline_voice_4458277312) {
+                                return 5;  // Slightly larger for min/max
+                            }
+                            return 0;
+                        },
+                        pointBackgroundColor: function(context) {
+                            const val = context.parsed.y;
+                            // Highlight min/max with different color
+                            if (val === minVal_sparkline_voice_4458277312) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_voice_4458277312) return '#10b981';  // Green for max
+                            return '#3b82f6';
+                        },
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 6,
+                        pointStyle: 'circle'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 20,
+                            right: 8,
+                            bottom: 8,
+                            left: 2
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    return 'Score: ' + context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                baseline: {
+                                    type: 'line',
+                                    yMin: 7.0,
+                                    yMax: 7.0,
+                                    borderColor: '#64748b',
+                                    borderWidth: 1,
+                                    borderDash: [3, 3],
+                                    label: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            display: false,
+                            min: 0,
+                            max: 10
+                        },
+                        x: { display: false }
+                    }
+                }
+            });
+        </script>
+        
 
             <div class="feedback-headline">Your intellectual curiosity drives meaningful conversations.</div>
 
@@ -686,6 +986,106 @@
             <div class="opportunity-score">5.6/10</div>
 
             
+        <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
+            <canvas id="sparkline_blind_4458277312"></canvas>
+            <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #ef4444; font-weight: 600;">
+                +0.0%
+            </div>
+        </div>
+        <script>
+            const ctx_sparkline_blind_4458277312 = document.getElementById('sparkline_blind_4458277312').getContext('2d');
+            const data_sparkline_blind_4458277312 = [6.8, 3.2, 6.8, 6.3, 3.2, 3.2, 6.8, 6.8, 6.4, 6.8, 6.2, 3.2, 6.4, 3.2, 3.2, 6.4, 6.8, 7.2, 6.8];
+            const minVal_sparkline_blind_4458277312 = Math.min(...data_sparkline_blind_4458277312);
+            const maxVal_sparkline_blind_4458277312 = Math.max(...data_sparkline_blind_4458277312);
+
+            new Chart(ctx_sparkline_blind_4458277312, {
+                type: 'line',
+                data: {
+                    labels: ['Why Your Mental Health Cris...', '10 Truths Every Teen Must K...', 'Is Paid Intimacy the Future...', 'Why Modern Society Is So Ru...', 'Why Adults Fail to Hear Chi...', 'The Power of the Subconscio...', 'From Sex Work to Self-Disco...', 'Where AI and Automation Are...', 'PayPal’s Former Innovation ...', 'Why Managing Gen Z Is Diffe...', 'Everything About Work Is Ch...', 'Why Hinduism’s Teachings Ar...', 'Why Social Media Is Breakin...', 'Everything Wrong With Artif...', 'The Power of Astronomy in t...', 'Have We Lost Human Touch? -...', 'Is AI Raising Entrepreneurs...', 'What Grief Teaches Us About...', 'How To Break Porn Addiction...'],
+                    datasets: [{
+                        data: data_sparkline_blind_4458277312,
+                        borderColor: '#ef4444',
+                        backgroundColor: '#ef444440',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.2,
+                        pointRadius: function(context) {
+                            const idx = context.dataIndex;
+                            const val = context.parsed.y;
+                            // Show markers on: first, last, min, max
+                            if (idx === 0 || idx === data_sparkline_blind_4458277312.length - 1) {
+                                return 4;
+                            }
+                            if (val === minVal_sparkline_blind_4458277312 || val === maxVal_sparkline_blind_4458277312) {
+                                return 5;  // Slightly larger for min/max
+                            }
+                            return 0;
+                        },
+                        pointBackgroundColor: function(context) {
+                            const val = context.parsed.y;
+                            // Highlight min/max with different color
+                            if (val === minVal_sparkline_blind_4458277312) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_blind_4458277312) return '#10b981';  // Green for max
+                            return '#ef4444';
+                        },
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 6,
+                        pointStyle: 'circle'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 20,
+                            right: 8,
+                            bottom: 8,
+                            left: 2
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    return 'Score: ' + context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                baseline: {
+                                    type: 'line',
+                                    yMin: 7.0,
+                                    yMax: 7.0,
+                                    borderColor: '#64748b',
+                                    borderWidth: 1,
+                                    borderDash: [3, 3],
+                                    label: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            display: false,
+                            min: 0,
+                            max: 10
+                        },
+                        x: { display: false }
+                    }
+                }
+            });
+        </script>
+        
 
             <div class="feedback-headline">Your content is becoming clearer, but some complexity still holds you back.</div>
 
@@ -810,11 +1210,106 @@
 
         <h2>📚 Episode Reports</h2>
         <div class="episode-directory">
-            <p>No published reports available</p>
+            <div class="episode-preview-grid">
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/Why-Your-Mental-Health-Crisis-Might-Be-A-Spiritual_51048b98.html">Why Your Mental Health Crisis Might Be A Spiritual Awakening - Alisa Gracheva</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.7</span><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.4</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/10-Truths-Every-Teen-Must-Know-Before-Adulthood-Dr_2a9ccdcf.html">10 Truths Every Teen Must Know Before Adulthood - Dr. Ran Anbar</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.7</span><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.4</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/Is-Paid-Intimacy-the-Future-of-Human-Connection-Ar_a3d5b734.html">Is Paid Intimacy the Future of Human Connection? - Arik Brueckner</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.5</span><span class="episode-score-badge">How Your Voice Carried the Room: 8.2</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/Why-Modern-Society-Is-So-Rude-And-How-To-Fix-It-Dr_1645ba9a.html">Why Modern Society Is So Rude And How To Fix It - Dr. John O'Brien</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.4</span><span class="episode-score-badge">What Makes You, You: 8.1</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/Why-Adults-Fail-to-Hear-Children-Dr-Zee_581a0778.html">Why Adults Fail to Hear Children – Dr. Zee</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.9</span><span class="episode-score-badge">How You Made Them Feel: 8.7</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/The-Power-of-the-Subconscious-Mind-Dr-Ran-Anbar_d257e482.html">The Power of the Subconscious Mind – Dr. Ran Anbar</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.9</span><span class="episode-score-badge">How You Made Them Feel: 8.7</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/From-Sex-Work-to-Self-Discovery-Tiffany-Zehara_707609a1.html">From Sex Work to Self-Discovery – Tiffany Zehara</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.7</span><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.4</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/Where-AI-and-Automation-Are-Really-Taking-Us-Alex-_fcf1f91d.html">Where AI and Automation Are Really Taking Us - Alex Rosalez</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">The Ideas You Cooked Up Together: 9.1</span><span class="episode-score-badge">How You Made Them Feel: 8.7</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/PayPals-Former-Innovation-Chief-Warns-Leaders-to-A_6cb07a37.html">PayPal’s Former Innovation Chief Warns Leaders to Adapt or Fail - Mike Todasco</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.7</span><span class="episode-score-badge">What Makes You, You: 8.1</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/Why-Managing-Gen-Z-Is-Different-Nikhil-Raval_461d0dde.html">Why Managing Gen Z Is Different – Nikhil Raval</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.7</span><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.4</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/Everything-About-Work-Is-Changing-Henrik-de-Gyor_6172afc5.html">Everything About Work Is Changing – Henrik de Gyor</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.7</span><span class="episode-score-badge">How You Made Them Feel: 8.5</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/Why-Hinduisms-Teachings-Are-More-Relevant-Than-Eve_6e97065f.html">Why Hinduism’s Teachings Are More Relevant Than Ever</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.7</span><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.4</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/Why-Social-Media-Is-Breaking-Us-Julien-Belmont_233bfd56.html">Why Social Media Is Breaking Us - Julien Belmont</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.7</span><span class="episode-score-badge">What Makes You, You: 8.1</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/Everything-Wrong-With-Artificial-Intelligence-in-2_506c43cc.html">Everything Wrong With Artificial Intelligence in 2025 - Chris Hood</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.7</span><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.4</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/The-Power-of-Astronomy-in-the-21st-Century-Mike-Si_804e0228.html">The Power of Astronomy in the 21st Century - Mike Simmons</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.9</span><span class="episode-score-badge">How You Made Them Feel: 8.7</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/Have-We-Lost-Human-Touch-Epiphany-Jordan_684afba5.html">Have We Lost Human Touch? - Epiphany Jordan</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">The Ideas You Cooked Up Together: 9.1</span><span class="episode-score-badge">How You Made Them Feel: 8.7</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/Is-AI-Raising-Entrepreneurs-Amy-Love_73f1ce05.html">Is AI Raising Entrepreneurs? – Amy Love</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.5</span><span class="episode-score-badge">How Your Voice Carried the Room: 8.2</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/What-Grief-Teaches-Us-About-Love-G-Scott-Graham_b0dcdc5d.html">What Grief Teaches Us About Love – G. Scott Graham</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 9.1</span><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.9</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../ayush-prakash/How-To-Break-Porn-Addiction-Joshua-Shea_10ebc5d4.html">How To Break Porn Addiction – Joshua Shea</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.7</span><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.4</span></div>
+            </div>
+            </div>
         </div>
 
         <footer>
-            <p>Generated on October 06, 2025 at 11:37 AM</p>
+            <p>Generated on October 06, 2025 at 09:15 PM</p>
             <p><strong>Channel ID:</strong> ayush-prakash • <strong>Episodes Analyzed:</strong> 19</p>
             <nav>
                 <a href="/">Home</a>

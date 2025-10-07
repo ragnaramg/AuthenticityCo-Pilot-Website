@@ -607,23 +607,23 @@
 
             
         <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_guest_4392274944"></canvas>
+            <canvas id="sparkline_guest_4467269184"></canvas>
             <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #10b981; font-weight: 600;">
                 +0.0%
             </div>
         </div>
         <script>
-            const ctx_sparkline_guest_4392274944 = document.getElementById('sparkline_guest_4392274944').getContext('2d');
-            const data_sparkline_guest_4392274944 = [8.2, 8.7, 8.7, 7.8, 8.2];
-            const minVal_sparkline_guest_4392274944 = Math.min(...data_sparkline_guest_4392274944);
-            const maxVal_sparkline_guest_4392274944 = Math.max(...data_sparkline_guest_4392274944);
+            const ctx_sparkline_guest_4467269184 = document.getElementById('sparkline_guest_4467269184').getContext('2d');
+            const data_sparkline_guest_4467269184 = [8.2, 8.7, 8.7, 7.8, 8.2];
+            const minVal_sparkline_guest_4467269184 = Math.min(...data_sparkline_guest_4467269184);
+            const maxVal_sparkline_guest_4467269184 = Math.max(...data_sparkline_guest_4467269184);
 
-            new Chart(ctx_sparkline_guest_4392274944, {
+            new Chart(ctx_sparkline_guest_4467269184, {
                 type: 'line',
                 data: {
                     labels: ['Authenticity, Ego & Spiritu...', 'Mastering Ego: The Path to ...', 'Finding Flow: Dismantling t...', 'Why Manifestation Isn’t Wor...', 'Authenticity, Ego & Spiritu...'],
                     datasets: [{
-                        data: data_sparkline_guest_4392274944,
+                        data: data_sparkline_guest_4467269184,
                         borderColor: '#10b981',
                         backgroundColor: '#10b98140',
                         borderWidth: 2,
@@ -633,10 +633,10 @@
                             const idx = context.dataIndex;
                             const val = context.parsed.y;
                             // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_guest_4392274944.length - 1) {
+                            if (idx === 0 || idx === data_sparkline_guest_4467269184.length - 1) {
                                 return 4;
                             }
-                            if (val === minVal_sparkline_guest_4392274944 || val === maxVal_sparkline_guest_4392274944) {
+                            if (val === minVal_sparkline_guest_4467269184 || val === maxVal_sparkline_guest_4467269184) {
                                 return 5;  // Slightly larger for min/max
                             }
                             return 0;
@@ -644,8 +644,8 @@
                         pointBackgroundColor: function(context) {
                             const val = context.parsed.y;
                             // Highlight min/max with different color
-                            if (val === minVal_sparkline_guest_4392274944) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_guest_4392274944) return '#10b981';  // Green for max
+                            if (val === minVal_sparkline_guest_4467269184) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_guest_4467269184) return '#10b981';  // Green for max
                             return '#10b981';
                         },
                         pointBorderColor: '#ffffff',
@@ -732,23 +732,23 @@
 
             
         <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_style_4392274944"></canvas>
+            <canvas id="sparkline_style_4467269184"></canvas>
             <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #f97316; font-weight: 600;">
                 +0.0%
             </div>
         </div>
         <script>
-            const ctx_sparkline_style_4392274944 = document.getElementById('sparkline_style_4392274944').getContext('2d');
-            const data_sparkline_style_4392274944 = [7.5, 8.1, 8.1, 8.1, 7.5];
-            const minVal_sparkline_style_4392274944 = Math.min(...data_sparkline_style_4392274944);
-            const maxVal_sparkline_style_4392274944 = Math.max(...data_sparkline_style_4392274944);
+            const ctx_sparkline_style_4467269184 = document.getElementById('sparkline_style_4467269184').getContext('2d');
+            const data_sparkline_style_4467269184 = [7.5, 8.1, 8.1, 8.1, 7.5];
+            const minVal_sparkline_style_4467269184 = Math.min(...data_sparkline_style_4467269184);
+            const maxVal_sparkline_style_4467269184 = Math.max(...data_sparkline_style_4467269184);
 
-            new Chart(ctx_sparkline_style_4392274944, {
+            new Chart(ctx_sparkline_style_4467269184, {
                 type: 'line',
                 data: {
                     labels: ['Authenticity, Ego & Spiritu...', 'Mastering Ego: The Path to ...', 'Finding Flow: Dismantling t...', 'Why Manifestation Isn’t Wor...', 'Authenticity, Ego & Spiritu...'],
                     datasets: [{
-                        data: data_sparkline_style_4392274944,
+                        data: data_sparkline_style_4467269184,
                         borderColor: '#f97316',
                         backgroundColor: '#f9731640',
                         borderWidth: 2,
@@ -758,10 +758,10 @@
                             const idx = context.dataIndex;
                             const val = context.parsed.y;
                             // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_style_4392274944.length - 1) {
+                            if (idx === 0 || idx === data_sparkline_style_4467269184.length - 1) {
                                 return 4;
                             }
-                            if (val === minVal_sparkline_style_4392274944 || val === maxVal_sparkline_style_4392274944) {
+                            if (val === minVal_sparkline_style_4467269184 || val === maxVal_sparkline_style_4467269184) {
                                 return 5;  // Slightly larger for min/max
                             }
                             return 0;
@@ -769,8 +769,8 @@
                         pointBackgroundColor: function(context) {
                             const val = context.parsed.y;
                             // Highlight min/max with different color
-                            if (val === minVal_sparkline_style_4392274944) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_style_4392274944) return '#10b981';  // Green for max
+                            if (val === minVal_sparkline_style_4467269184) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_style_4467269184) return '#10b981';  // Green for max
                             return '#f97316';
                         },
                         pointBorderColor: '#ffffff',
@@ -857,23 +857,23 @@
 
             
         <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_intelchem_4392274944"></canvas>
+            <canvas id="sparkline_intelchem_4467269184"></canvas>
             <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #8b5cf6; font-weight: 600;">
                 +0.0%
             </div>
         </div>
         <script>
-            const ctx_sparkline_intelchem_4392274944 = document.getElementById('sparkline_intelchem_4392274944').getContext('2d');
-            const data_sparkline_intelchem_4392274944 = [7.1, 7.8, 7.8, 8.4, 7.1];
-            const minVal_sparkline_intelchem_4392274944 = Math.min(...data_sparkline_intelchem_4392274944);
-            const maxVal_sparkline_intelchem_4392274944 = Math.max(...data_sparkline_intelchem_4392274944);
+            const ctx_sparkline_intelchem_4467269184 = document.getElementById('sparkline_intelchem_4467269184').getContext('2d');
+            const data_sparkline_intelchem_4467269184 = [7.1, 7.8, 7.8, 8.4, 7.1];
+            const minVal_sparkline_intelchem_4467269184 = Math.min(...data_sparkline_intelchem_4467269184);
+            const maxVal_sparkline_intelchem_4467269184 = Math.max(...data_sparkline_intelchem_4467269184);
 
-            new Chart(ctx_sparkline_intelchem_4392274944, {
+            new Chart(ctx_sparkline_intelchem_4467269184, {
                 type: 'line',
                 data: {
                     labels: ['Authenticity, Ego & Spiritu...', 'Mastering Ego: The Path to ...', 'Finding Flow: Dismantling t...', 'Why Manifestation Isn’t Wor...', 'Authenticity, Ego & Spiritu...'],
                     datasets: [{
-                        data: data_sparkline_intelchem_4392274944,
+                        data: data_sparkline_intelchem_4467269184,
                         borderColor: '#8b5cf6',
                         backgroundColor: '#8b5cf640',
                         borderWidth: 2,
@@ -883,10 +883,10 @@
                             const idx = context.dataIndex;
                             const val = context.parsed.y;
                             // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_intelchem_4392274944.length - 1) {
+                            if (idx === 0 || idx === data_sparkline_intelchem_4467269184.length - 1) {
                                 return 4;
                             }
-                            if (val === minVal_sparkline_intelchem_4392274944 || val === maxVal_sparkline_intelchem_4392274944) {
+                            if (val === minVal_sparkline_intelchem_4467269184 || val === maxVal_sparkline_intelchem_4467269184) {
                                 return 5;  // Slightly larger for min/max
                             }
                             return 0;
@@ -894,8 +894,8 @@
                         pointBackgroundColor: function(context) {
                             const val = context.parsed.y;
                             // Highlight min/max with different color
-                            if (val === minVal_sparkline_intelchem_4392274944) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_intelchem_4392274944) return '#10b981';  // Green for max
+                            if (val === minVal_sparkline_intelchem_4467269184) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_intelchem_4467269184) return '#10b981';  // Green for max
                             return '#8b5cf6';
                         },
                         pointBorderColor: '#ffffff',
@@ -987,23 +987,23 @@
 
             
         <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_voice_4392274944"></canvas>
+            <canvas id="sparkline_voice_4467269184"></canvas>
             <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #3b82f6; font-weight: 600;">
                 +0.0%
             </div>
         </div>
         <script>
-            const ctx_sparkline_voice_4392274944 = document.getElementById('sparkline_voice_4392274944').getContext('2d');
-            const data_sparkline_voice_4392274944 = [6.8, 7.2, 7.2, 7.2, 6.8];
-            const minVal_sparkline_voice_4392274944 = Math.min(...data_sparkline_voice_4392274944);
-            const maxVal_sparkline_voice_4392274944 = Math.max(...data_sparkline_voice_4392274944);
+            const ctx_sparkline_voice_4467269184 = document.getElementById('sparkline_voice_4467269184').getContext('2d');
+            const data_sparkline_voice_4467269184 = [6.8, 7.2, 7.2, 7.2, 6.8];
+            const minVal_sparkline_voice_4467269184 = Math.min(...data_sparkline_voice_4467269184);
+            const maxVal_sparkline_voice_4467269184 = Math.max(...data_sparkline_voice_4467269184);
 
-            new Chart(ctx_sparkline_voice_4392274944, {
+            new Chart(ctx_sparkline_voice_4467269184, {
                 type: 'line',
                 data: {
                     labels: ['Authenticity, Ego & Spiritu...', 'Mastering Ego: The Path to ...', 'Finding Flow: Dismantling t...', 'Why Manifestation Isn’t Wor...', 'Authenticity, Ego & Spiritu...'],
                     datasets: [{
-                        data: data_sparkline_voice_4392274944,
+                        data: data_sparkline_voice_4467269184,
                         borderColor: '#3b82f6',
                         backgroundColor: '#3b82f640',
                         borderWidth: 2,
@@ -1013,10 +1013,10 @@
                             const idx = context.dataIndex;
                             const val = context.parsed.y;
                             // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_voice_4392274944.length - 1) {
+                            if (idx === 0 || idx === data_sparkline_voice_4467269184.length - 1) {
                                 return 4;
                             }
-                            if (val === minVal_sparkline_voice_4392274944 || val === maxVal_sparkline_voice_4392274944) {
+                            if (val === minVal_sparkline_voice_4467269184 || val === maxVal_sparkline_voice_4467269184) {
                                 return 5;  // Slightly larger for min/max
                             }
                             return 0;
@@ -1024,8 +1024,8 @@
                         pointBackgroundColor: function(context) {
                             const val = context.parsed.y;
                             // Highlight min/max with different color
-                            if (val === minVal_sparkline_voice_4392274944) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_voice_4392274944) return '#10b981';  // Green for max
+                            if (val === minVal_sparkline_voice_4467269184) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_voice_4467269184) return '#10b981';  // Green for max
                             return '#3b82f6';
                         },
                         pointBorderColor: '#ffffff',
@@ -1112,23 +1112,23 @@
 
             
         <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_blind_4392274944"></canvas>
+            <canvas id="sparkline_blind_4467269184"></canvas>
             <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #ef4444; font-weight: 600;">
                 +0.0%
             </div>
         </div>
         <script>
-            const ctx_sparkline_blind_4392274944 = document.getElementById('sparkline_blind_4392274944').getContext('2d');
-            const data_sparkline_blind_4392274944 = [6.3, 6.3, 6.4, 6.3, 6.3];
-            const minVal_sparkline_blind_4392274944 = Math.min(...data_sparkline_blind_4392274944);
-            const maxVal_sparkline_blind_4392274944 = Math.max(...data_sparkline_blind_4392274944);
+            const ctx_sparkline_blind_4467269184 = document.getElementById('sparkline_blind_4467269184').getContext('2d');
+            const data_sparkline_blind_4467269184 = [6.3, 6.3, 6.4, 6.3, 6.3];
+            const minVal_sparkline_blind_4467269184 = Math.min(...data_sparkline_blind_4467269184);
+            const maxVal_sparkline_blind_4467269184 = Math.max(...data_sparkline_blind_4467269184);
 
-            new Chart(ctx_sparkline_blind_4392274944, {
+            new Chart(ctx_sparkline_blind_4467269184, {
                 type: 'line',
                 data: {
                     labels: ['Authenticity, Ego & Spiritu...', 'Mastering Ego: The Path to ...', 'Finding Flow: Dismantling t...', 'Why Manifestation Isn’t Wor...', 'Authenticity, Ego & Spiritu...'],
                     datasets: [{
-                        data: data_sparkline_blind_4392274944,
+                        data: data_sparkline_blind_4467269184,
                         borderColor: '#ef4444',
                         backgroundColor: '#ef444440',
                         borderWidth: 2,
@@ -1138,10 +1138,10 @@
                             const idx = context.dataIndex;
                             const val = context.parsed.y;
                             // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_blind_4392274944.length - 1) {
+                            if (idx === 0 || idx === data_sparkline_blind_4467269184.length - 1) {
                                 return 4;
                             }
-                            if (val === minVal_sparkline_blind_4392274944 || val === maxVal_sparkline_blind_4392274944) {
+                            if (val === minVal_sparkline_blind_4467269184 || val === maxVal_sparkline_blind_4467269184) {
                                 return 5;  // Slightly larger for min/max
                             }
                             return 0;
@@ -1149,8 +1149,8 @@
                         pointBackgroundColor: function(context) {
                             const val = context.parsed.y;
                             // Highlight min/max with different color
-                            if (val === minVal_sparkline_blind_4392274944) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_blind_4392274944) return '#10b981';  // Green for max
+                            if (val === minVal_sparkline_blind_4467269184) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_blind_4467269184) return '#10b981';  // Green for max
                             return '#ef4444';
                         },
                         pointBorderColor: '#ffffff',
@@ -1335,11 +1335,36 @@
 
         <h2>📚 Episode Reports</h2>
         <div class="episode-directory">
-            <p>No published reports available</p>
+            <div class="episode-preview-grid">
+            <div class="episode-preview-card">
+                <h4><a href="../../iam/Authenticity-Ego--Spiritual-Bypassing-The-Real-Inn_4e7dba5a.html">Authenticity, Ego & Spiritual Bypassing: The Real Inner Work | The I:AM Experience Ep. 4</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.2</span><span class="episode-score-badge">Extra Tools for Your Growth: 8.0</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../iam/Mastering-Ego-The-Path-to-Authentic-Self-ConceptAl_ac8ed8aa.html">Mastering Ego: The Path to Authentic Self Concept Alignment | The I:AM Experience Ep. 3</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.7</span><span class="episode-score-badge">What Makes You, You: 8.1</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../iam/Finding-Flow-Dismantling-the-Need-to-Perform--The-_c2dcb319.html">Finding Flow: Dismantling the Need to Perform | The I:AM Experience Ep. 2</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.7</span><span class="episode-score-badge">Extra Tools for Your Growth: 8.3</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../iam/Why-Manifestation-Isnt-Working-Even-Though-Youve-T_b83ba9e0.html">Why Manifestation Isn’t Working (Even Though You’ve Tried Everything) | The I:AM Experience Ep. 1</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.4</span><span class="episode-score-badge">What Makes You, You: 8.1</span></div>
+            </div>
+            
+            <div class="episode-preview-card">
+                <h4><a href="../../iam/Authenticity-Ego-Spiritual-Bypassing-The-Real-Inne_12464bd5.html">Authenticity, Ego & Spiritual Bypassing: The Real Inner Work | The I:AM Experience Ep. 4</a></h4>
+                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.2</span><span class="episode-score-badge">Extra Tools for Your Growth: 8.0</span></div>
+            </div>
+            </div>
         </div>
 
         <footer>
-            <p>Generated on October 05, 2025 at 06:38 PM</p>
+            <p>Generated on October 06, 2025 at 09:15 PM</p>
             <p><strong>Channel ID:</strong> iam • <strong>Episodes Analyzed:</strong> 5</p>
             <nav>
                 <a href="/">Home</a>
