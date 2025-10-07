@@ -583,12 +583,19 @@
 
         <h2>🎯 Your Next Episode Playbook</h2>
         <div class="playbook-section">
-            <p>Your <strong>How You Made Them Feel</strong> is your superpower - that's where you naturally shine. The biggest lever for your next episode? Focus on <strong>Content Accessibility & Clarity</strong>. Small improvements here will create outsized impact.</p><ul><li>Simplify your explanations - aim for grade 10 readability</li><li>Create a 'safe space' toolkit from your best moments</li><li>Build a resource library from your tactical takeaways</li></ul>
+            <p>Your superpower is empathy—it showed up in 3 out of 5 episodes (60%), making it your most consistent strength. But here's your biggest opportunity: listening was flagged as needing improvement in 4 out of 5 episodes (80%). The gap between your natural empathy and your active listening is where your next level of growth lives.</p>
+
+<ul>
+  <li>Deploy strategic questioning techniques to shift from empathetic responding to deep listening—this was specifically recommended in your coaching actions and directly addresses your most frequent growth area</li>
+  <li>When you feel the urge to share (which you do well in 60% of episodes), pause first and ask one follow-up question before offering your perspective—this will help balance your natural sharing strength with the listening skill you're building</li>
+  <li>Track "depth" moments in your next episode—since depth was flagged in 3 out of 5 episodes (60%), set a goal to ask "why" or "tell me more" at least three times when a guest shares something vulnerable</li>
+  <li>Create a 70/30 rule for yourself: aim for guests to speak 70% of the time while you facilitate with questions and brief empathetic bridges—this directly tackles the balance issues flagged in 40% of your episodes</li>
+</ul>
         </div>
 
         <h2>💡 Action Plan</h2>
         <div class="recommendations-section">
-            <div class="action-plan-grid"><div class="action-plan-box"><h3>✅ Keep Doing</h3><ul><li>Continue creating psychological safety where guests feel comfortable sharing vulnerable insights - this remains your strongest skill.<br><small style="color: #94a3b8; margin-left: 20px;">✅ Start with "How comfortable do you feel sharing this?" before deep topics</small></li><li>Maintain your authentic presence that encourages genuine dialogue and meaningful connections.<br><small style="color: #94a3b8; margin-left: 20px;">✅ Share one personal connection to each major topic</small></li><li>Keep demonstrating genuine intellectual curiosity that goes beyond surface-level questions.</li><li>Preserve your natural ability to guide conversations to meaningful philosophical depth.</li></ul></div><div class="action-plan-box"><h3>🎯 Quick Wins</h3><ul><li>Practice one-breath questions in your next episode (ask, then pause)<br><small style="color: #94a3b8; margin-left: 20px;">
+            <div class="action-plan-grid"><div class="action-plan-box"><h3>✅ Keep Doing</h3><ul><li>You consistently demonstrate empathy by creating emotional connections with your guests, appearing in 3/5 episodes as a core strength<br><small style="color: #94a3b8; margin-left: 20px;">✅ Example: "You validate guest experiences by reflecting back their emotions and acknowledging the weight of their stories before moving forward"</small></li><li>You excel at sharing personal experiences that build rapport and trust, evident in 3/5 episodes analyzed<br><small style="color: #94a3b8; margin-left: 20px;">✅ Example: "You strategically offer your own vulnerabilities or relatable anecdotes to make guests feel comfortable opening up about difficult topics"</small></li><li>You practice active listening techniques that make guests feel heard, demonstrated in 2/5 episodes<br><small style="color: #94a3b8; margin-left: 20px;">✅ Example: "You pause to process what guests say, ask clarifying questions that show you're tracking their narrative, and avoid interrupting their flow"</small><br><small style="color: #94a3b8; margin-left: 20px;">✅ Example: Apply this in your next episode</small></li><li>You create space for authentic vulnerability by balancing structure with organic conversation flow, shown in focused moments across episodes<br><small style="color: #94a3b8; margin-left: 20px;">✅ Example: "You allow conversations to breathe by not rushing to the next question, letting silence work for you when guests need time to formulate deeper responses"</small><br><small style="color: #94a3b8; margin-left: 20px;">✅ Example: Apply this in your next episode</small></li></ul></div><div class="action-plan-box"><h3>🎯 Quick Wins</h3><ul><li>Practice one-breath questions in your next episode (ask, then pause)<br><small style="color: #94a3b8; margin-left: 20px;">
                 🚫 Not: "So, I mean, like, what I'm really curious about here is, and correct me if I'm wrong, but how do you think about..."<br>
                 ✅ Do: "How did that feel?" (7 words, one breath)
             </small></li><li>Use 'define-then-dive' structure: explain term, then explore depth<br><small style="color: #94a3b8; margin-left: 20px;">
@@ -606,106 +613,6 @@
             <div class="strength-score">8.4/10</div>
 
             
-        <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_guest_4467426048"></canvas>
-            <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #10b981; font-weight: 600;">
-                +2.4%
-            </div>
-        </div>
-        <script>
-            const ctx_sparkline_guest_4467426048 = document.getElementById('sparkline_guest_4467426048').getContext('2d');
-            const data_sparkline_guest_4467426048 = [8.5, 7.8, 8.7, 8.5, 8.7];
-            const minVal_sparkline_guest_4467426048 = Math.min(...data_sparkline_guest_4467426048);
-            const maxVal_sparkline_guest_4467426048 = Math.max(...data_sparkline_guest_4467426048);
-
-            new Chart(ctx_sparkline_guest_4467426048, {
-                type: 'line',
-                data: {
-                    labels: ['How to Say NO to Toxic Feed...', 'Why Italian Furniture Got D...', "How We Built Amazon's First...", 'How I Convinced a 100-Year-...', 'Why Going Alone is Killing ...'],
-                    datasets: [{
-                        data: data_sparkline_guest_4467426048,
-                        borderColor: '#10b981',
-                        backgroundColor: '#10b98140',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.2,
-                        pointRadius: function(context) {
-                            const idx = context.dataIndex;
-                            const val = context.parsed.y;
-                            // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_guest_4467426048.length - 1) {
-                                return 4;
-                            }
-                            if (val === minVal_sparkline_guest_4467426048 || val === maxVal_sparkline_guest_4467426048) {
-                                return 5;  // Slightly larger for min/max
-                            }
-                            return 0;
-                        },
-                        pointBackgroundColor: function(context) {
-                            const val = context.parsed.y;
-                            // Highlight min/max with different color
-                            if (val === minVal_sparkline_guest_4467426048) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_guest_4467426048) return '#10b981';  // Green for max
-                            return '#10b981';
-                        },
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 6,
-                        pointStyle: 'circle'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout: {
-                        padding: {
-                            top: 20,
-                            right: 8,
-                            bottom: 8,
-                            left: 2
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            enabled: true,
-                            callbacks: {
-                                title: function(context) {
-                                    return context[0].label;
-                                },
-                                label: function(context) {
-                                    return 'Score: ' + context.parsed.y.toFixed(1) + '/10';
-                                }
-                            }
-                        },
-                        annotation: {
-                            annotations: {
-                                baseline: {
-                                    type: 'line',
-                                    yMin: 7.0,
-                                    yMax: 7.0,
-                                    borderColor: '#64748b',
-                                    borderWidth: 1,
-                                    borderDash: [3, 3],
-                                    label: {
-                                        display: false
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            display: false,
-                            min: 0,
-                            max: 10
-                        },
-                        x: { display: false }
-                    }
-                }
-            });
-        </script>
-        
 
             <div class="feedback-headline">You're creating exceptional psychological safety for your guests.</div>
 
@@ -731,106 +638,6 @@
             <div class="strength-score">7.9/10</div>
 
             
-        <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_style_4467426048"></canvas>
-            <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #f97316; font-weight: 600;">
-                +3.8%
-            </div>
-        </div>
-        <script>
-            const ctx_sparkline_style_4467426048 = document.getElementById('sparkline_style_4467426048').getContext('2d');
-            const data_sparkline_style_4467426048 = [7.8, 8.1, 7.8, 7.9, 8.1];
-            const minVal_sparkline_style_4467426048 = Math.min(...data_sparkline_style_4467426048);
-            const maxVal_sparkline_style_4467426048 = Math.max(...data_sparkline_style_4467426048);
-
-            new Chart(ctx_sparkline_style_4467426048, {
-                type: 'line',
-                data: {
-                    labels: ['How to Say NO to Toxic Feed...', 'Why Italian Furniture Got D...', "How We Built Amazon's First...", 'How I Convinced a 100-Year-...', 'Why Going Alone is Killing ...'],
-                    datasets: [{
-                        data: data_sparkline_style_4467426048,
-                        borderColor: '#f97316',
-                        backgroundColor: '#f9731640',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.2,
-                        pointRadius: function(context) {
-                            const idx = context.dataIndex;
-                            const val = context.parsed.y;
-                            // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_style_4467426048.length - 1) {
-                                return 4;
-                            }
-                            if (val === minVal_sparkline_style_4467426048 || val === maxVal_sparkline_style_4467426048) {
-                                return 5;  // Slightly larger for min/max
-                            }
-                            return 0;
-                        },
-                        pointBackgroundColor: function(context) {
-                            const val = context.parsed.y;
-                            // Highlight min/max with different color
-                            if (val === minVal_sparkline_style_4467426048) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_style_4467426048) return '#10b981';  // Green for max
-                            return '#f97316';
-                        },
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 6,
-                        pointStyle: 'circle'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout: {
-                        padding: {
-                            top: 20,
-                            right: 8,
-                            bottom: 8,
-                            left: 2
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            enabled: true,
-                            callbacks: {
-                                title: function(context) {
-                                    return context[0].label;
-                                },
-                                label: function(context) {
-                                    return 'Score: ' + context.parsed.y.toFixed(1) + '/10';
-                                }
-                            }
-                        },
-                        annotation: {
-                            annotations: {
-                                baseline: {
-                                    type: 'line',
-                                    yMin: 7.0,
-                                    yMax: 7.0,
-                                    borderColor: '#64748b',
-                                    borderWidth: 1,
-                                    borderDash: [3, 3],
-                                    label: {
-                                        display: false
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            display: false,
-                            min: 0,
-                            max: 10
-                        },
-                        x: { display: false }
-                    }
-                }
-            });
-        </script>
-        
 
             <div class="feedback-headline">Your what makes you, you is strong and consistent.</div>
 
@@ -856,106 +663,6 @@
             <div class="strength-score">7.8/10</div>
 
             
-        <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_voice_4467426048"></canvas>
-            <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #3b82f6; font-weight: 600;">
-                -12.2%
-            </div>
-        </div>
-        <script>
-            const ctx_sparkline_voice_4467426048 = document.getElementById('sparkline_voice_4467426048').getContext('2d');
-            const data_sparkline_voice_4467426048 = [8.2, 7.2, 8.2, 8.2, 7.2];
-            const minVal_sparkline_voice_4467426048 = Math.min(...data_sparkline_voice_4467426048);
-            const maxVal_sparkline_voice_4467426048 = Math.max(...data_sparkline_voice_4467426048);
-
-            new Chart(ctx_sparkline_voice_4467426048, {
-                type: 'line',
-                data: {
-                    labels: ['How to Say NO to Toxic Feed...', 'Why Italian Furniture Got D...', "How We Built Amazon's First...", 'How I Convinced a 100-Year-...', 'Why Going Alone is Killing ...'],
-                    datasets: [{
-                        data: data_sparkline_voice_4467426048,
-                        borderColor: '#3b82f6',
-                        backgroundColor: '#3b82f640',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.2,
-                        pointRadius: function(context) {
-                            const idx = context.dataIndex;
-                            const val = context.parsed.y;
-                            // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_voice_4467426048.length - 1) {
-                                return 4;
-                            }
-                            if (val === minVal_sparkline_voice_4467426048 || val === maxVal_sparkline_voice_4467426048) {
-                                return 5;  // Slightly larger for min/max
-                            }
-                            return 0;
-                        },
-                        pointBackgroundColor: function(context) {
-                            const val = context.parsed.y;
-                            // Highlight min/max with different color
-                            if (val === minVal_sparkline_voice_4467426048) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_voice_4467426048) return '#10b981';  // Green for max
-                            return '#3b82f6';
-                        },
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 6,
-                        pointStyle: 'circle'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout: {
-                        padding: {
-                            top: 20,
-                            right: 8,
-                            bottom: 8,
-                            left: 2
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            enabled: true,
-                            callbacks: {
-                                title: function(context) {
-                                    return context[0].label;
-                                },
-                                label: function(context) {
-                                    return 'Score: ' + context.parsed.y.toFixed(1) + '/10';
-                                }
-                            }
-                        },
-                        annotation: {
-                            annotations: {
-                                baseline: {
-                                    type: 'line',
-                                    yMin: 7.0,
-                                    yMax: 7.0,
-                                    borderColor: '#64748b',
-                                    borderWidth: 1,
-                                    borderDash: [3, 3],
-                                    label: {
-                                        display: false
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            display: false,
-                            min: 0,
-                            max: 10
-                        },
-                        x: { display: false }
-                    }
-                }
-            });
-        </script>
-        
 
             <div class="feedback-headline">Your intellectual curiosity drives meaningful conversations.</div>
 
@@ -986,106 +693,6 @@
             <div class="opportunity-score">6.5/10</div>
 
             
-        <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_blind_4467426048"></canvas>
-            <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #ef4444; font-weight: 600;">
-                -5.9%
-            </div>
-        </div>
-        <script>
-            const ctx_sparkline_blind_4467426048 = document.getElementById('sparkline_blind_4467426048').getContext('2d');
-            const data_sparkline_blind_4467426048 = [6.8, 6.4, 6.2, 6.8, 6.4];
-            const minVal_sparkline_blind_4467426048 = Math.min(...data_sparkline_blind_4467426048);
-            const maxVal_sparkline_blind_4467426048 = Math.max(...data_sparkline_blind_4467426048);
-
-            new Chart(ctx_sparkline_blind_4467426048, {
-                type: 'line',
-                data: {
-                    labels: ['How to Say NO to Toxic Feed...', 'Why Italian Furniture Got D...', "How We Built Amazon's First...", 'How I Convinced a 100-Year-...', 'Why Going Alone is Killing ...'],
-                    datasets: [{
-                        data: data_sparkline_blind_4467426048,
-                        borderColor: '#ef4444',
-                        backgroundColor: '#ef444440',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.2,
-                        pointRadius: function(context) {
-                            const idx = context.dataIndex;
-                            const val = context.parsed.y;
-                            // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_blind_4467426048.length - 1) {
-                                return 4;
-                            }
-                            if (val === minVal_sparkline_blind_4467426048 || val === maxVal_sparkline_blind_4467426048) {
-                                return 5;  // Slightly larger for min/max
-                            }
-                            return 0;
-                        },
-                        pointBackgroundColor: function(context) {
-                            const val = context.parsed.y;
-                            // Highlight min/max with different color
-                            if (val === minVal_sparkline_blind_4467426048) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_blind_4467426048) return '#10b981';  // Green for max
-                            return '#ef4444';
-                        },
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 6,
-                        pointStyle: 'circle'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout: {
-                        padding: {
-                            top: 20,
-                            right: 8,
-                            bottom: 8,
-                            left: 2
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            enabled: true,
-                            callbacks: {
-                                title: function(context) {
-                                    return context[0].label;
-                                },
-                                label: function(context) {
-                                    return 'Score: ' + context.parsed.y.toFixed(1) + '/10';
-                                }
-                            }
-                        },
-                        annotation: {
-                            annotations: {
-                                baseline: {
-                                    type: 'line',
-                                    yMin: 7.0,
-                                    yMax: 7.0,
-                                    borderColor: '#64748b',
-                                    borderWidth: 1,
-                                    borderDash: [3, 3],
-                                    label: {
-                                        display: false
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            display: false,
-                            min: 0,
-                            max: 10
-                        },
-                        x: { display: false }
-                    }
-                }
-            });
-        </script>
-        
 
             <div class="feedback-headline">Your content is becoming clearer, but some complexity still holds you back.</div>
 
@@ -1210,36 +817,11 @@
 
         <h2>📚 Episode Reports</h2>
         <div class="episode-directory">
-            <div class="episode-preview-grid">
-            <div class="episode-preview-card">
-                <h4><a href="../../morningmood/How-to-Say-NO-to-Toxic-Feedback-at-Work_5ffc514b.html">How to Say NO to Toxic Feedback at Work</a></h4>
-                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.5</span><span class="episode-score-badge">How Your Voice Carried the Room: 8.2</span></div>
-            </div>
-            
-            <div class="episode-preview-card">
-                <h4><a href="../../morningmood/Why-Italian-Furniture-Got-DESTROYED-at-Customs-Bro_d1a83af3.html">Why Italian Furniture Got DESTROYED at Customs (Broker Horror Story)</a></h4>
-                <div class="episode-scores"><span class="episode-score-badge">What Makes You, You: 8.1</span><span class="episode-score-badge">How You Made Them Feel: 7.8</span></div>
-            </div>
-            
-            <div class="episode-preview-card">
-                <h4><a href="../../morningmood/How-We-Built-Amazons-First-Cross-Border-Shipping-F_bbaa0452.html">How We Built Amazon's First Cross-Border Shipping (From Excel to Billions)</a></h4>
-                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.7</span><span class="episode-score-badge">The Ideas You Cooked Up Together: 8.5</span></div>
-            </div>
-            
-            <div class="episode-preview-card">
-                <h4><a href="../../morningmood/How-I-Convinced-a-100-Year-Old-Company-to-Go-Digit_778d30b7.html">How I Convinced a 100-Year-Old Company to Go Digital in 6 Minutes</a></h4>
-                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.5</span><span class="episode-score-badge">How Your Voice Carried the Room: 8.2</span></div>
-            </div>
-            
-            <div class="episode-preview-card">
-                <h4><a href="../../morningmood/Why-Going-Alone-is-Killing-Your-Business-Growth-Fo_4b350eb3.html">Why Going Alone is Killing Your Business Growth (Former Solopreneur's Story)</a></h4>
-                <div class="episode-scores"><span class="episode-score-badge">How You Made Them Feel: 8.7</span><span class="episode-score-badge">What Makes You, You: 8.1</span></div>
-            </div>
-            </div>
+            <p>No published reports available</p>
         </div>
 
         <footer>
-            <p>Generated on October 06, 2025 at 09:15 PM</p>
+            <p>Generated on October 07, 2025 at 06:54 AM</p>
             <p><strong>Channel ID:</strong> morningmood • <strong>Episodes Analyzed:</strong> 5</p>
             <nav>
                 <a href="/">Home</a>
