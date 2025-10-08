@@ -583,18 +583,441 @@
 
         <h2>🎯 Your Next Episode Playbook</h2>
         <div class="playbook-section">
-            <p>Your <strong>How You Made Them Feel</strong> is your superpower - that's where you naturally shine. The biggest lever for your next episode? Focus on <strong>Content Accessibility & Clarity</strong>. Small improvements here will create outsized impact.</p><ul><li>Simplify your explanations - aim for grade 10 readability</li><li>Strengthen your authentic voice with pre-show vocal warmups</li><li>Create a 'safe space' toolkit from your best moments</li></ul>
+            <p>Your superpower is empathy—it shines through in 3 out of 5 episodes (60%), creating genuine connection with your guests. However, your biggest opportunity for growth is depth, which was flagged in 3 out of 5 episodes (60%). You're building rapport effectively, but you're not always mining the richest insights from your conversations. The good news? Addressing this will transform your podcast from good to unforgettable.</p>
+
+<ul>
+  <li>Practice the "one more question" rule: When a guest shares something compelling, resist the urge to move on. Ask "What did that teach you?" or "How did that change your perspective?" to push past surface-level responses and unlock deeper insights.</li>
+  <li>Address your listening inconsistency (appears as both a strength in 2 episodes and flagged for improvement in 3 episodes): You're capable of strong listening, but you're not doing it consistently. Before each recording, commit to a 30-second reset where you clear your mind and focus solely on being present with your guest's words.</li>
+  <li>Balance your sharing impulse (strength in 2 episodes, but balance flagged in 2 episodes): Your personal stories create connection, but time them strategically. Share briefly to validate your guest's experience, then immediately pivot back with a follow-up question that keeps them center stage.</li>
+  <li>Develop a pre-episode questioning strategy: Since questioning technique was specifically recommended, prepare 3-5 "depth questions" before each interview that begin with "Why," "How," or "What does that mean to you" to naturally guide conversations toward more meaningful territory.</li>
+</ul>
         </div>
 
         <h2>💡 Action Plan</h2>
         <div class="recommendations-section">
-            <div class="action-plan-grid"><div class="action-plan-box"><h3>✅ Keep Doing</h3><ul><li>Continue creating psychological safety where guests feel comfortable sharing vulnerable insights - this remains your strongest skill.<br><small style="color: #94a3b8; margin-left: 20px;">✅ Start with "How comfortable do you feel sharing this?" before deep topics</small></li><li>Maintain your authentic presence that encourages genuine dialogue and meaningful connections.<br><small style="color: #94a3b8; margin-left: 20px;">✅ Share one personal connection to each major topic</small></li><li>Keep demonstrating genuine intellectual curiosity that goes beyond surface-level questions.</li><li>Preserve your natural ability to guide conversations to meaningful philosophical depth.</li></ul></div><div class="action-plan-box"><h3>🎯 Quick Wins</h3><ul><li>Practice one-breath questions in your next episode (ask, then pause)<br><small style="color: #94a3b8; margin-left: 20px;">
+            <div class="action-plan-grid"><div class="action-plan-box"><h3>✅ Keep Doing</h3><ul><li>You consistently demonstrate empathy in 3 out of 5 episodes, creating a safe space for authentic conversation<br><small style="color: #94a3b8; margin-left: 20px;">✅ Example: "The way you acknowledge emotional moments and validate guest experiences shows genuine care for their perspective"</small></li><li>Your active listening skills appear in 2 out of 5 episodes, allowing conversations to flow naturally from what guests share<br><small style="color: #94a3b8; margin-left: 20px;">✅ Example: "You pick up on subtle cues in responses and build follow-up questions directly from what you've just heard"</small></li><li>You effectively share relevant personal experiences in 2 out of 5 episodes, building rapport and connection with guests<br><small style="color: #94a3b8; margin-left: 20px;">✅ Example: "When you relate your own stories to guest experiences, it creates reciprocal vulnerability that deepens trust"</small></li><li>Your questioning technique in 1 out of 5 episodes demonstrates the ability to probe beyond surface-level answers<br><small style="color: #94a3b8; margin-left: 20px;">✅ Example: "When you ask clarifying questions that invite guests to expand on their thoughts, it unlocks richer dialogue"</small></li></ul></div><div class="action-plan-box"><h3>🎯 Quick Wins</h3><ul><li>Practice one-breath questions in your next episode (ask, then pause)<br><small style="color: #94a3b8; margin-left: 20px;">
                 🚫 Not: "So, I mean, like, what I'm really curious about here is, and correct me if I'm wrong, but how do you think about..."<br>
                 ✅ Do: "How did that feel?" (7 words, one breath)
             </small></li><li>Use 'define-then-dive' structure: explain term, then explore depth<br><small style="color: #94a3b8; margin-left: 20px;">
                 🚫 Not: "Let's talk about psychological safety" (assumes everyone knows the term)<br>
                 ✅ Do: "Psychological safety means feeling safe to speak up. Why does that matter in your work?"
             </small></li><li>Reduce filler words by pausing 2 seconds before answering</li><li>Practice vocal variety: emphasize key words in your next 3 questions<br><small style="color: #94a3b8; margin-left: 20px;">✅ Example: Apply this in your next episode</small></li></ul></div><div class="action-plan-box"><h3>🔨 Long-term Improvements</h3><ul><li>Develop a content simplification system: create analogies library for complex topics<br><small style="color: #94a3b8; margin-left: 20px;">✅ "What changed in how you see the world?"</small></li><li>Build audience jargon glossary: maintain definitions for recurring technical terms</li><li>Invest in vocal coaching: work on pacing, resonance, and intentional pauses<br><small style="color: #94a3b8; margin-left: 20px;">✅ Example: Apply this in your next episode</small></li></ul></div></div>
+        </div>
+
+        <h2>📈 Longitudinal Performance</h2>
+        <div class="metrics-section">
+            <div class="charts-grid">
+
+        <div class="chart-container">
+            <canvas id="chart_voice" class="chart-canvas"></canvas>
+        </div>
+        <script>
+            const ctx_voice = document.getElementById('chart_voice').getContext('2d');
+            new Chart(ctx_voice, {
+                type: 'line',
+                data: {
+                    labels: ['Authenticity, Ego & Spiritual Bypassi...', 'Mastering Ego: The Path to Authentic ...', 'Finding Flow: Dismantling the Need to...', 'Why Manifestation Isn’t Working (Even...', 'Authenticity, Ego & Spiritual Bypassi...'],
+                    datasets: [
+                        {
+                            label: 'How Your Voice Carried the Room',
+                            data: [6.8, 7.2, 7.2, 7.2, 6.8],
+                            borderColor: '#007bff',
+                            backgroundColor: '#007bff40',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            pointStyle: 'circle'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'How Your Voice Carried the Room',
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            },
+                            padding: { top: 0, bottom: 5 }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            position: 'nearest',
+                            yAlign: 'bottom',
+                            xAlign: 'center',
+                            displayColors: false,
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    return 'How Your Voice Carried the Room: ' + context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            display: false
+                        },
+                        x: {
+                            display: false
+                        }
+                    },
+                    elements: {
+                        point: {
+                            pointStyle: 'circle',
+                            radius: 6,
+                            hoverRadius: 8
+                        },
+                        line: {
+                            tension: 0.3,
+                            borderWidth: 2
+                        }
+                    }
+                }
+            });
+        </script>
+            
+
+        <div class="chart-container">
+            <canvas id="chart_style" class="chart-canvas"></canvas>
+        </div>
+        <script>
+            const ctx_style = document.getElementById('chart_style').getContext('2d');
+            new Chart(ctx_style, {
+                type: 'line',
+                data: {
+                    labels: ['Authenticity, Ego & Spiritual Bypassi...', 'Mastering Ego: The Path to Authentic ...', 'Finding Flow: Dismantling the Need to...', 'Why Manifestation Isn’t Working (Even...', 'Authenticity, Ego & Spiritual Bypassi...'],
+                    datasets: [
+                        {
+                            label: 'What Makes You, You',
+                            data: [7.5, 8.1, 8.1, 8.1, 7.5],
+                            borderColor: '#fd7e14',
+                            backgroundColor: '#fd7e1440',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            pointStyle: 'circle'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'What Makes You, You',
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            },
+                            padding: { top: 0, bottom: 5 }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            position: 'nearest',
+                            yAlign: 'bottom',
+                            xAlign: 'center',
+                            displayColors: false,
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    return 'What Makes You, You: ' + context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            display: false
+                        },
+                        x: {
+                            display: false
+                        }
+                    },
+                    elements: {
+                        point: {
+                            pointStyle: 'circle',
+                            radius: 6,
+                            hoverRadius: 8
+                        },
+                        line: {
+                            tension: 0.3,
+                            borderWidth: 2
+                        }
+                    }
+                }
+            });
+        </script>
+            
+
+        <div class="chart-container">
+            <canvas id="chart_guest" class="chart-canvas"></canvas>
+        </div>
+        <script>
+            const ctx_guest = document.getElementById('chart_guest').getContext('2d');
+            new Chart(ctx_guest, {
+                type: 'line',
+                data: {
+                    labels: ['Authenticity, Ego & Spiritual Bypassi...', 'Mastering Ego: The Path to Authentic ...', 'Finding Flow: Dismantling the Need to...', 'Why Manifestation Isn’t Working (Even...', 'Authenticity, Ego & Spiritual Bypassi...'],
+                    datasets: [
+                        {
+                            label: 'How You Made Them Feel',
+                            data: [8.2, 8.7, 8.7, 7.8, 8.2],
+                            borderColor: '#28a745',
+                            backgroundColor: '#28a74540',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            pointStyle: 'circle'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'How You Made Them Feel',
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            },
+                            padding: { top: 0, bottom: 5 }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            position: 'nearest',
+                            yAlign: 'bottom',
+                            xAlign: 'center',
+                            displayColors: false,
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    return 'How You Made Them Feel: ' + context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            display: false
+                        },
+                        x: {
+                            display: false
+                        }
+                    },
+                    elements: {
+                        point: {
+                            pointStyle: 'circle',
+                            radius: 6,
+                            hoverRadius: 8
+                        },
+                        line: {
+                            tension: 0.3,
+                            borderWidth: 2
+                        }
+                    }
+                }
+            });
+        </script>
+            
+
+        <div class="chart-container">
+            <canvas id="chart_intelchem" class="chart-canvas"></canvas>
+        </div>
+        <script>
+            const ctx_intelchem = document.getElementById('chart_intelchem').getContext('2d');
+            new Chart(ctx_intelchem, {
+                type: 'line',
+                data: {
+                    labels: ['Authenticity, Ego & Spiritual Bypassi...', 'Mastering Ego: The Path to Authentic ...', 'Finding Flow: Dismantling the Need to...', 'Why Manifestation Isn’t Working (Even...', 'Authenticity, Ego & Spiritual Bypassi...'],
+                    datasets: [
+                        {
+                            label: 'The Ideas You Cooked Up Together',
+                            data: [7.1, 7.8, 7.8, 8.4, 7.1],
+                            borderColor: '#6f42c1',
+                            backgroundColor: '#6f42c140',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            pointStyle: 'circle'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'The Ideas You Cooked Up Together',
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            },
+                            padding: { top: 0, bottom: 5 }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            position: 'nearest',
+                            yAlign: 'bottom',
+                            xAlign: 'center',
+                            displayColors: false,
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    return 'The Ideas You Cooked Up Together: ' + context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            display: false
+                        },
+                        x: {
+                            display: false
+                        }
+                    },
+                    elements: {
+                        point: {
+                            pointStyle: 'circle',
+                            radius: 6,
+                            hoverRadius: 8
+                        },
+                        line: {
+                            tension: 0.3,
+                            borderWidth: 2
+                        }
+                    }
+                }
+            });
+        </script>
+            
+
+        <div class="chart-container">
+            <canvas id="chart_blind" class="chart-canvas"></canvas>
+        </div>
+        <script>
+            const ctx_blind = document.getElementById('chart_blind').getContext('2d');
+            new Chart(ctx_blind, {
+                type: 'line',
+                data: {
+                    labels: ['Authenticity, Ego & Spiritual Bypassi...', 'Mastering Ego: The Path to Authentic ...', 'Finding Flow: Dismantling the Need to...', 'Why Manifestation Isn’t Working (Even...', 'Authenticity, Ego & Spiritual Bypassi...'],
+                    datasets: [
+                        {
+                            label: 'Content Accessibility & Clarity',
+                            data: [6.3, 6.3, 6.4, 6.3, 6.3],
+                            borderColor: '#dc3545',
+                            backgroundColor: '#dc354540',
+                            borderWidth: 2,
+                            fill: false,
+                            tension: 0.3,
+                            pointRadius: 6,
+                            pointHoverRadius: 8,
+                            pointStyle: 'circle'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Content Accessibility & Clarity',
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            },
+                            padding: { top: 0, bottom: 5 }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            position: 'nearest',
+                            yAlign: 'bottom',
+                            xAlign: 'center',
+                            displayColors: false,
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    return 'Content Accessibility & Clarity: ' + context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            display: false
+                        },
+                        x: {
+                            display: false
+                        }
+                    },
+                    elements: {
+                        point: {
+                            pointStyle: 'circle',
+                            radius: 6,
+                            hoverRadius: 8
+                        },
+                        line: {
+                            tension: 0.3,
+                            borderWidth: 2
+                        }
+                    }
+                }
+            });
+        </script>
+            
+</div>
         </div>
 
         <h2>✅ Overall Strengths</h2>
@@ -607,23 +1030,23 @@
 
             
         <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_guest_4392274944"></canvas>
+            <canvas id="sparkline_guest_4391513728"></canvas>
             <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #10b981; font-weight: 600;">
                 +0.0%
             </div>
         </div>
         <script>
-            const ctx_sparkline_guest_4392274944 = document.getElementById('sparkline_guest_4392274944').getContext('2d');
-            const data_sparkline_guest_4392274944 = [8.2, 8.7, 8.7, 7.8, 8.2];
-            const minVal_sparkline_guest_4392274944 = Math.min(...data_sparkline_guest_4392274944);
-            const maxVal_sparkline_guest_4392274944 = Math.max(...data_sparkline_guest_4392274944);
+            const ctx_sparkline_guest_4391513728 = document.getElementById('sparkline_guest_4391513728').getContext('2d');
+            const data_sparkline_guest_4391513728 = [8.2, 8.7, 8.7, 7.8, 8.2];
+            const minVal_sparkline_guest_4391513728 = Math.min(...data_sparkline_guest_4391513728);
+            const maxVal_sparkline_guest_4391513728 = Math.max(...data_sparkline_guest_4391513728);
 
-            new Chart(ctx_sparkline_guest_4392274944, {
+            new Chart(ctx_sparkline_guest_4391513728, {
                 type: 'line',
                 data: {
                     labels: ['Authenticity, Ego & Spiritu...', 'Mastering Ego: The Path to ...', 'Finding Flow: Dismantling t...', 'Why Manifestation Isn’t Wor...', 'Authenticity, Ego & Spiritu...'],
                     datasets: [{
-                        data: data_sparkline_guest_4392274944,
+                        data: data_sparkline_guest_4391513728,
                         borderColor: '#10b981',
                         backgroundColor: '#10b98140',
                         borderWidth: 2,
@@ -633,10 +1056,10 @@
                             const idx = context.dataIndex;
                             const val = context.parsed.y;
                             // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_guest_4392274944.length - 1) {
+                            if (idx === 0 || idx === data_sparkline_guest_4391513728.length - 1) {
                                 return 4;
                             }
-                            if (val === minVal_sparkline_guest_4392274944 || val === maxVal_sparkline_guest_4392274944) {
+                            if (val === minVal_sparkline_guest_4391513728 || val === maxVal_sparkline_guest_4391513728) {
                                 return 5;  // Slightly larger for min/max
                             }
                             return 0;
@@ -644,8 +1067,8 @@
                         pointBackgroundColor: function(context) {
                             const val = context.parsed.y;
                             // Highlight min/max with different color
-                            if (val === minVal_sparkline_guest_4392274944) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_guest_4392274944) return '#10b981';  // Green for max
+                            if (val === minVal_sparkline_guest_4391513728) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_guest_4391513728) return '#10b981';  // Green for max
                             return '#10b981';
                         },
                         pointBorderColor: '#ffffff',
@@ -707,20 +1130,20 @@
         </script>
         
 
-            <div class="feedback-headline">You're creating exceptional psychological safety for your guests.</div>
+            <div class="feedback-headline">Your guests consistently leave feeling valued—but the trend is slipping</div>
 
             <div class="feedback-evidence">
                 <div class="feedback-evidence-title">Evidence:</div>
-                <span class='feedback-quantified'>↑ +11% from 7.5 → 8.3</span><br>Appears consistently in 4/4 episodes (100%)
+                Across 4 episodes, 'How You Made Them Feel' averages 8.35/10 (range 7.8–8.7). However, the score has declined from 8.7 to 8.2, a -5.7% shift.
             </div>
 
             <div class="feedback-why-matters">
-                <strong>Why it matters:</strong> Psychological safety keeps guests in flow state and encourages listeners to stay engaged throughout the conversation.
+                <strong>Why it matters:</strong> Guest experience is your strongest suit and a differentiator for I:AM Podcast. A declining trend here risks eroding the warmth and connection that defines your show.
             </div>
 
             <div class="feedback-action">
                 <div class="feedback-action-title">Keep Doing:</div>
-                • Maintain 95%+ psychological safety across episodes (currently 97%)<br>• Continue 2-second pause technique<ul class='feedback-drills'><li>Safety Check Drill: Ask "How comfortable do you feel sharing this?" when exploring sensitive topics</li><li>Energy Matching: Mirror guest's emotional tone in first 30 seconds</li></ul>
+                • Reverse the -0.5 point decline and return to 8.7+ in the next 3 episodes<br>• Reduce score variability (currently std dev 0.44) to maintain consistency above 8.5<ul class='feedback-drills'><li>After each recording, ask yourself: 'Did I give my guest space to shine?' and note one moment you could have leaned in more</li><li>Pre-interview, write down 2–3 personal details about your guest and weave them into the conversation to deepen connection</li><li>Review the 7.8-scoring episode to identify what felt different—less prep time, energy, or follow-up questions?</li></ul>
             </div>
 
         </div>
@@ -732,23 +1155,23 @@
 
             
         <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_style_4392274944"></canvas>
+            <canvas id="sparkline_style_4391513728"></canvas>
             <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #f97316; font-weight: 600;">
                 +0.0%
             </div>
         </div>
         <script>
-            const ctx_sparkline_style_4392274944 = document.getElementById('sparkline_style_4392274944').getContext('2d');
-            const data_sparkline_style_4392274944 = [7.5, 8.1, 8.1, 8.1, 7.5];
-            const minVal_sparkline_style_4392274944 = Math.min(...data_sparkline_style_4392274944);
-            const maxVal_sparkline_style_4392274944 = Math.max(...data_sparkline_style_4392274944);
+            const ctx_sparkline_style_4391513728 = document.getElementById('sparkline_style_4391513728').getContext('2d');
+            const data_sparkline_style_4391513728 = [7.5, 8.1, 8.1, 8.1, 7.5];
+            const minVal_sparkline_style_4391513728 = Math.min(...data_sparkline_style_4391513728);
+            const maxVal_sparkline_style_4391513728 = Math.max(...data_sparkline_style_4391513728);
 
-            new Chart(ctx_sparkline_style_4392274944, {
+            new Chart(ctx_sparkline_style_4391513728, {
                 type: 'line',
                 data: {
                     labels: ['Authenticity, Ego & Spiritu...', 'Mastering Ego: The Path to ...', 'Finding Flow: Dismantling t...', 'Why Manifestation Isn’t Wor...', 'Authenticity, Ego & Spiritu...'],
                     datasets: [{
-                        data: data_sparkline_style_4392274944,
+                        data: data_sparkline_style_4391513728,
                         borderColor: '#f97316',
                         backgroundColor: '#f9731640',
                         borderWidth: 2,
@@ -758,10 +1181,10 @@
                             const idx = context.dataIndex;
                             const val = context.parsed.y;
                             // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_style_4392274944.length - 1) {
+                            if (idx === 0 || idx === data_sparkline_style_4391513728.length - 1) {
                                 return 4;
                             }
-                            if (val === minVal_sparkline_style_4392274944 || val === maxVal_sparkline_style_4392274944) {
+                            if (val === minVal_sparkline_style_4391513728 || val === maxVal_sparkline_style_4391513728) {
                                 return 5;  // Slightly larger for min/max
                             }
                             return 0;
@@ -769,8 +1192,8 @@
                         pointBackgroundColor: function(context) {
                             const val = context.parsed.y;
                             // Highlight min/max with different color
-                            if (val === minVal_sparkline_style_4392274944) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_style_4392274944) return '#10b981';  // Green for max
+                            if (val === minVal_sparkline_style_4391513728) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_style_4391513728) return '#10b981';  // Green for max
                             return '#f97316';
                         },
                         pointBorderColor: '#ffffff',
@@ -832,20 +1255,20 @@
         </script>
         
 
-            <div class="feedback-headline">Your what makes you, you is strong and consistent.</div>
+            <div class="feedback-headline">Your signature style is strong but losing definition</div>
 
             <div class="feedback-evidence">
                 <div class="feedback-evidence-title">Evidence:</div>
-                <span class='feedback-quantified'>↑ +11% from 7.1 → 7.9</span><br>Appears consistently in 4/4 episodes (100%)
+                'What Makes You, You' averages 7.95/10 across 4 episodes (range 7.5–8.1), but has declined from 8.1 to 7.5—a -7.4% drop.
             </div>
 
             <div class="feedback-why-matters">
-                <strong>Why it matters:</strong> This area significantly impacts how listeners connect with and benefit from your conversations.
+                <strong>Why it matters:</strong> Your unique voice and approach are what make I:AM Podcast memorable. A weakening style signal suggests you may be drifting toward generic podcast territory.
             </div>
 
             <div class="feedback-action">
                 <div class="feedback-action-title">Keep Doing:</div>
-                • Target score ≥8.4 within 4 episodes<ul class='feedback-drills'><li>Practice focused improvement exercises</li><li>Track progress episode by episode</li></ul>
+                • Halt the decline and stabilize at 8.0+ over the next 2 episodes<br>• Identify and double down on 2–3 signature elements that scored 8.1 in your strongest episode<ul class='feedback-drills'><li>List 3 quirks, phrases, or structural choices that only you would make—then intentionally feature one per episode</li><li>Compare your 8.1 episode to your 7.5 episode: what risks did you take early that you've since smoothed over?</li><li>Record a 2-minute cold open that's purely 'you'—no guest, no script—and assess whether it feels distinct</li></ul>
             </div>
 
         </div>
@@ -857,23 +1280,23 @@
 
             
         <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_intelchem_4392274944"></canvas>
+            <canvas id="sparkline_intelchem_4391513728"></canvas>
             <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #8b5cf6; font-weight: 600;">
                 +0.0%
             </div>
         </div>
         <script>
-            const ctx_sparkline_intelchem_4392274944 = document.getElementById('sparkline_intelchem_4392274944').getContext('2d');
-            const data_sparkline_intelchem_4392274944 = [7.1, 7.8, 7.8, 8.4, 7.1];
-            const minVal_sparkline_intelchem_4392274944 = Math.min(...data_sparkline_intelchem_4392274944);
-            const maxVal_sparkline_intelchem_4392274944 = Math.max(...data_sparkline_intelchem_4392274944);
+            const ctx_sparkline_intelchem_4391513728 = document.getElementById('sparkline_intelchem_4391513728').getContext('2d');
+            const data_sparkline_intelchem_4391513728 = [7.1, 7.8, 7.8, 8.4, 7.1];
+            const minVal_sparkline_intelchem_4391513728 = Math.min(...data_sparkline_intelchem_4391513728);
+            const maxVal_sparkline_intelchem_4391513728 = Math.max(...data_sparkline_intelchem_4391513728);
 
-            new Chart(ctx_sparkline_intelchem_4392274944, {
+            new Chart(ctx_sparkline_intelchem_4391513728, {
                 type: 'line',
                 data: {
                     labels: ['Authenticity, Ego & Spiritu...', 'Mastering Ego: The Path to ...', 'Finding Flow: Dismantling t...', 'Why Manifestation Isn’t Wor...', 'Authenticity, Ego & Spiritu...'],
                     datasets: [{
-                        data: data_sparkline_intelchem_4392274944,
+                        data: data_sparkline_intelchem_4391513728,
                         borderColor: '#8b5cf6',
                         backgroundColor: '#8b5cf640',
                         borderWidth: 2,
@@ -883,10 +1306,10 @@
                             const idx = context.dataIndex;
                             const val = context.parsed.y;
                             // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_intelchem_4392274944.length - 1) {
+                            if (idx === 0 || idx === data_sparkline_intelchem_4391513728.length - 1) {
                                 return 4;
                             }
-                            if (val === minVal_sparkline_intelchem_4392274944 || val === maxVal_sparkline_intelchem_4392274944) {
+                            if (val === minVal_sparkline_intelchem_4391513728 || val === maxVal_sparkline_intelchem_4391513728) {
                                 return 5;  // Slightly larger for min/max
                             }
                             return 0;
@@ -894,8 +1317,8 @@
                         pointBackgroundColor: function(context) {
                             const val = context.parsed.y;
                             // Highlight min/max with different color
-                            if (val === minVal_sparkline_intelchem_4392274944) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_intelchem_4392274944) return '#10b981';  // Green for max
+                            if (val === minVal_sparkline_intelchem_4391513728) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_intelchem_4391513728) return '#10b981';  // Green for max
                             return '#8b5cf6';
                         },
                         pointBorderColor: '#ffffff',
@@ -957,20 +1380,20 @@
         </script>
         
 
-            <div class="feedback-headline">Your authentic presence sparks genuine dialogue.</div>
+            <div class="feedback-headline">Great ideas are emerging, but intellectual spark is dimming</div>
 
             <div class="feedback-evidence">
                 <div class="feedback-evidence-title">Evidence:</div>
-                <span class='feedback-quantified'>↑ +11% from 7.0 → 7.8</span><br>Appears consistently in 4/4 episodes (100%)
+                'The Ideas You Cooked Up Together' scores 7.78/10 on average (range 7.1–8.4, std dev 0.53), but has dropped from 7.8 to 7.1—a -9.0% decline.
             </div>
 
             <div class="feedback-why-matters">
-                <strong>Why it matters:</strong> Authentic dialogue creates memorable moments that listeners cite as life-changing insights.
+                <strong>Why it matters:</strong> Co-created insights are the hallmark of compelling conversation. This decline suggests you may be playing it safer or not pushing guests into deeper territory.
             </div>
 
             <div class="feedback-action">
                 <div class="feedback-action-title">Keep Doing:</div>
-                • Keep authenticity score ≥8.0 (currently 8.4)<br>• Maintain natural conversation flow<ul class='feedback-drills'><li>Authenticity Anchor: Share one personal connection to each major topic</li><li>Flow Check: Notice and acknowledge when conversations feel forced vs natural</li></ul>
+                • Recover the -0.7 point loss and aim for 8.0+ by increasing curiosity and challenge<br>• Narrow the range (currently 1.3 points) by ensuring every episode reaches 7.5+ in intellectual chemistry<ul class='feedback-drills'><li>Prepare one 'what if' or contrarian question per episode that forces both you and your guest to think on your feet</li><li>When a guest offers a safe answer, follow up with 'Tell me more about why that matters to you'—push past the first layer</li><li>Review your 8.4-scoring episode: what question or moment unlocked the best idea? Reverse-engineer that dynamic</li></ul>
             </div>
 
         </div>
@@ -982,153 +1405,28 @@
             <div class='opportunities-grid'>
         <div class="opportunity-card">
             <div class="opportunity-icon">🎯</div>
-            <div class="opportunity-title">How Your Voice Carried the Room</div>
-            <div class="opportunity-score">7.1/10</div>
-
-            
-        <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_voice_4392274944"></canvas>
-            <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #3b82f6; font-weight: 600;">
-                +0.0%
-            </div>
-        </div>
-        <script>
-            const ctx_sparkline_voice_4392274944 = document.getElementById('sparkline_voice_4392274944').getContext('2d');
-            const data_sparkline_voice_4392274944 = [6.8, 7.2, 7.2, 7.2, 6.8];
-            const minVal_sparkline_voice_4392274944 = Math.min(...data_sparkline_voice_4392274944);
-            const maxVal_sparkline_voice_4392274944 = Math.max(...data_sparkline_voice_4392274944);
-
-            new Chart(ctx_sparkline_voice_4392274944, {
-                type: 'line',
-                data: {
-                    labels: ['Authenticity, Ego & Spiritu...', 'Mastering Ego: The Path to ...', 'Finding Flow: Dismantling t...', 'Why Manifestation Isn’t Wor...', 'Authenticity, Ego & Spiritu...'],
-                    datasets: [{
-                        data: data_sparkline_voice_4392274944,
-                        borderColor: '#3b82f6',
-                        backgroundColor: '#3b82f640',
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.2,
-                        pointRadius: function(context) {
-                            const idx = context.dataIndex;
-                            const val = context.parsed.y;
-                            // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_voice_4392274944.length - 1) {
-                                return 4;
-                            }
-                            if (val === minVal_sparkline_voice_4392274944 || val === maxVal_sparkline_voice_4392274944) {
-                                return 5;  // Slightly larger for min/max
-                            }
-                            return 0;
-                        },
-                        pointBackgroundColor: function(context) {
-                            const val = context.parsed.y;
-                            // Highlight min/max with different color
-                            if (val === minVal_sparkline_voice_4392274944) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_voice_4392274944) return '#10b981';  // Green for max
-                            return '#3b82f6';
-                        },
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 6,
-                        pointStyle: 'circle'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    layout: {
-                        padding: {
-                            top: 20,
-                            right: 8,
-                            bottom: 8,
-                            left: 2
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            enabled: true,
-                            callbacks: {
-                                title: function(context) {
-                                    return context[0].label;
-                                },
-                                label: function(context) {
-                                    return 'Score: ' + context.parsed.y.toFixed(1) + '/10';
-                                }
-                            }
-                        },
-                        annotation: {
-                            annotations: {
-                                baseline: {
-                                    type: 'line',
-                                    yMin: 7.0,
-                                    yMax: 7.0,
-                                    borderColor: '#64748b',
-                                    borderWidth: 1,
-                                    borderDash: [3, 3],
-                                    label: {
-                                        display: false
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            display: false,
-                            min: 0,
-                            max: 10
-                        },
-                        x: { display: false }
-                    }
-                }
-            });
-        </script>
-        
-
-            <div class="feedback-headline">Your how your voice carried the room is developing with room for growth.</div>
-
-            <div class="feedback-evidence">
-                <div class="feedback-evidence-title">Evidence:</div>
-                <span class='feedback-quantified'>↑ +6% from 6.7 → 7.1</span><br>Appears consistently in 4/4 episodes (100%)
-            </div>
-
-            <div class="feedback-why-matters">
-                <strong>Why it matters:</strong> This area significantly impacts how listeners connect with and benefit from your conversations.
-            </div>
-
-            <div class="feedback-action">
-                <div class="feedback-action-title">Action Plan:</div>
-                • Target score ≥7.6 within 4 episodes<ul class='feedback-drills'><li>Practice focused improvement exercises</li><li>Track progress episode by episode</li></ul>
-            </div>
-
-        </div>
-        
-        <div class="opportunity-card">
-            <div class="opportunity-icon">🎯</div>
             <div class="opportunity-title">Content Accessibility & Clarity</div>
             <div class="opportunity-score">6.3/10</div>
 
             
         <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
-            <canvas id="sparkline_blind_4392274944"></canvas>
+            <canvas id="sparkline_blind_4391513728"></canvas>
             <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #ef4444; font-weight: 600;">
                 +0.0%
             </div>
         </div>
         <script>
-            const ctx_sparkline_blind_4392274944 = document.getElementById('sparkline_blind_4392274944').getContext('2d');
-            const data_sparkline_blind_4392274944 = [6.3, 6.3, 6.4, 6.3, 6.3];
-            const minVal_sparkline_blind_4392274944 = Math.min(...data_sparkline_blind_4392274944);
-            const maxVal_sparkline_blind_4392274944 = Math.max(...data_sparkline_blind_4392274944);
+            const ctx_sparkline_blind_4391513728 = document.getElementById('sparkline_blind_4391513728').getContext('2d');
+            const data_sparkline_blind_4391513728 = [6.3, 6.3, 6.4, 6.3, 6.3];
+            const minVal_sparkline_blind_4391513728 = Math.min(...data_sparkline_blind_4391513728);
+            const maxVal_sparkline_blind_4391513728 = Math.max(...data_sparkline_blind_4391513728);
 
-            new Chart(ctx_sparkline_blind_4392274944, {
+            new Chart(ctx_sparkline_blind_4391513728, {
                 type: 'line',
                 data: {
                     labels: ['Authenticity, Ego & Spiritu...', 'Mastering Ego: The Path to ...', 'Finding Flow: Dismantling t...', 'Why Manifestation Isn’t Wor...', 'Authenticity, Ego & Spiritu...'],
                     datasets: [{
-                        data: data_sparkline_blind_4392274944,
+                        data: data_sparkline_blind_4391513728,
                         borderColor: '#ef4444',
                         backgroundColor: '#ef444440',
                         borderWidth: 2,
@@ -1138,10 +1436,10 @@
                             const idx = context.dataIndex;
                             const val = context.parsed.y;
                             // Show markers on: first, last, min, max
-                            if (idx === 0 || idx === data_sparkline_blind_4392274944.length - 1) {
+                            if (idx === 0 || idx === data_sparkline_blind_4391513728.length - 1) {
                                 return 4;
                             }
-                            if (val === minVal_sparkline_blind_4392274944 || val === maxVal_sparkline_blind_4392274944) {
+                            if (val === minVal_sparkline_blind_4391513728 || val === maxVal_sparkline_blind_4391513728) {
                                 return 5;  // Slightly larger for min/max
                             }
                             return 0;
@@ -1149,8 +1447,8 @@
                         pointBackgroundColor: function(context) {
                             const val = context.parsed.y;
                             // Highlight min/max with different color
-                            if (val === minVal_sparkline_blind_4392274944) return '#ef4444';  // Red for min
-                            if (val === maxVal_sparkline_blind_4392274944) return '#10b981';  // Green for max
+                            if (val === minVal_sparkline_blind_4391513728) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_blind_4391513728) return '#10b981';  // Green for max
                             return '#ef4444';
                         },
                         pointBorderColor: '#ffffff',
@@ -1212,20 +1510,145 @@
         </script>
         
 
-            <div class="feedback-headline">Your content is becoming clearer, but some complexity still holds you back.</div>
+            <div class="feedback-headline">Accessibility is stuck in neutral—and holding you back</div>
 
             <div class="feedback-evidence">
                 <div class="feedback-evidence-title">Evidence:</div>
-                <span class='feedback-quantified'>↑ +7% from 5.9 → 6.3</span><br>Appears consistently in 4/4 episodes (100%)
+                'Content Accessibility & Clarity' sits at 6.33/10 across 4 episodes (range 6.3–6.4, std dev 0.05), with zero movement from first to latest episode.
             </div>
 
             <div class="feedback-why-matters">
-                <strong>Why it matters:</strong> Clearer language makes your episodes more engaging, especially for newcomers, and increases completion rates.
+                <strong>Why it matters:</strong> A flat 6.3 means a significant portion of your audience is working too hard to follow along. This limits your reach and prevents casual listeners from becoming loyal fans.
             </div>
 
             <div class="feedback-action">
                 <div class="feedback-action-title">Action Plan:</div>
-                • Target readability ≤10 grade level (currently 12.3)<br>• Reduce jargon to ≤3 out of 200 words (currently 5 out of 200 = 2.5%)<ul class='feedback-drills'><li>One-Breath Questions: Practice questions you can say in one breath</li><li>Define-then-Dive: Plain definition → why it matters → example → guest prompt</li></ul>
+                • Lift the score from 6.3 to 7.0+ within 3 episodes by prioritizing clarity and onboarding<br>• Reduce jargon or unexplained references by 50% in the next recording<ul class='feedback-drills'><li>Before recording, identify 3 terms or concepts your guest might use and plan how you'll explain them for a first-time listener</li><li>At the 10-minute mark of each episode, pause and verbally summarize: 'So far, we've covered...'—this resets context</li><li>Ask a friend unfamiliar with your topic to listen to 10 minutes and flag anything confusing—then address those patterns</li></ul>
+            </div>
+
+        </div>
+        
+        <div class="opportunity-card">
+            <div class="opportunity-icon">🎯</div>
+            <div class="opportunity-title">How Your Voice Carried the Room</div>
+            <div class="opportunity-score">7.1/10</div>
+
+            
+        <div style="position: relative; height: 50px; margin: 8px 0; padding-right: 40px;">
+            <canvas id="sparkline_voice_4391513728"></canvas>
+            <div style="position: absolute; top: 0; right: 4px; font-size: 11px; color: #3b82f6; font-weight: 600;">
+                +0.0%
+            </div>
+        </div>
+        <script>
+            const ctx_sparkline_voice_4391513728 = document.getElementById('sparkline_voice_4391513728').getContext('2d');
+            const data_sparkline_voice_4391513728 = [6.8, 7.2, 7.2, 7.2, 6.8];
+            const minVal_sparkline_voice_4391513728 = Math.min(...data_sparkline_voice_4391513728);
+            const maxVal_sparkline_voice_4391513728 = Math.max(...data_sparkline_voice_4391513728);
+
+            new Chart(ctx_sparkline_voice_4391513728, {
+                type: 'line',
+                data: {
+                    labels: ['Authenticity, Ego & Spiritu...', 'Mastering Ego: The Path to ...', 'Finding Flow: Dismantling t...', 'Why Manifestation Isn’t Wor...', 'Authenticity, Ego & Spiritu...'],
+                    datasets: [{
+                        data: data_sparkline_voice_4391513728,
+                        borderColor: '#3b82f6',
+                        backgroundColor: '#3b82f640',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.2,
+                        pointRadius: function(context) {
+                            const idx = context.dataIndex;
+                            const val = context.parsed.y;
+                            // Show markers on: first, last, min, max
+                            if (idx === 0 || idx === data_sparkline_voice_4391513728.length - 1) {
+                                return 4;
+                            }
+                            if (val === minVal_sparkline_voice_4391513728 || val === maxVal_sparkline_voice_4391513728) {
+                                return 5;  // Slightly larger for min/max
+                            }
+                            return 0;
+                        },
+                        pointBackgroundColor: function(context) {
+                            const val = context.parsed.y;
+                            // Highlight min/max with different color
+                            if (val === minVal_sparkline_voice_4391513728) return '#ef4444';  // Red for min
+                            if (val === maxVal_sparkline_voice_4391513728) return '#10b981';  // Green for max
+                            return '#3b82f6';
+                        },
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 6,
+                        pointStyle: 'circle'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 20,
+                            right: 8,
+                            bottom: 8,
+                            left: 2
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            enabled: true,
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    return 'Score: ' + context.parsed.y.toFixed(1) + '/10';
+                                }
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                baseline: {
+                                    type: 'line',
+                                    yMin: 7.0,
+                                    yMax: 7.0,
+                                    borderColor: '#64748b',
+                                    borderWidth: 1,
+                                    borderDash: [3, 3],
+                                    label: {
+                                        display: false
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            display: false,
+                            min: 0,
+                            max: 10
+                        },
+                        x: { display: false }
+                    }
+                }
+            });
+        </script>
+        
+
+            <div class="feedback-headline">Your vocal presence is solid but losing authority</div>
+
+            <div class="feedback-evidence">
+                <div class="feedback-evidence-title">Evidence:</div>
+                'How Your Voice Carried the Room' averages 7.1/10 (range 6.8–7.2, std dev 0.20), declining from 7.2 to 6.8—a -5.6% shift.
+            </div>
+
+            <div class="feedback-why-matters">
+                <strong>Why it matters:</strong> Vocal delivery shapes listener trust and engagement. A slipping score here suggests you may be receding into the background or losing vocal energy.
+            </div>
+
+            <div class="feedback-action">
+                <div class="feedback-action-title">Action Plan:</div>
+                • Reverse the -0.4 decline and return to 7.2+ in the next 2 episodes<br>• Increase moments of vocal emphasis or conviction by at least 3 per episode<ul class='feedback-drills'><li>Warm up your voice before recording: hum, stretch your jaw, and speak your intro aloud twice to find your full range</li><li>Identify 2–3 key moments per episode where you should 'land the plane'—slow down, lower your pitch, and drive the point home</li><li>Listen back to your 7.2 episode and note where your voice had more presence—were you standing? More caffeinated? Prep accordingly</li></ul>
             </div>
 
         </div>
@@ -1339,7 +1762,7 @@
         </div>
 
         <footer>
-            <p>Generated on October 05, 2025 at 06:38 PM</p>
+            <p>Generated on October 07, 2025 at 05:56 PM</p>
             <p><strong>Channel ID:</strong> iam • <strong>Episodes Analyzed:</strong> 5</p>
             <nav>
                 <a href="/">Home</a>
