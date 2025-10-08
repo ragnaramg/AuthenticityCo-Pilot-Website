@@ -248,7 +248,7 @@ const PaidContentToggle = ({ isLocked, onToggle }) => {
         marginTop: '8px'
       }}
     >
-      <span>Preview Locked Content</span>
+      <span>Lock Content</span>
       <label
         style={{
           position: 'relative',
@@ -750,10 +750,18 @@ function ReportApp({ report, isContentLocked = false, onToggle }) {
                     ]);
                 };
                 
+                // Enhanced ReportApp with header and footer
+                const MainReportApp = ({ report }) => {
+                    return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
+                        React.createElement(EnhancedReportApp, { key: 'report', report }),
+                        React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
+                    ]);
+                };
                 
                 // Render the app
                 const root = ReactDOM.createRoot(document.getElementById('root'));
-                root.render(React.createElement(EnhancedReportApp, { report: reportData }));
+                root.render(React.createElement(MainReportApp, { report: reportData }));
             </script>
         
         <div id="authenticity-nav-footer"></div>

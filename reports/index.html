@@ -6,31 +6,31 @@
     <title>Analysis Reports - AuthenticityCo-Pilot</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
             background: linear-gradient(180deg, #020617 0%, #0f172a 50%, #1e293b 100%);
             min-height: 100vh;
         }
         .header-section {
-            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.12) 0%, rgba(2,6,23,0) 55%),
+            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.12) 0%, rgba(2,6,23,0) 55%), 
                        linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(15,23,42,0.95) 100%);
             border: 1px solid rgba(148,163,184,0.18);
             box-shadow: 0 10px 24px rgba(2,6,23,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
         }
         .stat-card {
-            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.12) 0%, rgba(2,6,23,0) 55%),
+            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.12) 0%, rgba(2,6,23,0) 55%), 
                        linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(15,23,42,0.95) 100%);
             border: 1px solid rgba(148,163,184,0.18);
             box-shadow: 0 10px 24px rgba(2,6,23,0.5);
         }
         .report-card {
-            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%),
+            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), 
                        linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
             border: 1px solid rgba(148,163,184,0.14);
             box-shadow: 0 10px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.04);
         }
         .nav-section {
-            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.06) 0%, rgba(2,6,23,0) 55%),
+            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.06) 0%, rgba(2,6,23,0) 55%), 
                        linear-gradient(180deg, rgba(30,41,59,0.8) 0%, rgba(15,23,42,0.8) 100%);
             border: 1px solid rgba(148,163,184,0.12);
         }
@@ -47,6 +47,7 @@
         }
     </style>
 </head>
+<body>
 <body class="text-slate-200">
     <div class="max-w-7xl mx-auto px-6 py-8">
         <div class="nav-section rounded-lg p-4 mb-8">
@@ -54,7 +55,7 @@
                 🏠 Back to Home
             </a>
         </div>
-
+        
         <div class="header-section rounded-2xl p-8 mb-10 text-center">
             <div class="mb-4">
                 <span class="text-5xl mb-4 block">📊</span>
@@ -66,13 +67,13 @@
                 </p>
             </div>
         </div>
-
+        
         <div class="report-card rounded-2xl p-6 mb-10">
             <p class="text-slate-200 leading-relaxed">
                 <strong class="text-white">About These Reports:</strong> Each analysis is powered by the latest LLM systems evaluating host performance, conversation authenticity, and coaching effectiveness. Reports include detailed metrics on hosting balance, question patterns, and evidence-based insights for continuous improvement.
             </p>
         </div>
-
+        
         <h3 class="section-label">Analytics Overview</h3>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <div class="stat-card rounded-2xl p-6 text-center">
@@ -90,73 +91,6 @@
         </div>
 
         <div class="mb-12">
-            <h3 class="section-label">📊 Channel Performance Reports</h3>
-            <div class="report-card rounded-2xl p-6 mb-6">
-                <p class="text-slate-200 leading-relaxed text-center">
-                    <strong class="text-white">Longitudinal Channel Insights:</strong> View aggregated performance metrics, coaching patterns, and growth trends across all episodes for each podcast channel.
-                </p>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 text-center">
-                    <div class="text-4xl mb-4">📈</div>
-                    <h4 class="text-white font-semibold mb-3 text-lg">
-                        Ayush Prakash
-                    </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        Longitudinal insights across all episodes
-                    </p>
-                    <a href="channels/ayush-prakash/report.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Channel Report
-                        <span class="ml-2">→</span>
-                    </a>
-                </div>
-                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 text-center">
-                    <div class="text-4xl mb-4">📈</div>
-                    <h4 class="text-white font-semibold mb-3 text-lg">
-                        I:AM
-                    </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        Longitudinal insights across all episodes
-                    </p>
-                    <a href="channels/iam/report.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Channel Report
-                        <span class="ml-2">→</span>
-                    </a>
-                </div>
-                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 text-center">
-                    <div class="text-4xl mb-4">📈</div>
-                    <h4 class="text-white font-semibold mb-3 text-lg">
-                        MorningMood
-                    </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        Longitudinal insights across all episodes
-                    </p>
-                    <a href="channels/morningmood/report.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Channel Report
-                        <span class="ml-2">→</span>
-                    </a>
-                </div>
-                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 text-center">
-                    <div class="text-4xl mb-4">📈</div>
-                    <h4 class="text-white font-semibold mb-3 text-lg">
-                        Transformational Journeys
-                    </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        Longitudinal insights across all episodes
-                    </p>
-                    <a href="channels/transformational-journeys/report.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Channel Report
-                        <span class="ml-2">→</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-
-        <div class="mb-12">
             <h3 class="section-label">Ayush Prakash Podcast (19 reports)</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
@@ -166,14 +100,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         How To Break Porn Addiction – Joshua Shea
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Oct 06, 2025
-                    </p>
-                    <a href="ayush-prakash/How-To-Break-Porn-Addiction-Joshua-Shea_10ebc5d4.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/10/06</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/How-To-Break-Porn-Addiction-Joshua-Shea_10ebc5d4.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=ZQxkHkxCDBc" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -182,14 +119,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         What Grief Teaches Us About Love – G. Scott Graham
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Oct 06, 2025
-                    </p>
-                    <a href="ayush-prakash/What-Grief-Teaches-Us-About-Love-G-Scott-Graham_b0dcdc5d.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/10/06</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/What-Grief-Teaches-Us-About-Love-G-Scott-Graham_b0dcdc5d.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=DfjxWn_HVxs" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -198,14 +138,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Is AI Raising Entrepreneurs? – Amy Love
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Oct 06, 2025
-                    </p>
-                    <a href="ayush-prakash/Is-AI-Raising-Entrepreneurs-Amy-Love_73f1ce05.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/10/06</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/Is-AI-Raising-Entrepreneurs-Amy-Love_73f1ce05.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=B0RfWTnpWm4" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -214,14 +157,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Have We Lost Human Touch? - Epiphany Jordan
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Oct 06, 2025
-                    </p>
-                    <a href="ayush-prakash/Have-We-Lost-Human-Touch-Epiphany-Jordan_684afba5.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/10/06</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/Have-We-Lost-Human-Touch-Epiphany-Jordan_684afba5.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=9O77H4mtx9U" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -230,14 +176,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         The Power of Astronomy in the 21st Century - Mike Simmons
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Oct 06, 2025
-                    </p>
-                    <a href="ayush-prakash/The-Power-of-Astronomy-in-the-21st-Century-Mike-Si_804e0228.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/10/06</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/The-Power-of-Astronomy-in-the-21st-Century-Mike-Si_804e0228.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=5U_6EUbzktI" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -246,14 +195,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Everything Wrong With Artificial Intelligence in 2025 - Chris Hood
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Oct 06, 2025
-                    </p>
-                    <a href="ayush-prakash/Everything-Wrong-With-Artificial-Intelligence-in-2_506c43cc.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/10/06</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/Everything-Wrong-With-Artificial-Intelligence-in-2_506c43cc.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=NJ0XUGurIUc" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -262,14 +214,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Why Social Media Is Breaking Us - Julien Belmont
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Oct 06, 2025
-                    </p>
-                    <a href="ayush-prakash/Why-Social-Media-Is-Breaking-Us-Julien-Belmont_233bfd56.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/10/06</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/Why-Social-Media-Is-Breaking-Us-Julien-Belmont_233bfd56.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=dt0MtF9yrCA" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -278,14 +233,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Why Hinduism’s Teachings Are More Relevant Than Ever
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Oct 06, 2025
-                    </p>
-                    <a href="ayush-prakash/Why-Hinduisms-Teachings-Are-More-Relevant-Than-Eve_6e97065f.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/10/06</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/Why-Hinduisms-Teachings-Are-More-Relevant-Than-Eve_6e97065f.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=QsPUHTjZcgI" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -294,14 +252,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Everything About Work Is Changing – Henrik de Gyor
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Oct 06, 2025
-                    </p>
-                    <a href="ayush-prakash/Everything-About-Work-Is-Changing-Henrik-de-Gyor_6172afc5.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/10/06</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/Everything-About-Work-Is-Changing-Henrik-de-Gyor_6172afc5.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=WKV2mveXZK8" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -310,14 +271,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Why Managing Gen Z Is Different – Nikhil Raval
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Oct 06, 2025
-                    </p>
-                    <a href="ayush-prakash/Why-Managing-Gen-Z-Is-Different-Nikhil-Raval_461d0dde.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/10/06</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/Why-Managing-Gen-Z-Is-Different-Nikhil-Raval_461d0dde.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=rW_wktCbtUo" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -326,14 +290,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         PayPal’s Former Innovation Chief Warns Leaders to Adapt or Fail - Mike Todasco
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Oct 06, 2025
-                    </p>
-                    <a href="ayush-prakash/PayPals-Former-Innovation-Chief-Warns-Leaders-to-A_6cb07a37.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/10/06</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/PayPals-Former-Innovation-Chief-Warns-Leaders-to-A_6cb07a37.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=f8Rp2narJFg" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -342,14 +309,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Where AI and Automation Are Really Taking Us - Alex Rosalez
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 11, 2025
-                    </p>
-                    <a href="ayush-prakash/Where-AI-and-Automation-Are-Really-Taking-Us-Alex-_fcf1f91d.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/11</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/Where-AI-and-Automation-Are-Really-Taking-Us-Alex-_fcf1f91d.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=5yBY3jjj-ZU" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -358,14 +328,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         From Sex Work to Self-Discovery – Tiffany Zehara
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 11, 2025
-                    </p>
-                    <a href="ayush-prakash/From-Sex-Work-to-Self-Discovery-Tiffany-Zehara_707609a1.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/11</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/From-Sex-Work-to-Self-Discovery-Tiffany-Zehara_707609a1.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=XhNaul6W_v4" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -374,14 +347,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         The Power of the Subconscious Mind – Dr. Ran Anbar
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 11, 2025
-                    </p>
-                    <a href="ayush-prakash/The-Power-of-the-Subconscious-Mind-Dr-Ran-Anbar_d257e482.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/11</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/The-Power-of-the-Subconscious-Mind-Dr-Ran-Anbar_d257e482.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=4uBAG_HZzqo" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -390,14 +366,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Why Adults Fail to Hear Children – Dr. Zee
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 10, 2025
-                    </p>
-                    <a href="ayush-prakash/Why-Adults-Fail-to-Hear-Children-Dr-Zee_581a0778.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/10</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/Why-Adults-Fail-to-Hear-Children-Dr-Zee_581a0778.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=R080Go8ZLvo" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -406,14 +385,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Why Modern Society Is So Rude And How To Fix It - Dr. John O'Brien
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 10, 2025
-                    </p>
-                    <a href="ayush-prakash/Why-Modern-Society-Is-So-Rude-And-How-To-Fix-It-Dr_1645ba9a.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/10</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/Why-Modern-Society-Is-So-Rude-And-How-To-Fix-It-Dr_1645ba9a.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=8fnFUN2ryc4" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -422,14 +404,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Is Paid Intimacy the Future of Human Connection? - Arik Brueckner
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 10, 2025
-                    </p>
-                    <a href="ayush-prakash/Is-Paid-Intimacy-the-Future-of-Human-Connection-Ar_a3d5b734.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/10</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/Is-Paid-Intimacy-the-Future-of-Human-Connection-Ar_a3d5b734.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=tv4PT16--EQ" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -438,14 +423,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         10 Truths Every Teen Must Know Before Adulthood - Dr. Ran Anbar
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 10, 2025
-                    </p>
-                    <a href="ayush-prakash/10-Truths-Every-Teen-Must-Know-Before-Adulthood-Dr_2a9ccdcf.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/10</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/10-Truths-Every-Teen-Must-Know-Before-Adulthood-Dr_2a9ccdcf.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=y6GRR5MNnso" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -454,14 +442,155 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Why Your Mental Health Crisis Might Be A Spiritual Awakening - Alisa Gracheva
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 10, 2025
-                    </p>
-                    <a href="ayush-prakash/Why-Your-Mental-Health-Crisis-Might-Be-A-Spiritual_51048b98.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/10</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="ayush-prakash/Why-Your-Mental-Health-Crisis-Might-Be-A-Spiritual_51048b98.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=O4dBMddrbrU" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mb-12">
+            <h3 class="section-label">Transformational Journeys Podcast (7 reports)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Jamie Meyer on How to Stop Performing and Reclaim Your Authentic Identity
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/20</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="transformational-journeys/Jamie-Meyer-on-How-to-Stop-Performing-and-Reclaim-_430a4daa.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=PeEzfrgvn1U" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Kimberly Reuter: Choosing Freedom Changed Everything for Her
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/20</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="transformational-journeys/Kimberly-Reuter-Choosing-Freedom-Changed-Everythin_1990b5c8.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=0FCvdus_Gcg" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        The Truth About Authentic Living No One Tells You!
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/11</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="transformational-journeys/The-Truth-About-Authentic-Living-No-One-Tells-You_fc34a310.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=JgXqSYLoZQw" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        How Self-Sabotage Nearly Cost Him Everything
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/11</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="transformational-journeys/How-Self-Sabotage-Nearly-Cost-Him-Everything_002868f5.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=VP9YEyjCz0Y" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        How Did She Go From Baseball to the Cockpit?
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/10</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="transformational-journeys/How-Did-She-Go-From-Baseball-to-the-Cockpit_4536ff1e.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=Dg8Bia3DLC8" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        AI Rewrote Her Breakup It Changed Everything!
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/10</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="transformational-journeys/AI-Rewrote-Her-Breakup-It-Changed-Everything_cc40b6a6.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=E5HT0apZpok" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        His Generation is Drowning. He's Trying to Save it.
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/10</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="transformational-journeys/His-Generation-is-Drowning-Hes-Trying-to-Save-it_06783913.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=cr-1jieNPxY" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -475,14 +604,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Why Going Alone is Killing Your Business Growth (Former Solopreneur's Story)
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 20, 2025
-                    </p>
-                    <a href="morningmood/Why-Going-Alone-is-Killing-Your-Business-Growth-Fo_4b350eb3.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/20</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="morningmood/Why-Going-Alone-is-Killing-Your-Business-Growth-Fo_4b350eb3.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=RL1iK-nalog" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -491,14 +623,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         How I Convinced a 100-Year-Old Company to Go Digital in 6 Minutes
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 20, 2025
-                    </p>
-                    <a href="morningmood/How-I-Convinced-a-100-Year-Old-Company-to-Go-Digit_778d30b7.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/20</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="morningmood/How-I-Convinced-a-100-Year-Old-Company-to-Go-Digit_778d30b7.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=WwPxdASt5KQ" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -507,14 +642,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         How We Built Amazon's First Cross-Border Shipping (From Excel to Billions)
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 20, 2025
-                    </p>
-                    <a href="morningmood/How-We-Built-Amazons-First-Cross-Border-Shipping-F_bbaa0452.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/20</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="morningmood/How-We-Built-Amazons-First-Cross-Border-Shipping-F_bbaa0452.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=2dRtX1BTMts" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -523,14 +661,17 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Why Italian Furniture Got DESTROYED at Customs (Broker Horror Story)
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 20, 2025
-                    </p>
-                    <a href="morningmood/Why-Italian-Furniture-Got-DESTROYED-at-Customs-Bro_d1a83af3.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/20</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="morningmood/Why-Italian-Furniture-Got-DESTROYED-at-Customs-Bro_d1a83af3.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=WCsPlE96drU" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -539,184 +680,98 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         How to Say NO to Toxic Feedback at Work
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 20, 2025
-                    </p>
-                    <a href="morningmood/How-to-Say-NO-to-Toxic-Feedback-at-Work_5ffc514b.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/20</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="morningmood/How-to-Say-NO-to-Toxic-Feedback-at-Work_5ffc514b.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=fw6MwCdcPHo" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="mb-12">
-            <h3 class="section-label">Transformational Journeys Podcast (9 reports)</h3>
+            <h3 class="section-label">Unknown Uploader Podcast (4 reports)</h3>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
-                        Transformational Journeys
+                        Unknown Uploader
                     </div>
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
-                        Jamie Meyer on How to Stop Performing and Reclaim Your Authentic Identity
+                        Episode BObxPy-B (Metadata Unavailable)
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 20, 2025
-                    </p>
-                    <a href="transformational-journeys/Jamie-Meyer-on-How-to-Stop-Performing-and-Reclaim-_430a4daa.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/19</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="unknown-uploader/Episode-BObxPy-B-Metadata-Unavailable_cb229944.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=BObxPy-Bikk" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
-                        Transformational Journeys
+                        Unknown Uploader
                     </div>
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
-                        Kimberly Reuter: Choosing Freedom Changed Everything for Her
+                        Episode y5sD_fbn (Metadata Unavailable)
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 20, 2025
-                    </p>
-                    <a href="transformational-journeys/Kimberly-Reuter-Choosing-Freedom-Changed-Everythin_1990b5c8.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/19</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="unknown-uploader/Episode-y5sD_fbn-Metadata-Unavailable_6d5fcd0e.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=y5sD_fbn82Q" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
-                        Transformational Journeys
+                        Unknown Uploader
                     </div>
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
-                        The Truth About Authentic Living No One Tells You!
+                        Episode BObxPy-B (Metadata Unavailable)
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 11, 2025
-                    </p>
-                    <a href="transformational-journeys/The-Truth-About-Authentic-Living-No-One-Tells-You_fc34a310.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/19</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="unknown-uploader/Episode-BObxPy-B-Metadata-Unavailable_9c0a84a7.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=BObxPy-Bikk" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
-                        Transformational Journeys
+                        Unknown Uploader
                     </div>
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
-                        How Self-Sabotage Nearly Cost Him Everything
+                        Episode y5sD_fbn (Metadata Unavailable)
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 11, 2025
-                    </p>
-                    <a href="transformational-journeys/How-Self-Sabotage-Nearly-Cost-Him-Everything_002868f5.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
-                </div>
-                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
-                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
-                        Transformational Journeys
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/19</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="unknown-uploader/Episode-y5sD_fbn-Metadata-Unavailable_e2ad5450.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=y5sD_fbn82Q" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
                     </div>
-                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
-                        “I Wanted Every Emotion to Be Anger. Until It Broke Me” Tiffany Zehara | Transfo...
-                    </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 11, 2025
-                    </p>
-                    <a href="transformational-journeys/I-Wanted-Every-Emotion-to-Be-Anger-Until-It-Broke-_5460233f.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
-                </div>
-                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
-                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
-                        Transformational Journeys
-                    </div>
-                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
-                        "I Came Out to My Son Before I Came Out to Myself" | Andrew Miner | Transformati...
-                    </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 11, 2025
-                    </p>
-                    <a href="transformational-journeys/I-Came-Out-to-My-Son-Before-I-Came-Out-to-Myself-A_65abe32d.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
-                </div>
-                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
-                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
-                        Transformational Journeys
-                    </div>
-                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
-                        How Did She Go From Baseball to the Cockpit?
-                    </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 10, 2025
-                    </p>
-                    <a href="transformational-journeys/How-Did-She-Go-From-Baseball-to-the-Cockpit_4536ff1e.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
-                </div>
-                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
-                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
-                        Transformational Journeys
-                    </div>
-                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
-                        AI Rewrote Her Breakup It Changed Everything!
-                    </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 10, 2025
-                    </p>
-                    <a href="transformational-journeys/AI-Rewrote-Her-Breakup-It-Changed-Everything_cc40b6a6.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
-                </div>
-                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
-                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
-                        Transformational Journeys
-                    </div>
-                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
-                        His Generation is Drowning. He's Trying to Save it.
-                    </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 10, 2025
-                    </p>
-                    <a href="transformational-journeys/His-Generation-is-Drowning-Hes-Trying-to-Save-it_06783913.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="mb-12">
-            <h3 class="section-label">Rick Astley (1 reports)</h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
-                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
-                        Rick Astley
-                    </div>
-                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
-                        Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)
-                    </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 13, 2025
-                    </p>
-                    <a href="rick-astley/Rick-Astley-Never-Gonna-Give-You-Up-Official-Video_bdaa7482.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
                 </div>
             </div>
         </div>
@@ -728,32 +783,38 @@
                         I:AM
                     </div>
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
-                        Authenticity, Ego & Spiritual Bypassing: The Real Inner Work | The I:AM Experien...
+                        Authenticity, Ego &amp; Spiritual Bypassing: The Real Inner Work | The I:AM Experience Ep. 4
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 10, 2025
-                    </p>
-                    <a href="iam/Authenticity-Ego-Spiritual-Bypassing-The-Real-Inne_12464bd5.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/10</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="iam/Authenticity-Ego-Spiritual-Bypassing-The-Real-Inne_12464bd5.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=kbXMZuaXjpI" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
                         I:AM
                     </div>
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
-                        Why Manifestation Isn’t Working (Even Though You’ve Tried Everything) | The I:AM...
+                        Why Manifestation Isn’t Working (Even Though You’ve Tried Everything) | The I:AM Experience Ep. 1
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 10, 2025
-                    </p>
-                    <a href="iam/Why-Manifestation-Isnt-Working-Even-Though-Youve-T_b83ba9e0.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/10</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="iam/Why-Manifestation-Isnt-Working-Even-Though-Youve-T_b83ba9e0.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=j-8ex6TPFcU" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
@@ -762,32 +823,79 @@
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
                         Finding Flow: Dismantling the Need to Perform | The I:AM Experience Ep. 2
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 10, 2025
-                    </p>
-                    <a href="iam/Finding-Flow-Dismantling-the-Need-to-Perform-The-I_c2dcb319.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/10</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="iam/Finding-Flow-Dismantling-the-Need-to-Perform-The-I_c2dcb319.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=RoKuBc9yZu0" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
                 <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
                     <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
                         I:AM
                     </div>
                     <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
-                        Mastering Ego: The Path to Authentic Self Concept Alignment | The I:AM Experienc...
+                        Mastering Ego: The Path to Authentic Self Concept Alignment | The I:AM Experience Ep. 3
                     </h4>
-                    <p class="text-slate-400 text-sm mb-4">
-                        📅 Sep 10, 2025
-                    </p>
-                    <a href="iam/Mastering-Ego-The-Path-to-Authentic-Self-Concept-A_ac8ed8aa.html"
-                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
-                        View Analysis
-                        <span class="ml-2">→</span>
-                    </a>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/10</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="iam/Mastering-Ego-The-Path-to-Authentic-Self-Concept-A_ac8ed8aa.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=3qPyD4tiGQw" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="mb-12">
+            <h3 class="section-label">Rick Astley Podcast (1 reports)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Rick Astley
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">Analyzed on 2025/09/13</p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="rick-astley/Rick-Astley-Never-Gonna-Give-You-Up-Official-Video_bdaa7482.html" 
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-medium rounded-lg neon-glow hover:bg-blue-400 transition-all duration-300">
+                            View Analysis
+                        </a>
+                        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank"
+                           class="inline-flex items-center gap-2 px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-400 transition-all duration-300">
+                            📺 Watch
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="report-card rounded-2xl p-8 text-center mt-16">
+            <div class="flex flex-wrap gap-4 justify-center mb-6">
+                <a href="../index.html" 
+                   class="inline-flex items-center gap-2 px-4 py-2 border border-slate-600 text-slate-300 rounded-lg font-medium hover:border-slate-500 hover:text-slate-200 transition-all duration-300">
+                    🏠 Home
+                </a>
+                <button onclick="window.scrollTo(0,0)"
+                        class="inline-flex items-center gap-2 px-4 py-2 border border-slate-600 text-slate-300 rounded-lg font-medium hover:border-slate-500 hover:text-slate-200 transition-all duration-300">
+                    ⬆️ Back to Top
+                </button>
+            </div>
+            <p class="text-white font-semibold mb-2">AuthenticityCo-Pilot</p>
+            <p class="text-slate-400 text-sm">
+                Advanced Podcast Coaching Analysis • Evidence-based insights for transformational conversations
+            </p>
         </div>
     </div>
 </body>

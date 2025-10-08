@@ -307,12 +307,9 @@ function EnhancedReportApp({ report }) {
     setIsContentLocked(!isContentLocked);
   };
 
-  // Pass toggle state and handler to ReportApp, and include JobIdFooter
+  // Pass toggle state and handler to ReportApp
   return (
-    <div>
-      <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
-      <JobIdFooter jobId={report.meta?.jobId || 'Unknown'} />
-    </div>
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
   );
 }
 
@@ -753,12 +750,21 @@ function ReportApp({ report, isContentLocked = false, onToggle }) {
                     ]);
                 };
                 
+                // Enhanced ReportApp with header and footer
+                const MainReportApp = ({ report }) => {
+                    return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
+                        React.createElement(EnhancedReportApp, { key: 'report', report }),
+                        React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
+                    ]);
+                };
+                
                 // Render the app
                 const root = ReactDOM.createRoot(document.getElementById('root'));
-                root.render(React.createElement(EnhancedReportApp, { report: reportData }));
+                root.render(React.createElement(MainReportApp, { report: reportData }));
             </script>
         
-        <!-- Debug: Report fully restored with proper React template at 2025-01-20 23:45 - FORCE DEPLOYMENT -->
+        <div id="authenticity-nav-footer"></div>
         </body>
         </html>
         
