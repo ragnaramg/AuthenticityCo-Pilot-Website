@@ -1,0 +1,764 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head><script src="../../shared-nav.js"></script>
+            <title>Podcast Analysis - MorningMood</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+            <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+            <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+            <script src="https://cdn.tailwindcss.com"></script>
+            <style>
+                /* Dark neon theme overrides to ensure compatibility */
+                body {
+                    margin: 0;
+                    padding: 0;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="authenticity-nav-header"></div><div id="root"></div>
+            
+            <script type="text/babel">
+                /**
+ * Podcast Interviewer Co-Pilot — Report Template
+ * - Dark neon theme preserved
+ * - Expects a `report` prop (JSON) that matches the schema below
+ * - First-insight-free + teaser + locked everywhere
+ * - Conversational headers mapped at render
+ */
+
+// Available via global React
+const { useState } = React;
+
+/** ==== JSON prop schema (matches your latest report format) ==== */
+// Expected report structure with various sections for podcast analysis
+
+/* ---------- helpers ---------- */
+
+const iconForTitle = (title) => {
+  const t = title.toLowerCase();
+  if (t.includes("episode arc") || t.includes("conversation")) return "📈";
+  if (t.includes("quote") || t.includes("highlight") || t.includes("remembering")) return "💬";
+  if (t.includes("tone") || t.includes("energy")) return "🌊";
+  if (t.includes("theme") || t.includes("threads")) return "🧵";
+  if (t.includes("style") || t.includes("habits")) return "✨";
+  if (t.includes("voice")) return "🎙️";
+  if (t.includes("guest") || t.includes("rapport") || t.includes("feel")) return "🤝";
+  if (t.includes("chem") || t.includes("co-creation") || t.includes("ideas")) return "🧪";
+  if (t.includes("blind")) return "🙈";
+  if (t.includes("resource") || t.includes("tools")) return "📚";
+  return "•";
+};
+
+function effectiveScore(score, scoreType) {
+  if (score == null) return null;
+  if (scoreType === "lower") return 10 - score;
+  return score;
+}
+
+function computeHeaderStats(themes) {
+  const scored = themes
+    .map((d) => ({ d, eff: effectiveScore(d.score, d.scoreType) }))
+    .filter((x) => x.eff !== null);
+
+  const overall =
+    scored.length > 0
+      ? +(scored.reduce((s, x) => s + x.eff, 0) / scored.length).toFixed(1)
+      : 0;
+
+  const strength = scored.reduce((best, x) => (x.eff > best.eff ? x : best), scored[0]);
+  const opportunity = scored.reduce((worst, x) => (x.eff < worst.eff ? x : worst), scored[0]);
+
+  return {
+    overall,
+    strengthTitle: strength?.d?.title ?? "",
+    strengthScoreLabel: strength?.d?.score != null ? `${strength.d.score}/10` : "",
+    strengthColor: "#22C55E", // always green
+    opportunityTitle: opportunity?.d?.title ?? "",
+    opportunityScoreLabel: opportunity?.d?.score != null ? `${opportunity.d.score}/10` : "",
+    opportunityColor: "#FACC15", // always amber
+  };
+}
+
+/* ---------- sparkline ---------- */
+
+const Sparkline = ({ values, color }) => {
+  if (!values || values.length < 2) return null;
+  const W = 360, H = 64, pad = 6;
+  const clamp01 = (v) => Math.min(1, Math.max(0, v));
+  const pts = values.map((v, i) => {
+    const x = pad + (i * (W - pad * 2)) / (values.length - 1);
+    const y = pad + (H - pad * 2) * (1 - clamp01(v));
+    return [x, y];
+  });
+  const path = pts.map(([x, y], i) => `${i ? "L" : "M"} ${x} ${y}`).join(" ");
+  const area = `${path} L ${pts[pts.length - 1][0]} ${H - pad} L ${pts[0][0]} ${H - pad} Z`;
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} width="100%" height="64" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id={`g-${color.replace("#", "")}`} x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.22" />
+          <stop offset="100%" stopColor={color} stopOpacity="0.04" />
+        </linearGradient>
+      </defs>
+      <path d={area} fill={`url(#g-${color.replace("#", "")})`} />
+      <path d={path} fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" />
+      {pts.map(([x, y], i) => <circle key={i} cx={x} cy={y} r={2} fill={color} />)}
+    </svg>
+  );
+};
+
+/* ---------- small UI bits ---------- */
+
+const SectionLabel = ({ children }) => (
+  <h3 className="mb-3 text-slate-300 uppercase tracking-widest text-xl text-center">{children}</h3>
+);
+
+const PillScore = ({ value, color }) => (
+  <span
+    className="text-[13px] font-bold px-2 py-1 rounded-full border"
+    style={{
+      borderColor: color,
+      color,
+      boxShadow: `0 0 12px ${color}33`,
+      background: "rgba(2,6,23,0.4)",
+    }}
+  >
+    {value}
+  </span>
+);
+
+const ClampParagraph = ({ html, initiallyClamped = true }) => {
+  const [clamped, setClamped] = useState(initiallyClamped);
+  return (
+    <div>
+      <div
+        style={
+          clamped
+            ? {
+                display: "-webkit-box",
+                WebkitLineClamp: 5,
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+              }
+            : {}
+        }
+        className="text-[14px] text-slate-200 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
+      <button
+        onClick={() => setClamped((v) => !v)}
+        className="mt-1 text-[12px] text-blue-300 hover:text-blue-200 underline"
+      >
+        {clamped ? "See more" : "See less"}
+      </button>
+    </div>
+  );
+};
+
+/** Locked content blur with teaser + count */
+const LockedListBlur = ({ teaser, items, isContentLocked = true }) => {
+  const [open, setOpen] = useState(false);
+
+  const List = (
+    <ol className="list-decimal pl-5 space-y-3">
+      {items.map((p, i) => (
+        <li key={i} className="text-[14px] text-slate-300">
+          <span dangerouslySetInnerHTML={{ __html: p }} />
+        </li>
+      ))}
+    </ol>
+  );
+
+  // If content is unlocked via toggle, show the content directly
+  if (!isContentLocked || open) return <div className="mt-2">{List}</div>;
+
+  return (
+    <div className="relative rounded-md overflow-hidden mt-2">
+      <div className="p-3 space-y-2">{List}</div>
+      <div
+        className="absolute inset-0 flex flex-col items-center justify-center text-center px-4"
+        style={{
+          background: "rgba(2,6,23,0.55)",
+          backdropFilter: "blur(8px)",
+          borderTop: "1px solid rgba(255,255,255,0.04)",
+          borderBottom: "1px solid rgba(255,255,255,0.04)",
+        }}
+      >
+        {teaser && (
+          <span className="text-[13px] font-medium text-slate-100 mb-2">
+            {teaser}
+          </span>
+        )}
+        <span className="text-[11px] text-slate-300 mb-3">
+          Includes <strong>{items.length}</strong> insights
+        </span>
+        <button
+          className="text-[12px] text-blue-300 hover:text-blue-200 underline"
+          onClick={() => setOpen(true)}
+        >
+          Upgrade to unlock
+        </button>
+      </div>
+    </div>
+  );
+};
+
+/* ---------- title mapping to conversational headers ---------- */
+
+function mapDigestTitle(oldTitle) {
+  if (/episode arc/i.test(oldTitle)) return "How the Conversation Flowed";
+  if (/quotable|highlight/i.test(oldTitle)) return "Moments Worth Remembering";
+  if (/tone snapshot|shifts? in your energy/i.test(oldTitle)) return "Shifts in Your Energy";
+  if (/emergent theme|threads?/i.test(oldTitle)) return "The Threads You and Your Guest Wove Together";
+  if (/conversation(al)? style|habits/i.test(oldTitle)) return "Your Hosting Habits in Numbers";
+  return oldTitle;
+}
+
+function mapThemeTitle(oldTitle) {
+  if (/voice reflection/i.test(oldTitle)) return "How Your Voice Carried the Room";
+  if (/style.*differentiation/i.test(oldTitle)) return "What Makes You, You";
+  if (/guest.*connection/i.test(oldTitle)) return "How You Made Them Feel";
+  if (/intellectual.*chem|co-creation|ideas/i.test(oldTitle)) return "The Ideas You Cooked Up Together";
+  if (/blind/i.test(oldTitle)) return "Places to Grow (Without Losing Yourself)";
+  if (/resource|tools/i.test(oldTitle)) return "Extra Tools for Your Growth";
+  return oldTitle;
+}
+
+/* ------------------------------ APP ------------------------------ */
+
+// Paid Content Lock Toggle Component
+const PaidContentToggle = ({ isLocked, onToggle }) => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+        color: '#e2e8f0',
+        fontSize: '14px',
+        fontWeight: '500',
+        marginTop: '8px'
+      }}
+    >
+      <span>Lock Content</span>
+      <label
+        style={{
+          position: 'relative',
+          display: 'inline-block',
+          width: '44px',
+          height: '24px'
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={isLocked}
+          onChange={onToggle}
+          style={{
+            opacity: 0,
+            width: 0,
+            height: 0
+          }}
+        />
+        <span
+          style={{
+            position: 'absolute',
+            cursor: 'pointer',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: isLocked ? '#3b82f6' : '#64748b',
+            transition: '0.3s',
+            borderRadius: '24px'
+          }}
+        >
+          <span
+            style={{
+              position: 'absolute',
+              content: '',
+              height: '18px',
+              width: '18px',
+              left: isLocked ? '23px' : '3px',
+              bottom: '3px',
+              backgroundColor: 'white',
+              transition: '0.3s',
+              borderRadius: '50%'
+            }}
+          />
+        </span>
+      </label>
+    </div>
+  );
+};
+
+// Enhanced ReportApp with paid content toggle
+function EnhancedReportApp({ report }) {
+  const [isContentLocked, setIsContentLocked] = useState(false); // Default to unlocked
+
+  const handleToggle = () => {
+    setIsContentLocked(!isContentLocked);
+  };
+
+  // Pass toggle state and handler to ReportApp
+  return (
+    <ReportApp report={report} isContentLocked={isContentLocked} onToggle={handleToggle} />
+  );
+}
+
+function ReportApp({ report, isContentLocked = false, onToggle }) {
+  const headerStats = computeHeaderStats(report.themes);
+
+  const unlockedCount =
+    report.digest.length + report.themes.length + 1 /* game plan */;
+
+  const totalLocked =
+    report.digest.reduce((n, i) => n + i.lockedParagraphsHtml.length, 0) +
+    report.themes.reduce((n, i) => n + i.lockedParagraphsHtml.length, 0) +
+    report.gamePlan.lockedActions.length +
+    (report.progress ? report.progress.lockedItemsHtml.length : 0);
+
+  return (
+    <div
+      className="min-h-screen text-slate-100"
+      style={{
+        background:
+          "radial-gradient(120% 120% at 0% 0%, #0B1220 0%, #0B1220 12%, #0F172A 40%, #0F172A 100%)",
+        fontFamily: "Inter, system-ui, sans-serif",
+      }}
+    >
+      <div className="max-w-[1200px] mx-auto px-6 py-10">
+        {/* Header */}
+        <div
+          className="mb-8 rounded-2xl p-6 md:p-8"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+            boxShadow: "0 10px 30px rgba(2,6,23,0.5)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(148,163,184,0.18)",
+          }}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
+            {/* Overall */}
+            <div
+              className="rounded-xl p-4 h-full flex flex-col items-center justify-center text-center"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(2,6,23,0.35) 0%, rgba(2,6,23,0.2) 100%)",
+                border: "1px solid rgba(148,163,184,0.14)",
+              }}
+            >
+              <div className="text-slate-200 text-[18px] uppercase tracking-wider font-semibold">
+                Overall Score
+              </div>
+              <div
+                className="mt-1 font-extrabold"
+                style={{
+                  fontSize: "36px",
+                  color: "#22C55E",
+                  textShadow: "0 0 12px rgba(34,197,94,0.5)",
+                  lineHeight: 1.1,
+                }}
+              >
+                {headerStats.overall.toFixed(1)}/10
+              </div>
+            </div>
+
+            {/* Title Block */}
+            <div className="flex flex-col items-center justify-center text-center">
+              <h2
+                className="text-[24px] font-semibold text-white"
+                style={{
+                  textShadow:
+                    "0 0 14px rgba(255,255,255,0.7), 0 0 28px rgba(59,130,246,0.4)",
+                }}
+              >
+                Episode Insights For:
+              </h2>
+              
+              <div className="mt-3 text-slate-300">
+                <div className="italic text-slate-200">
+                  <span className="font-medium">Podcast:</span> {report.header.podcast}
+                </div>
+                <div className="italic text-slate-200 mt-1">
+                  <span className="font-medium">Episode:</span> {report.header.episode}
+                </div>
+                {report.header.guest && (
+                  <div className="italic text-slate-200 mt-1">
+                    <span className="font-medium">Guest:</span> {report.header.guest}
+                  </div>
+                )}
+              </div>
+
+              <p className="mt-3 text-slate-300">
+                {unlockedCount} insights unlocked.{" "}
+                <button
+                  className="underline text-blue-300 hover:text-blue-200"
+                  onClick={() => console.log("open upgrade")}
+                >
+                  Upgrade
+                </button>{" "}
+                to see {totalLocked} more.
+              </p>
+              {onToggle && (
+                <PaidContentToggle isLocked={isContentLocked} onToggle={onToggle} />
+              )}
+            </div>
+
+            {/* Strength / Opportunity — top copy (pulled from Game Plan) */}
+            <div
+              className="rounded-xl p-4 h-full flex flex-col items-start justify-center text-left"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(2,6,23,0.35) 0%, rgba(2,6,23,0.2) 100%)",
+                border: "1px solid rgba(148,163,184,0.14)",
+              }}
+            >
+              <div className="text-white text-[18px] uppercase tracking-wider font-semibold">
+                Strength
+              </div>
+              <div className="mt-1 text-[14px] text-slate-200">
+                {report.gamePlan.strength}
+              </div>
+
+              <div className="mt-4 text-white text-[18px] uppercase tracking-wider font-semibold">
+                Opportunity
+              </div>
+              <div className="mt-1 text-[14px] text-slate-200">
+                {report.gamePlan.opportunity}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Your Game Plan at a Glance */}
+        <SectionLabel>Your Game Plan at a Glance</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10"
+          style={{
+            background:
+              "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+            border: "1px solid rgba(148,163,184,0.14)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div className="text-[14px] text-slate-200 leading-relaxed">
+            <p className="mb-3">
+              <span className="font-semibold">Free:</span>{" "}
+              <span className="text-slate-100">{report.gamePlan.freeAction.title}</span>{" "}
+              — {report.gamePlan.freeAction.detail}
+            </p>
+            <LockedListBlur
+              teaser={report.gamePlan.teaser}
+              items={report.gamePlan.lockedActions}
+              isContentLocked={isContentLocked}
+            />
+          </div>
+        </div>
+
+        {/* The Vibe Check */}
+        <SectionLabel>The Vibe Check</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10 text-center"
+          style={{
+            background:
+              "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+            border: "1px solid rgba(148,163,184,0.14)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div style={{ fontSize: "24px" }} className="mb-2">
+            {report.vibeCheck.icon}
+          </div>
+          <div
+            style={{ fontSize: "16px" }}
+            className="text-slate-200 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: report.vibeCheck.vibeHtml }}
+          />
+          <div
+            style={{ fontSize: "16px" }}
+            className="mt-2 text-slate-200 leading-relaxed"
+            dangerouslySetInnerHTML={{ __html: report.vibeCheck.quoteHtml }}
+          />
+        </div>
+
+        {/* Digest */}
+        <SectionLabel>Digest</SectionLabel>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {report.digest.map((c, idx) => {
+            const mappedTitle = mapDigestTitle(c.title);
+            return (
+              <div
+                key={idx}
+                className="rounded-2xl p-5"
+                style={{
+                  background:
+                    "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+                  border: "1px solid rgba(148,163,184,0.14)",
+                  boxShadow:
+                    "0 10px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.04)",
+                }}
+              >
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-[16px]" style={{ color: c.iconColor }}>
+                    {iconForTitle(mappedTitle)}
+                  </span>
+                  <div
+                    className="text-[15px] font-semibold"
+                    style={{ color: c.iconColor, textShadow: `0 0 6px ${c.iconColor}55` }}
+                  >
+                    {mappedTitle}
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+                    Unlocked Insight
+                  </p>
+                  <ClampParagraph html={c.unlockedHtml} />
+                </div>
+
+                <LockedListBlur teaser={c.teaser} items={c.lockedParagraphsHtml} isContentLocked={isContentLocked} />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Scored Themes */}
+        <SectionLabel>Scored Themes</SectionLabel>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          {report.themes.map((ins, idx) => {
+            const mappedTitle = mapThemeTitle(ins.title);
+            return (
+              <div
+                key={idx}
+                className="rounded-2xl p-5"
+                style={{
+                  background:
+                    "radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)",
+                  border: "1px solid rgba(148,163,184,0.14)",
+                  boxShadow:
+                    "0 10px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.04)",
+                }}
+              >
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[16px]" style={{ color: ins.iconColor }}>
+                      {iconForTitle(mappedTitle)}
+                    </span>
+                    <h4
+                      className="text-[15px] font-semibold"
+                      style={{ color: ins.iconColor, textShadow: `0 0 6px ${ins.iconColor}55` }}
+                    >
+                      {mappedTitle}
+                    </h4>
+                  </div>
+                  {ins.score != null && <PillScore value={`${ins.score}/10`} color={ins.color} />}
+                </div>
+
+                {ins.trend && ins.trend.length > 1 && (
+                  <div
+                    className="rounded-md px-2 py-1 mb-3"
+                    style={{ background: "linear-gradient(180deg, #0B1220 0%, #0F172A 100%)" }}
+                  >
+                    <Sparkline values={ins.trend} color={ins.color} />
+                  </div>
+                )}
+
+                <div className="space-y-1">
+                  <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wide">
+                    Unlocked Insight
+                  </p>
+                  <ClampParagraph html={ins.unlockedHtml} />
+                </div>
+
+                <LockedListBlur teaser={ins.teaser} items={ins.lockedParagraphsHtml} isContentLocked={isContentLocked} />
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Progress Over Time - only show if progress data exists */}
+        {report.progress && (
+          <>
+            <SectionLabel>Tracking Your Progress Over Time</SectionLabel>
+        <div
+          className="rounded-2xl p-6 mb-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.03) 100%)",
+            border: "1px solid rgba(148,163,184,0.18)",
+            boxShadow: "0 10px 24px rgba(2,6,23,0.45)",
+          }}
+        >
+          <div className="mb-3">
+            <p
+              className="text-[14px] text-slate-200 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: report.progress.summaryHtml }}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+            {report.progress.series.map((s, i) => (
+              <div key={i}>
+                <div className="text-xs text-slate-300 mb-1">{s.label}</div>
+                <div
+                  className="rounded-md px-2 py-1"
+                  style={{ background: "linear-gradient(180deg, #0B1220 0%, #0F172A 100%)" }}
+                >
+                  <Sparkline values={s.values} color={s.color} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <LockedListBlur
+            teaser={report.progress.lockedTeaser}
+            items={report.progress.lockedItemsHtml}
+            isContentLocked={isContentLocked}
+          />
+        </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+                
+                // Report data from server
+                const reportData = {"header": {"podcast": "MorningMood", "host": "Unknown Host", "episode": "Why 40% of Companies Build Their Own Software (And Regret It)", "guest": "Unknown Guest", "tone": "Professional"}, "gamePlan": {"strength": "Your ability to build on shared experiences and create meaningful dialogue through storytelling, particularly when connecting global logistics challenges to specific examples like the Ukrainian truck driver shortage.", "opportunity": "Taking more conversational control and driving deeper into your unique European perspective rather than primarily responding to your guest's lead.", "freeAction": {"title": "Lead with Your European Expertise Earlier", "detail": "You waited until mid-conversation to share your strongest insights about European logistics impacts. Start episodes by establishing your unique perspective within the first 2-3 exchanges, using specific data points like the '10,000 Ukrainian truck drivers gone overnight' example that made this conversation memorable."}, "teaser": "Plus 3 advanced strategies for conversation leadership, energy management, and leveraging your technical expertise more effectively.", "lockedActions": ["Develop transition phrases that help you redirect conversations back to your expertise areas when discussions drift too broadly", "Create a pre-episode ritual to identify 2-3 specific European logistics data points or stories you want to weave into each conversation", "Practice the 'Yes, and here's what I'm seeing in Europe' technique to build on guest insights while establishing your unique value"]}, "vibeCheck": {"icon": "\ud83e\udd1d", "vibeHtml": "<strong>Collaborative Builder</strong> - You created a genuine partnership dynamic, with both voices contributing equally to build ideas together rather than a traditional host-guest hierarchy.", "quoteHtml": "\"And I'm thinking then sort of, I guess, half a wild guess why you're firefighting. Right.\" - Your gentle challenge showed you're thinking alongside your guest, not just facilitating."}, "digest": [{"title": "How the Conversation Flowed", "iconColor": "#3B82F6", "teaser": "Analysis of your conversation architecture, including 3 specific flow patterns and 2 missed transition opportunities.", "unlockedHtml": "You maintained excellent conversational rhythm, with your speaking segments averaging 45-60 seconds - long enough to develop complete thoughts without dominating. Your response pattern showed strong active listening, consistently building on Kimberly's points with specific European examples.", "lockedParagraphsHtml": ["Your conversation architecture followed a classic 'problem-example-insight' pattern, but you missed two key opportunities to redirect the flow back to your European expertise when the discussion became too US-focused around Excel spreadsheets and consulting experiences.", "The strongest flow moment came when you connected COVID disruptions to the Ukraine war impact, creating a timeline narrative that gave the conversation forward momentum rather than circular discussion.", "Your transition technique of using 'Right' and 'Yeah, absolutely' as bridges worked well for agreement, but you need stronger pivot phrases when you want to introduce contrasting or additional perspectives from your European vantage point."]}, {"title": "Moments Worth Remembering", "iconColor": "#10B981", "teaser": "4 standout moments analyzed, including your strongest insight delivery and 2 missed opportunities for deeper exploration.", "unlockedHtml": "Your most impactful moment was the Ukrainian truck driver story: \"almost like overnight, it was like kind of whatever, 10,000 truck drivers gone.\" This specific, visceral example elevated the entire conversation from abstract to concrete reality.", "lockedParagraphsHtml": ["The Turkish transport company owner story (\"that was the biggest mistake I've ever made\") was your strongest narrative moment, but you could have explored the maintenance burden insight more deeply - this was a goldmine that got passed over too quickly.", "Your reframe of firefighting (\"If you're firefighting for five years, that's not firefighting\") was conceptually brilliant but delivered too quietly. This insight deserved more emphasis and development.", "You missed a significant opportunity when discussing the 40% build-vs-buy statistic - this European-specific data point could have been the foundation for a much deeper exploration of regional differences in technology adoption."]}, {"title": "Shifts in Your Energy", "iconColor": "#F59E0B", "teaser": "Energy mapping across 5 conversation phases, including your peak engagement triggers and 2 energy dips.", "unlockedHtml": "Your energy peaked noticeably when sharing specific European examples, particularly the Ukraine war impact and the Turkish company story. Your voice became more animated and your pacing quickened from measured to engaged.", "lockedParagraphsHtml": ["You experienced an energy dip during the middle section about Excel spreadsheets and consulting approaches, where you fell into pure agreement mode rather than contributing your own perspective - your responses shortened to simple confirmations.", "Your energy resurged strongly when introducing the build-vs-buy statistics, but then plateaued when you didn't fully capitalize on that momentum to drive deeper into the European technology adoption landscape.", "The conversation's end showed your strongest sustained energy as you developed the Turkish company narrative, suggesting you're most engaged when sharing detailed, personal industry stories rather than discussing abstract concepts."]}, {"title": "The Threads You and Your Guest Wove Together", "iconColor": "#8B5CF6", "teaser": "3 major collaborative themes analyzed, plus 2 thread-weaving techniques you can strengthen.", "unlockedHtml": "You and Kimberly created a powerful shared narrative around the 'firefighting vs. fire prevention' concept, with both of you building on Marc Anetto's wisdom. This collaborative development showed true co-creation rather than just turn-taking.", "lockedParagraphsHtml": ["The crisis timeline thread (COVID \u2192 Ukraine \u2192 Suez) became a strong collaborative framework, with you providing European context while Kimberly added US consulting perspective, creating a more complete global picture than either could achieve alone.", "Your technology resistance theme developed beautifully through shared frustration, but you could have strengthened this thread by more explicitly connecting your European statistics (40% build-themselves) to Kimberly's Excel spreadsheet observations.", "The most sophisticated thread-weaving happened around the 'reward fire preventers' concept, where you both added layers of insight, but you could have claimed more ownership of the European implementation challenges rather than just agreeing with the general principle."]}, {"title": "Your Hosting Habits in Numbers", "iconColor": "#EF4444", "teaser": "Complete statistical breakdown including talk-time ratios, question patterns, and 3 specific metrics for improvement.", "unlockedHtml": "Your talk-time distribution was well-balanced at approximately 45% host to 55% guest, showing good conversational generosity. You asked 3 direct questions and made 12 building statements, indicating a collaborative rather than interrogative hosting style.", "lockedParagraphsHtml": ["Your agreement-to-challenge ratio was heavily skewed toward agreement (8:1), which created harmony but missed opportunities for productive tension that could have deepened the conversation's analytical value.", "You introduced 4 specific data points (Volkswagen's 25,000 suppliers, 10,000 Ukrainian drivers, 40% build-themselves statistic, 100 million euro estimates) showing strong preparation, but your follow-through rate on developing these insights was only 50%.", "Your response latency averaged 0.5 seconds, indicating excellent active listening, but your topic initiation rate was low at 25% - you primarily responded to Kimberly's direction rather than driving new conversational territories from your European expertise."]}], "themes": [{"id": "voice", "title": "How Your Voice Carried the Room", "iconColor": "#22C55E", "score": 7.2, "scoreType": "higher", "teaser": "Analysis of your vocal authority patterns, storytelling cadence, and 3 techniques to amplify your expertise delivery.", "unlockedHtml": "Your voice carried quiet authority, particularly when sharing European-specific insights. You spoke with measured confidence when presenting data points like the \"40% of companies choose to build themselves\" statistic, establishing credibility through specific knowledge rather than volume or force.", "lockedParagraphsHtml": ["Your storytelling voice transformed noticeably during the Turkish transport company narrative - your pacing slowed, your tone became more intimate, and you used strategic pauses (\"and he said to me like... and that was the biggest mistake I've ever made\") that created genuine suspense and engagement.", "You have a tendency to diminish your expertise with qualifying language (\"I guess,\" \"kind of,\" \"whatever\") that undermines the authority of your insights. When you said \"I guess, half a wild guess why you're firefighting,\" you weakened what was actually a sharp analytical observation.", "Your voice carries best when you're building bridges between concepts rather than just agreeing. The moment you connected firefighting duration to the definition of firefighting itself showed your analytical voice at its strongest, but you need to lean into these insights more boldly."]}, {"id": "style", "title": "What Makes You, You", "iconColor": "#3B82F6", "score": 8.1, "scoreType": "higher", "teaser": "Your unique hosting signature analyzed across 4 dimensions, plus specific techniques to amplify your distinctive approach.", "unlockedHtml": "Your signature style blends analytical thinking with storytelling, creating a distinctive \"data-driven narrative\" approach. You don't just share statistics - you embed them in human stories, like connecting the abstract \"10,000 truck drivers\" to the personal reality of people wanting to \"go home\" during war.", "lockedParagraphsHtml": ["Your European perspective creates unique value through specific regional insights that your guest couldn't provide. The Ukraine war impact on European logistics was exclusively yours to share, and these moments of unique expertise represent your strongest hosting signature.", "You have a natural gift for temporal thinking - connecting events across time (COVID \u2192 Ukraine \u2192 Suez crisis) in ways that create narrative coherence. This timeline-building ability is a distinctive strength that separates you from hosts who only discuss current events in isolation.", "Your collaborative style shines when you're building on shared professional experiences, like the Marc Anetto reference. You create genuine intellectual partnership rather than traditional host-guest hierarchy, which works particularly well for B2B professional content where peer credibility matters more than entertainment value."]}, {"id": "guest", "title": "How You Made Them Feel", "iconColor": "#10B981", "score": 8.7, "scoreType": "higher", "teaser": "Guest comfort and engagement metrics, including 3 specific moments of connection and 2 opportunities for deeper rapport.", "unlockedHtml": "You created excellent psychological safety for your guest, evidenced by Kimberly's willingness to share detailed consulting experiences and personal frustrations. Your consistent \"Yeah, absolutely\" responses provided steady validation that encouraged her continued openness.", "lockedParagraphsHtml": ["Your guest felt heard and valued, particularly when you built substantially on her ideas rather than just acknowledging them. When she mentioned firefighting, you didn't just agree - you extended the metaphor with the five-year timeline insight, showing you were genuinely processing and developing her thoughts.", "The shared reference to Marc Anetto created a moment of professional intimacy that elevated the conversation from interview to peer discussion. Your guest's energy noticeably increased when you demonstrated this shared professional context, showing the power of common reference points.", "You could have created even deeper connection by asking more about her specific consulting experiences rather than primarily sharing your own observations. While your European insights were valuable, occasional curiosity about her rescue stories could have created more balanced intellectual exchange."]}, {"id": "intelchem", "title": "The Ideas You Cooked Up Together", "iconColor": "#8B5CF6", "score": 7.8, "scoreType": "higher", "teaser": "3 breakthrough collaborative insights analyzed, plus the intellectual chemistry patterns that sparked your best thinking.", "unlockedHtml": "Your strongest intellectual collaboration emerged around redefining firefighting from emergency response to chronic dysfunction. Together, you evolved this from a simple complaint (\"we're always firefighting\") to a diagnostic insight (\"if you're firefighting for five years, that's not firefighting\") to a systemic solution (reward fire preventers).", "lockedParagraphsHtml": ["The crisis timeline framework became a powerful analytical tool through your collaboration - Kimberly provided the C-suite attention pattern while you added the specific European disruption sequence, creating a more complete understanding of why technology adoption remains stalled in logistics.", "Your build-vs-buy discussion revealed the intellectual chemistry of complementary expertise: your European statistics (40% build themselves) combined with her field experience (Excel spreadsheet rescues) to illuminate the gap between ambitious technology plans and practical implementation reality.", "The most sophisticated idea development happened around the maintenance burden insight from your Turkish company story. This moved beyond simple technology adoption to the hidden costs of custom solutions, but this breakthrough insight was underdeveloped - it deserved more collaborative exploration to reach its full analytical potential."]}, {"id": "blind", "title": "Places to Grow (Without Losing Yourself)", "iconColor": "#F59E0B", "score": 6.4, "scoreType": "lower", "teaser": "4 specific growth opportunities identified, including conversation control techniques and expertise positioning strategies.", "unlockedHtml": "Your biggest blind spot is underutilizing your unique European perspective. You have exclusive insights about regional logistics challenges, but you often wait for permission or perfect moments to share them rather than confidently establishing your expertise early and often.", "lockedParagraphsHtml": ["You tend to get pulled into your guest's framework rather than establishing your own conversational territory. While collaboration is valuable, you missed opportunities to redirect discussions toward European logistics challenges where your expertise could shine most brightly.", "Your qualifying language (\"I guess,\" \"kind of,\" \"whatever\") undermines the authority of insights that are actually quite sharp. When you said \"I guess, half a wild guess why you're firefighting,\" you were making a sophisticated analytical connection that deserved confident delivery.", "You have a pattern of introducing powerful data points (40% build-themselves statistic, Ukrainian driver shortage) but not fully developing their implications. These insights are conversation gold that you're leaving on the table by moving on too quickly to the next topic.", "Your agreement-heavy response pattern, while creating good rapport, sometimes prevents you from exploring productive disagreement or alternative perspectives that could deepen the analytical value of your conversations."]}, {"id": "resources", "title": "Extra Tools for Your Growth", "iconColor": "#EF4444", "score": 7.5, "scoreType": "higher", "teaser": "5 specific development resources and 3 practice techniques tailored to your collaborative hosting style and European expertise.", "unlockedHtml": "Focus on developing stronger transition phrases that help you redirect conversations back to your areas of expertise. Practice variations of \"That's exactly what we're seeing in Europe, and here's what's different...\" to bridge from guest insights to your unique perspective.", "lockedParagraphsHtml": ["Create a pre-episode preparation ritual where you identify 2-3 European logistics data points or stories you want to weave into each conversation. Having these ready will help you contribute unique value even when discussions drift toward general industry topics.", "Develop your insight development technique by practicing the \"Yes, and here's the deeper implication\" approach. When you share statistics like the 40% build-themselves figure, immediately follow with what this means for European competitiveness or operational efficiency.", "Work on confident delivery of your analytical insights by recording yourself sharing industry observations without qualifying language. Your analytical thinking is sharp - your delivery just needs to match the quality of your insights.", "Consider creating a European Logistics Insights newsletter or blog series to establish your thought leadership platform outside of podcast conversations. This will give you more confidence to position yourself as the European expert in collaborative discussions.", "Practice productive disagreement techniques for moments when you have different perspectives from your guests. Phrases like \"I'm seeing something different in Europe\" or \"The data I'm tracking suggests another angle\" can create valuable analytical tension without damaging rapport."]}], "meta": {"jobId": "a5a82062-2f69-4091-be7e-630782416008"}};
+                
+                // Add Report Header component
+                const ReportHeader = () => {
+                    return React.createElement('div', {
+                        style: {
+                            marginBottom: '30px',
+                            padding: '30px',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderRadius: '10px',
+                            textAlign: 'center',
+                            boxShadow: '0 10px 24px rgba(2,6,23,0.45)'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'brand',
+                            style: {
+                                marginBottom: '20px',
+                                fontSize: '12px',
+                                color: '#94a3b8'
+                            }
+                        }, [
+                            React.createElement('p', {
+                                key: 'title',
+                                style: { margin: '0', color: '#e2e8f0', fontWeight: '600' }
+                            }, 'AuthenticityCo-Pilot'),
+                            React.createElement('p', {
+                                key: 'subtitle', 
+                                style: { margin: '5px 0 0 0' }
+                            }, 'Advanced Podcast Coaching Analysis • Evidence-based insights')
+                        ]),
+                        React.createElement('div', {
+                            key: 'nav',
+                            style: {
+                                display: 'flex',
+                                justifyContent: 'flex-start',
+                                gap: '20px',
+                                flexWrap: 'wrap',
+                                alignItems: 'center'
+                            }
+                        }, [
+                            React.createElement('a', {
+                                key: 'reports-link',
+                                href: '../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: '#3b82f6',
+                                    color: 'white',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    transition: 'all 0.3s',
+                                    boxShadow: '0 0 12px rgba(59,130,246,0.4)'
+                                },
+                                onMouseOver: function(e) { e.target.style.background='#2563eb'; e.target.style.transform='translateY(-1px)'; },
+                                onMouseOut: function(e) { e.target.style.background='#3b82f6'; e.target.style.transform='translateY(0)'; }
+                            }, '← Back to All Reports'),
+                            React.createElement('a', {
+                                key: 'home-link',
+                                href: '../../index.html',
+                                style: {
+                                    display: 'inline-block',
+                                    background: 'transparent',
+                                    color: '#cbd5e1',
+                                    padding: '12px 24px',
+                                    textDecoration: 'none',
+                                    borderRadius: '6px',
+                                    fontWeight: '500',
+                                    border: '1px solid rgba(203,213,225,0.2)',
+                                    transition: 'all 0.3s'
+                                },
+                                onMouseOver: function(e) { e.target.style.borderColor='rgba(203,213,225,0.4)'; e.target.style.color='#e2e8f0'; },
+                                onMouseOut: function(e) { e.target.style.borderColor='rgba(203,213,225,0.2)'; e.target.style.color='#cbd5e1'; }
+                            }, '🏠 Home')
+                        ])
+                    ]);
+                };
+                
+                // Add Job ID Footer component
+                const JobIdFooter = ({ jobId }) => {
+                    const copyToClipboard = () => {
+                        navigator.clipboard.writeText(jobId).then(() => {
+                            alert('Job ID copied to clipboard!');
+                        });
+                    };
+                    
+                    return React.createElement('div', {
+                        style: {
+                            marginTop: '0',
+                            padding: '15px 30px',
+                            textAlign: 'center',
+                            background: 'radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%), linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%)',
+                            border: '1px solid rgba(148,163,184,0.14)',
+                            borderTop: 'none',
+                            color: '#cbd5e1'
+                        }
+                    }, [
+                        React.createElement('div', {
+                            key: 'job-id',
+                            style: {
+                                fontSize: '12px',
+                                fontFamily: 'monospace, courier',
+                                cursor: 'pointer',
+                                userSelect: 'all',
+                                color: '#94a3b8',
+                                opacity: '0.8'
+                            },
+                            onClick: copyToClipboard,
+                            title: 'Click to copy Job ID'
+                        }, `Job ID: ${jobId}`)
+                    ]);
+                };
+                
+                // Enhanced ReportApp with header and footer
+                const MainReportApp = ({ report }) => {
+                    return React.createElement('div', {}, [
+                        React.createElement(ReportHeader, { key: 'header' }),
+                        React.createElement(EnhancedReportApp, { key: 'report', report }),
+                        React.createElement(JobIdFooter, { key: 'footer', jobId: report.meta?.jobId || 'Unknown' })
+                    ]);
+                };
+                
+                // Render the app
+                const root = ReactDOM.createRoot(document.getElementById('root'));
+                root.render(React.createElement(MainReportApp, { report: reportData }));
+            </script>
+        <div id="authenticity-nav-footer"></div></body>
+        </html>
+        
