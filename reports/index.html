@@ -7,699 +7,1010 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(180deg, #020617 0%, #0f172a 50%, #1e293b 100%);
+            min-height: 100vh;
         }
-        .glass-panel {
+        .header-section {
+            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.12) 0%, rgba(2,6,23,0) 55%),
+                       linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(15,23,42,0.95) 100%);
+            border: 1px solid rgba(148,163,184,0.18);
+            box-shadow: 0 10px 24px rgba(2,6,23,0.5), inset 0 1px 0 rgba(255,255,255,0.06);
+        }
+        .stat-card {
+            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.12) 0%, rgba(2,6,23,0) 55%),
+                       linear-gradient(180deg, rgba(30,41,59,0.95) 0%, rgba(15,23,42,0.95) 100%);
+            border: 1px solid rgba(148,163,184,0.18);
+            box-shadow: 0 10px 24px rgba(2,6,23,0.5);
+        }
+        .report-card {
             background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.08) 0%, rgba(2,6,23,0) 55%),
-                        linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
+                       linear-gradient(180deg, rgba(30,41,59,0.92) 0%, rgba(15,23,42,0.92) 100%);
             border: 1px solid rgba(148,163,184,0.14);
             box-shadow: 0 10px 24px rgba(2,6,23,0.45), inset 0 1px 0 rgba(255,255,255,0.04);
         }
-        .neon-text {
-            text-shadow: 0 0 14px rgba(255,255,255,0.5), 0 0 28px rgba(59,130,246,0.3);
+        .nav-section {
+            background: radial-gradient(120% 120% at 0% 0%, rgba(59,130,246,0.06) 0%, rgba(2,6,23,0) 55%),
+                       linear-gradient(180deg, rgba(30,41,59,0.8) 0%, rgba(15,23,42,0.8) 100%);
+            border: 1px solid rgba(148,163,184,0.12);
+        }
+        .section-label {
+            color: #cbd5e1;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .neon-glow {
+            box-shadow: 0 0 12px rgba(59,130,246,0.4);
         }
     </style>
 </head>
 <body class="text-slate-200">
-    <div class="max-w-7xl mx-auto px-6 py-10 space-y-12">
-        <header class="glass-panel rounded-3xl p-10">
-            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-                <div>
-                    <h1 class="text-3xl font-semibold text-white neon-text">AuthenticityCo-Pilot Reports Directory</h1>
-                    <p class="text-slate-300 mt-4 max-w-2xl">
-                        Browse longitudinal channel dashboards and individual episode deep dives powered by the Authenticity analyzer.
-                        Channel pages aggregate performance trends, while episode reports unpack tactical coaching insights with Claude-generated narratives.
+    <div class="max-w-7xl mx-auto px-6 py-8">
+        <div class="nav-section rounded-lg p-4 mb-8">
+            <a href="../index.html" class="text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                🏠 Back to Home
+            </a>
+        </div>
+
+        <div class="header-section rounded-2xl p-8 mb-10 text-center">
+            <div class="mb-4">
+                <span class="text-5xl mb-4 block">📊</span>
+                <h1 class="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+                    Analysis Reports Directory
+                </h1>
+                <p class="text-xl text-slate-300">
+                    Comprehensive coaching insights across 51 podcast analyses
+                </p>
+            </div>
+        </div>
+
+        <div class="report-card rounded-2xl p-6 mb-10">
+            <p class="text-slate-200 leading-relaxed">
+                <strong class="text-white">About These Reports:</strong> Each analysis is powered by the latest LLM systems evaluating host performance, conversation authenticity, and coaching effectiveness. Reports include detailed metrics on hosting balance, question patterns, and evidence-based insights for continuous improvement.
+            </p>
+        </div>
+
+        <h3 class="section-label">Analytics Overview</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="stat-card rounded-2xl p-6 text-center">
+                <div class="text-3xl font-bold text-white mb-2">51</div>
+                <div class="text-slate-300 uppercase tracking-wide text-sm">Total Reports</div>
+            </div>
+            <div class="stat-card rounded-2xl p-6 text-center">
+                <div class="text-3xl font-bold text-white mb-2">5</div>
+                <div class="text-slate-300 uppercase tracking-wide text-sm">Podcast Channels</div>
+            </div>
+            <div class="stat-card rounded-2xl p-6 text-center">
+                <div class="text-3xl font-bold text-white mb-2">98%</div>
+                <div class="text-slate-300 uppercase tracking-wide text-sm">Quote Accuracy</div>
+            </div>
+        </div>
+
+        <div class="mb-12">
+            <h3 class="section-label">📊 Channel Performance Reports</h3>
+            <div class="report-card rounded-2xl p-6 mb-6">
+                <p class="text-slate-200 leading-relaxed text-center">
+                    <strong class="text-white">Longitudinal Channel Insights:</strong> View aggregated performance metrics, coaching patterns, and growth trends across all episodes for each podcast channel.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 text-center">
+                    <div class="text-4xl mb-4">📈</div>
+                    <h4 class="text-white font-semibold mb-3 text-lg">
+                        Ayush Prakash Podcast
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        Longitudinal insights across all episodes
                     </p>
+                    <a href="channels/ayush-prakash/report.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Channel Report
+                        <span class="ml-2">→</span>
+                    </a>
                 </div>
-                <div class="grid grid-cols-3 gap-4 min-w-[320px] text-center">
-                    <div class="glass-panel rounded-2xl py-4" data-total-channels="5">
-                        <div class="text-sm uppercase tracking-wider text-slate-400">Channels</div>
-                        <div class="text-2xl font-bold text-white">5</div>
-                    </div>
-                    <div class="glass-panel rounded-2xl py-4" data-total-episodes="50">
-                        <div class="text-sm uppercase tracking-wider text-slate-400">Episode Reports</div>
-                        <div class="text-2xl font-bold text-white">50</div>
-                    </div>
-                    <div class="glass-panel rounded-2xl py-4" data-last-published="Oct 10, 2025">
-                        <div class="text-sm uppercase tracking-wider text-slate-400">Last Refresh</div>
-                        <div class="text-2xl font-bold text-white">Oct 10, 2025</div>
-                    </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 text-center">
+                    <div class="text-4xl mb-4">📈</div>
+                    <h4 class="text-white font-semibold mb-3 text-lg">
+                        I:AM Podcast
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        Longitudinal insights across all episodes
+                    </p>
+                    <a href="channels/iam/report.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Channel Report
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 text-center">
+                    <div class="text-4xl mb-4">📈</div>
+                    <h4 class="text-white font-semibold mb-3 text-lg">
+                        MorningMood Podcast
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        Longitudinal insights across all episodes
+                    </p>
+                    <a href="channels/morningmood/report.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Channel Report
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 text-center">
+                    <div class="text-4xl mb-4">📈</div>
+                    <h4 class="text-white font-semibold mb-3 text-lg">
+                        Transformational Journeys
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        Longitudinal insights across all episodes
+                    </p>
+                    <a href="channels/transformational-journeys/report.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Channel Report
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300 text-center">
+                    <div class="text-4xl mb-4">📈</div>
+                    <h4 class="text-white font-semibold mb-3 text-lg">
+                        Unknown Uploader
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        Longitudinal insights across all episodes
+                    </p>
+                    <a href="channels/unknown-uploader/report.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Channel Report
+                        <span class="ml-2">→</span>
+                    </a>
                 </div>
             </div>
-        </header>
+        </div>
 
-        <section class="space-y-6">
-            <div class="flex items-center justify-between">
-                <h2 class="text-xl uppercase tracking-[0.35em] text-slate-300">Channel Performance Reports</h2>
-                <span class="text-sm text-slate-400">Explore how each show is trending over time</span>
+        <div class="mb-12">
+            <h3 class="section-label">MorningMood Podcast (19 reports)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Three Types of Feedback (And Why Two Suck)
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/Three-Types-of-Feedback-And-Why-Two-Suck_bc3bdbf2.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Stop Saying 'Respectfully' - How to Build Real Professional Relationships
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/Stop-Saying-Respectfully---How-to-Build-Real-Profe_94eaa9ff.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Changing the Weather - The Art of Receiving Feedback Without Losing Your MindFee...
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/Changing-the-Weather---The-Art-of-Receiving-Feedba_4f439ca3.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        The $500 Hour Test: Why Real Confidence Means Saying 'I Don't Know'
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/The-500-Hour-Test-Why-Real-Confidence-Means-Saying_42f9f8f9.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        How Amazon Invented Microservices - The 24-Hour Build That Nearly Killed the Com...
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/How-Amazon-Invented-Microservices---The-24-Hour-Bu_829d3d41.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        When Ocean Carriers Forgot They Had Customers
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/When-Ocean-Carriers-Forgot-They-Had-Customers_68e1c3c0.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        I Lost My Identity When I Left My Corporate Job (And You Will Too)
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/I-Lost-My-Identity-When-I-Left-My-Corporate-Job-An_21d758de.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Why Multiple Warehouses Will DESTROY Your Profit (500 Orders/Month Mistake)
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/Why-Multiple-Warehouses-Will-DESTROY-Your-Profit-5_fba8825d.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Why 40% of Companies Build Their Own Software (And Regret It)
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/Why-40-of-Companies-Build-Their-Own-Software-And-R_a5a82062.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        How Amazon Built a Multi-Billion Dollar Global Empire from Scratch (Amazon Globa...
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/How-Amazon-Built-a-Multi-Billion-Dollar-Global-Emp_aefc197e.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Why Your Customs Broker Is Costing You Thousands (Hidden Importer Liability Expo...
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/Why-Your-Customs-Broker-Is-Costing-You-Thousands-H_657eed02.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Why I Retired at 50 (And My Caribbean Father Was Shocked)
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/Why-I-Retired-at-50-And-My-Caribbean-Father-Was-Sh_d152a8b8.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        100 Episodes of No Makeup, No Script, No Bullsh*t
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/100-Episodes-of-No-Makeup-No-Script-No-Bullsht_4ce261c7.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Ocean Freight Rates Drop Below Contracts - What Shippers Need to Know for Q4 202...
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 10, 2025
+                    </p>
+                    <a href="morningmood/Ocean-Freight-Rates-Drop-Below-Contracts---What-Sh_f01350a6.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Why Going Alone is Killing Your Business Growth (Former Solopreneur's Story)
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 20, 2025
+                    </p>
+                    <a href="morningmood/Why-Going-Alone-is-Killing-Your-Business-Growth-Fo_4b350eb3.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        How I Convinced a 100-Year-Old Company to Go Digital in 6 Minutes
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 20, 2025
+                    </p>
+                    <a href="morningmood/How-I-Convinced-a-100-Year-Old-Company-to-Go-Digit_778d30b7.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        How We Built Amazon's First Cross-Border Shipping (From Excel to Billions)
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 20, 2025
+                    </p>
+                    <a href="morningmood/How-We-Built-Amazons-First-Cross-Border-Shipping-F_bbaa0452.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Why Italian Furniture Got DESTROYED at Customs (Broker Horror Story)
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 20, 2025
+                    </p>
+                    <a href="morningmood/Why-Italian-Furniture-Got-DESTROYED-at-Customs-Bro_d1a83af3.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        MorningMood
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        How to Say NO to Toxic Feedback at Work
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 20, 2025
+                    </p>
+                    <a href="morningmood/How-to-Say-NO-to-Toxic-Feedback-at-Work_5ffc514b.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
             </div>
-            <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                <a class="glass-panel rounded-3xl p-6 hover:scale-[1.01] transition shadow-xl" href="channels/ayush-prakash/report.html" data-channel-slug="ayush-prakash">
-    <div class="flex items-center justify-between">
-        <span class="text-white text-lg font-semibold">Ayush Prakash Podcast</span>
-        <span class="text-sky-300 text-sm">View Channel Report →</span>
-    </div>
-    <div class="mt-3 text-slate-400 text-sm">19 episodes analyzed</div>
-</a>
-<a class="glass-panel rounded-3xl p-6 hover:scale-[1.01] transition shadow-xl" href="channels/iam/report.html" data-channel-slug="iam">
-    <div class="flex items-center justify-between">
-        <span class="text-white text-lg font-semibold">I:AM Podcast</span>
-        <span class="text-sky-300 text-sm">View Channel Report →</span>
-    </div>
-    <div class="mt-3 text-slate-400 text-sm">4 episodes analyzed</div>
-</a>
-<a class="glass-panel rounded-3xl p-6 hover:scale-[1.01] transition shadow-xl" href="channels/morningmood/report.html" data-channel-slug="morningmood">
-    <div class="flex items-center justify-between">
-        <span class="text-white text-lg font-semibold">MorningMood Podcast</span>
-        <span class="text-sky-300 text-sm">View Channel Report →</span>
-    </div>
-    <div class="mt-3 text-slate-400 text-sm">5 episodes analyzed</div>
-</a>
-<a class="glass-panel rounded-3xl p-6 hover:scale-[1.01] transition shadow-xl" href="channels/transformational-journeys/report.html" data-channel-slug="transformational-journeys">
-    <div class="flex items-center justify-between">
-        <span class="text-white text-lg font-semibold">Transformational Journeys</span>
-        <span class="text-sky-300 text-sm">View Channel Report →</span>
-    </div>
-    <div class="mt-3 text-slate-400 text-sm">7 episodes analyzed</div>
-</a>
-<a class="glass-panel rounded-3xl p-6 hover:scale-[1.01] transition shadow-xl" href="channels/unknown-uploader/report.html" data-channel-slug="unknown-uploader">
-    <div class="flex items-center justify-between">
-        <span class="text-white text-lg font-semibold">Unknown Uploader</span>
-        <span class="text-sky-300 text-sm">View Channel Report →</span>
-    </div>
-    <div class="mt-3 text-slate-400 text-sm">No completed episodes yet</div>
-</a>
+        </div>
+        <div class="mb-12">
+            <h3 class="section-label">Transformational Journeys Podcast (8 reports)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        “I Wanted Every Emotion to Be Anger. Until It Broke Me” Tiffany Zehara | Transfo...
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 09, 2025
+                    </p>
+                    <a href="transformational-journeys/I-Wanted-Every-Emotion-to-Be-Anger-Until-It-Broke-_da39b206.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Jamie Meyer on How to Stop Performing and Reclaim Your Authentic Identity
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 20, 2025
+                    </p>
+                    <a href="transformational-journeys/Jamie-Meyer-on-How-to-Stop-Performing-and-Reclaim-_430a4daa.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Kimberly Reuter: Choosing Freedom Changed Everything for Her
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 20, 2025
+                    </p>
+                    <a href="transformational-journeys/Kimberly-Reuter-Choosing-Freedom-Changed-Everythin_1990b5c8.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        The Truth About Authentic Living No One Tells You!
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 11, 2025
+                    </p>
+                    <a href="transformational-journeys/The-Truth-About-Authentic-Living-No-One-Tells-You_fc34a310.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        How Self-Sabotage Nearly Cost Him Everything
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 11, 2025
+                    </p>
+                    <a href="transformational-journeys/How-Self-Sabotage-Nearly-Cost-Him-Everything_002868f5.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        How Did She Go From Baseball to the Cockpit?
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 10, 2025
+                    </p>
+                    <a href="transformational-journeys/How-Did-She-Go-From-Baseball-to-the-Cockpit_4536ff1e.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        AI Rewrote Her Breakup It Changed Everything!
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 10, 2025
+                    </p>
+                    <a href="transformational-journeys/AI-Rewrote-Her-Breakup-It-Changed-Everything_cc40b6a6.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Transformational Journeys
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        His Generation is Drowning. He's Trying to Save it.
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 10, 2025
+                    </p>
+                    <a href="transformational-journeys/His-Generation-is-Drowning-Hes-Trying-to-Save-it_06783913.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
             </div>
-        </section>
-
-        <section class="space-y-6">
-            <div class="flex items-center justify-between">
-                <h2 class="text-xl uppercase tracking-[0.35em] text-slate-300">Episode Deep Dives</h2>
-                <span class="text-sm text-slate-400">Newest analyses first</span>
+        </div>
+        <div class="mb-12">
+            <h3 class="section-label">Ayush Prakash Podcast (19 reports)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        How To Break Porn Addiction – Joshua Shea
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 06, 2025
+                    </p>
+                    <a href="ayush-prakash/How-To-Break-Porn-Addiction--Joshua-Shea_10ebc5d4.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        What Grief Teaches Us About Love – G. Scott Graham
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 06, 2025
+                    </p>
+                    <a href="ayush-prakash/What-Grief-Teaches-Us-About-Love--G-Scott-Graham_b0dcdc5d.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Is AI Raising Entrepreneurs? – Amy Love
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 06, 2025
+                    </p>
+                    <a href="ayush-prakash/Is-AI-Raising-Entrepreneurs--Amy-Love_73f1ce05.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Have We Lost Human Touch? - Epiphany Jordan
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 06, 2025
+                    </p>
+                    <a href="ayush-prakash/Have-We-Lost-Human-Touch---Epiphany-Jordan_684afba5.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        The Power of Astronomy in the 21st Century - Mike Simmons
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 06, 2025
+                    </p>
+                    <a href="ayush-prakash/The-Power-of-Astronomy-in-the-21st-Century---Mike-_804e0228.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Everything Wrong With Artificial Intelligence in 2025 - Chris Hood
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 06, 2025
+                    </p>
+                    <a href="ayush-prakash/Everything-Wrong-With-Artificial-Intelligence-in-2_506c43cc.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Why Social Media Is Breaking Us - Julien Belmont
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 06, 2025
+                    </p>
+                    <a href="ayush-prakash/Why-Social-Media-Is-Breaking-Us---Julien-Belmont_233bfd56.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Why Hinduism’s Teachings Are More Relevant Than Ever
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 06, 2025
+                    </p>
+                    <a href="ayush-prakash/Why-Hinduisms-Teachings-Are-More-Relevant-Than-Eve_6e97065f.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Everything About Work Is Changing – Henrik de Gyor
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 06, 2025
+                    </p>
+                    <a href="ayush-prakash/Everything-About-Work-Is-Changing--Henrik-de-Gyor_6172afc5.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Why Managing Gen Z Is Different – Nikhil Raval
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 06, 2025
+                    </p>
+                    <a href="ayush-prakash/Why-Managing-Gen-Z-Is-Different--Nikhil-Raval_461d0dde.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        PayPal’s Former Innovation Chief Warns Leaders to Adapt or Fail - Mike Todasco
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Oct 06, 2025
+                    </p>
+                    <a href="ayush-prakash/PayPals-Former-Innovation-Chief-Warns-Leaders-to-A_6cb07a37.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Where AI and Automation Are Really Taking Us - Alex Rosalez
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 11, 2025
+                    </p>
+                    <a href="ayush-prakash/Where-AI-and-Automation-Are-Really-Taking-Us---Ale_fcf1f91d.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        From Sex Work to Self-Discovery – Tiffany Zehara
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 11, 2025
+                    </p>
+                    <a href="ayush-prakash/From-Sex-Work-to-Self-Discovery--Tiffany-Zehara_707609a1.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        The Power of the Subconscious Mind – Dr. Ran Anbar
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 11, 2025
+                    </p>
+                    <a href="ayush-prakash/The-Power-of-the-Subconscious-Mind--Dr-Ran-Anbar_d257e482.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Why Adults Fail to Hear Children – Dr. Zee
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 10, 2025
+                    </p>
+                    <a href="ayush-prakash/Why-Adults-Fail-to-Hear-Children--Dr-Zee_581a0778.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Why Modern Society Is So Rude And How To Fix It - Dr. John O'Brien
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 10, 2025
+                    </p>
+                    <a href="ayush-prakash/Why-Modern-Society-Is-So-Rude-And-How-To-Fix-It---_1645ba9a.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Is Paid Intimacy the Future of Human Connection? - Arik Brueckner
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 10, 2025
+                    </p>
+                    <a href="ayush-prakash/Is-Paid-Intimacy-the-Future-of-Human-Connection---_a3d5b734.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        10 Truths Every Teen Must Know Before Adulthood - Dr. Ran Anbar
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 10, 2025
+                    </p>
+                    <a href="ayush-prakash/10-Truths-Every-Teen-Must-Know-Before-Adulthood---_2a9ccdcf.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Ayush Prakash
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Why Your Mental Health Crisis Might Be A Spiritual Awakening - Alisa Gracheva
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 10, 2025
+                    </p>
+                    <a href="ayush-prakash/Why-Your-Mental-Health-Crisis-Might-Be-A-Spiritual_51048b98.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
             </div>
-            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                <div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Stop Saying 'Respectfully' - How to Build Real Professional Relationships</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-10-10 23:29:30</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/Stop-Saying-Respectfully---How-to-Build-Real-Profe_94eaa9ff.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Changing the Weather - The Art of Receiving Feedback Without Losing Your MindFeedback 3</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-10-10 23:27:06</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/Changing-the-Weather---The-Art-of-Receiving-Feedba_4f439ca3.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">The $500 Hour Test: Why Real Confidence Means Saying 'I Don't Know'</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-10-10 23:24:28</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/The-500-Hour-Test-Why-Real-Confidence-Means-Saying_42f9f8f9.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">How Amazon Invented Microservices - The 24-Hour Build That Nearly Killed the Company</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-10-10 23:21:27</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/How-Amazon-Invented-Microservices---The-24-Hour-Bu_829d3d41.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">When Ocean Carriers Forgot They Had Customers</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-10-10 23:18:30</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/When-Ocean-Carriers-Forgot-They-Had-Customers_68e1c3c0.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">I Lost My Identity When I Left My Corporate Job (And You Will Too)</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-10-10 23:16:07</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/I-Lost-My-Identity-When-I-Left-My-Corporate-Job-An_21d758de.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Why Multiple Warehouses Will DESTROY Your Profit (500 Orders/Month Mistake)</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-10-10 23:13:43</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/Why-Multiple-Warehouses-Will-DESTROY-Your-Profit-5_fba8825d.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Why 40% of Companies Build Their Own Software (And Regret It)</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-10-10 23:11:17</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/Why-40-of-Companies-Build-Their-Own-Software-And-R_a5a82062.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">How Amazon Built a Multi-Billion Dollar Global Empire from Scratch (Amazon Global Inside Story)</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-10-10 23:08:45</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/How-Amazon-Built-a-Multi-Billion-Dollar-Global-Emp_aefc197e.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Why Your Customs Broker Is Costing You Thousands (Hidden Importer Liability Exposed)</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-10-10 23:06:14</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/Why-Your-Customs-Broker-Is-Costing-You-Thousands-H_657eed02.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Why I Retired at 50 (And My Caribbean Father Was Shocked)</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-10-10 23:03:37</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/Why-I-Retired-at-50-And-My-Caribbean-Father-Was-Sh_d152a8b8.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">100 Episodes of No Makeup, No Script, No Bullsh*t</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-10-10 23:01:22</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/100-Episodes-of-No-Makeup-No-Script-No-Bullsht_4ce261c7.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Ocean Freight Rates Drop Below Contracts - What Shippers Need to Know for Q4 2025</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-10-10 22:59:07</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/Ocean-Freight-Rates-Drop-Below-Contracts---What-Sh_f01350a6.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">“I Wanted Every Emotion to Be Anger. Until It Broke Me” Tiffany Zehara | Transformational Journeys</h3>
-        <p class="text-slate-400 text-sm mt-1">Transformational Journeys · 2025-10-09 18:23:37</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="transformational-journeys/I-Wanted-Every-Emotion-to-Be-Anger-Until-It-Broke-_da39b206.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">How To Break Porn Addiction – Joshua Shea</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-10-06 15:00:48</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/How-To-Break-Porn-Addiction--Joshua-Shea_10ebc5d4.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">What Grief Teaches Us About Love – G. Scott Graham</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-10-06 15:00:38</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/What-Grief-Teaches-Us-About-Love--G-Scott-Graham_b0dcdc5d.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Is AI Raising Entrepreneurs? – Amy Love</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-10-06 15:00:28</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/Is-AI-Raising-Entrepreneurs--Amy-Love_73f1ce05.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Have We Lost Human Touch? - Epiphany Jordan</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-10-06 15:00:18</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/Have-We-Lost-Human-Touch---Epiphany-Jordan_684afba5.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">The Power of Astronomy in the 21st Century - Mike Simmons</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-10-06 01:53:06</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/The-Power-of-Astronomy-in-the-21st-Century---Mike-_804e0228.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Everything Wrong With Artificial Intelligence in 2025 - Chris Hood</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-10-06 01:53:02</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/Everything-Wrong-With-Artificial-Intelligence-in-2_506c43cc.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Why Social Media Is Breaking Us - Julien Belmont</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-10-06 01:52:59</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/Why-Social-Media-Is-Breaking-Us---Julien-Belmont_233bfd56.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Why Hinduism’s Teachings Are More Relevant Than Ever</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-10-06 01:52:54</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/Why-Hinduisms-Teachings-Are-More-Relevant-Than-Eve_6e97065f.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Everything About Work Is Changing – Henrik de Gyor</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-10-06 01:52:51</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/Everything-About-Work-Is-Changing--Henrik-de-Gyor_6172afc5.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Why Managing Gen Z Is Different – Nikhil Raval</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-10-06 01:52:47</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/Why-Managing-Gen-Z-Is-Different--Nikhil-Raval_461d0dde.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">PayPal’s Former Innovation Chief Warns Leaders to Adapt or Fail - Mike Todasco</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-10-06 01:52:27</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/PayPals-Former-Innovation-Chief-Warns-Leaders-to-A_6cb07a37.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Why Going Alone is Killing Your Business Growth (Former Solopreneur's Story)</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-09-20 15:36:08</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/Why-Going-Alone-is-Killing-Your-Business-Growth-Fo_4b350eb3.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">How I Convinced a 100-Year-Old Company to Go Digital in 6 Minutes</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-09-20 15:36:03</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/How-I-Convinced-a-100-Year-Old-Company-to-Go-Digit_778d30b7.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">How We Built Amazon's First Cross-Border Shipping (From Excel to Billions)</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-09-20 15:35:58</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/How-We-Built-Amazons-First-Cross-Border-Shipping-F_bbaa0452.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Why Italian Furniture Got DESTROYED at Customs (Broker Horror Story)</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-09-20 15:35:53</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/Why-Italian-Furniture-Got-DESTROYED-at-Customs-Bro_d1a83af3.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">How to Say NO to Toxic Feedback at Work</h3>
-        <p class="text-slate-400 text-sm mt-1">MorningMood · 2025-09-20 15:35:49</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="morningmood/How-to-Say-NO-to-Toxic-Feedback-at-Work_5ffc514b.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Jamie Meyer on How to Stop Performing and Reclaim Your Authentic Identity</h3>
-        <p class="text-slate-400 text-sm mt-1">Transformational Journeys · 2025-09-20 05:32:35</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="transformational-journeys/Jamie-Meyer-on-How-to-Stop-Performing-and-Reclaim-_430a4daa.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Kimberly Reuter: Choosing Freedom Changed Everything for Her</h3>
-        <p class="text-slate-400 text-sm mt-1">Transformational Journeys · 2025-09-20 05:32:32</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="transformational-journeys/Kimberly-Reuter-Choosing-Freedom-Changed-Everythin_1990b5c8.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)</h3>
-        <p class="text-slate-400 text-sm mt-1">Rick Astley · 2025-09-13 01:06:56</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="rick-astley/Rick-Astley---Never-Gonna-Give-You-Up-Official-Vid_bdaa7482.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Where AI and Automation Are Really Taking Us - Alex Rosalez</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-09-11 04:38:44</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/Where-AI-and-Automation-Are-Really-Taking-Us---Ale_fcf1f91d.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">From Sex Work to Self-Discovery – Tiffany Zehara</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-09-11 04:38:41</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/From-Sex-Work-to-Self-Discovery--Tiffany-Zehara_707609a1.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">The Power of the Subconscious Mind – Dr. Ran Anbar</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-09-11 04:38:37</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/The-Power-of-the-Subconscious-Mind--Dr-Ran-Anbar_d257e482.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">The Truth About Authentic Living No One Tells You!</h3>
-        <p class="text-slate-400 text-sm mt-1">Transformational Journeys · 2025-09-11 03:12:22</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="transformational-journeys/The-Truth-About-Authentic-Living-No-One-Tells-You_fc34a310.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">How Self-Sabotage Nearly Cost Him Everything</h3>
-        <p class="text-slate-400 text-sm mt-1">Transformational Journeys · 2025-09-11 03:03:39</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="transformational-journeys/How-Self-Sabotage-Nearly-Cost-Him-Everything_002868f5.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Authenticity, Ego & Spiritual Bypassing: The Real Inner Work | The I:AM Experience Ep. 4</h3>
-        <p class="text-slate-400 text-sm mt-1">I:AM · 2025-09-10 19:19:54</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="iam/Authenticity-Ego--Spiritual-Bypassing-The-Real-Inn_12464bd5.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">How Did She Go From Baseball to the Cockpit?</h3>
-        <p class="text-slate-400 text-sm mt-1">Transformational Journeys · 2025-09-10 19:15:44</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="transformational-journeys/How-Did-She-Go-From-Baseball-to-the-Cockpit_4536ff1e.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">AI Rewrote Her Breakup It Changed Everything!</h3>
-        <p class="text-slate-400 text-sm mt-1">Transformational Journeys · 2025-09-10 19:15:31</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="transformational-journeys/AI-Rewrote-Her-Breakup-It-Changed-Everything_cc40b6a6.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Why Manifestation Isn’t Working (Even Though You’ve Tried Everything) | The I:AM Experience Ep. 1</h3>
-        <p class="text-slate-400 text-sm mt-1">I:AM · 2025-09-10 16:02:10</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="iam/Why-Manifestation-Isnt-Working-Even-Though-Youve-T_b83ba9e0.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Finding Flow: Dismantling the Need to Perform | The I:AM Experience Ep. 2</h3>
-        <p class="text-slate-400 text-sm mt-1">I:AM · 2025-09-10 16:01:58</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="iam/Finding-Flow-Dismantling-the-Need-to-Perform--The-_c2dcb319.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Mastering Ego: The Path to Authentic Self Concept Alignment | The I:AM Experience Ep. 3</h3>
-        <p class="text-slate-400 text-sm mt-1">I:AM · 2025-09-10 16:01:45</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="iam/Mastering-Ego-The-Path-to-Authentic-Self-ConceptAl_ac8ed8aa.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">His Generation is Drowning. He's Trying to Save it.</h3>
-        <p class="text-slate-400 text-sm mt-1">Transformational Journeys · 2025-09-10 15:58:54</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="transformational-journeys/His-Generation-is-Drowning-Hes-Trying-to-Save-it_06783913.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Why Adults Fail to Hear Children – Dr. Zee</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-09-10 08:08:57</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/Why-Adults-Fail-to-Hear-Children--Dr-Zee_581a0778.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Why Modern Society Is So Rude And How To Fix It - Dr. John O'Brien</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-09-10 08:08:44</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/Why-Modern-Society-Is-So-Rude-And-How-To-Fix-It---_1645ba9a.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Is Paid Intimacy the Future of Human Connection? - Arik Brueckner</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-09-10 08:08:31</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/Is-Paid-Intimacy-the-Future-of-Human-Connection---_a3d5b734.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">10 Truths Every Teen Must Know Before Adulthood - Dr. Ran Anbar</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-09-10 08:08:18</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/10-Truths-Every-Teen-Must-Know-Before-Adulthood---_2a9ccdcf.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
-<div class="glass-panel rounded-3xl p-6 flex flex-col justify-between">
-    <div>
-        <h3 class="text-white font-semibold text-lg">Why Your Mental Health Crisis Might Be A Spiritual Awakening - Alisa Gracheva</h3>
-        <p class="text-slate-400 text-sm mt-1">Ayush Prakash · 2025-09-10 08:08:06</p>
-    </div>
-    <div class="mt-4">
-        <a class="inline-flex items-center text-sky-300 text-sm font-medium" href="ayush-prakash/Why-Your-Mental-Health-Crisis-Might-Be-A-Spiritual_51048b98.html">
-            View Episode Report
-            <span class="ml-2">→</span>
-        </a>
-    </div>
-</div>
+        </div>
+        <div class="mb-12">
+            <h3 class="section-label">Rick Astley (1 reports)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        Rick Astley
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 13, 2025
+                    </p>
+                    <a href="rick-astley/Rick-Astley---Never-Gonna-Give-You-Up-Official-Vid_bdaa7482.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
             </div>
-        </section>
+        </div>
+        <div class="mb-12">
+            <h3 class="section-label">I:AM Podcast (4 reports)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        I:AM
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Authenticity, Ego & Spiritual Bypassing: The Real Inner Work | The I:AM Experien...
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 10, 2025
+                    </p>
+                    <a href="iam/Authenticity-Ego--Spiritual-Bypassing-The-Real-Inn_12464bd5.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        I:AM
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Why Manifestation Isn’t Working (Even Though You’ve Tried Everything) | The I:AM...
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 10, 2025
+                    </p>
+                    <a href="iam/Why-Manifestation-Isnt-Working-Even-Though-Youve-T_b83ba9e0.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        I:AM
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Finding Flow: Dismantling the Need to Perform | The I:AM Experience Ep. 2
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 10, 2025
+                    </p>
+                    <a href="iam/Finding-Flow-Dismantling-the-Need-to-Perform--The-_c2dcb319.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+                <div class="report-card rounded-2xl p-6 hover:shadow-2xl transition-all duration-300">
+                    <div class="inline-block px-3 py-1 text-xs font-medium text-slate-300 bg-slate-700 rounded-full mb-4">
+                        I:AM
+                    </div>
+                    <h4 class="text-white font-semibold mb-3 leading-tight line-clamp-3">
+                        Mastering Ego: The Path to Authentic Self Concept Alignment | The I:AM Experienc...
+                    </h4>
+                    <p class="text-slate-400 text-sm mb-4">
+                        📅 Sep 10, 2025
+                    </p>
+                    <a href="iam/Mastering-Ego-The-Path-to-Authentic-Self-ConceptAl_ac8ed8aa.html"
+                       class="inline-flex items-center text-blue-300 hover:text-blue-200 font-medium transition-colors">
+                        View Analysis
+                        <span class="ml-2">→</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
