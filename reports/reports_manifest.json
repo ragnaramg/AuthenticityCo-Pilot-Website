@@ -1,5 +1,14 @@
 [
   {
+    "title": "Hormone & Fertility Experts: We've Been Lied To About Women's Health! If This Happens, Call A Doctor",
+    "uploader": "The Diary Of A CEO",
+    "job_id": "30339618-1541-4b77-a773-45f17453abf5",
+    "filename": "Hormone--Fertility-Experts-Weve-Been-Lied-To-About_30339618.html",
+    "channel_dir": "the-diary-of-a-ceo",
+    "created_at": "2025-10-25 14:42:04",
+    "youtube_url": "https://www.youtube.com/watch?v=kizDk8idpT8"
+  },
+  {
     "title": "Neil deGrasse Tyson: The Harsh Truth About Horoscopes (sorry but it\u2019s true)",
     "uploader": "The Diary Of A CEO",
     "job_id": "1c4d5ffe-8266-48d0-b688-f95d386c4372",
@@ -505,50 +514,18 @@
   },
   {
     "report_type": "channel",
-    "channel": "MorningMood Podcast",
-    "channel_dir": "morningmood",
-    "filename": "report.html",
-    "created_at": "2025-10-25 07:38:26",
-    "episode_count": 20
-  },
-  {
-    "report_type": "channel",
-    "channel": "I:AM Podcast",
-    "channel_dir": "iam",
-    "filename": "report.html",
-    "created_at": "2025-10-25 07:39:26",
-    "episode_count": 5
-  },
-  {
-    "report_type": "channel",
-    "channel": "Ayush Prakash Podcast",
-    "channel_dir": "ayush-prakash",
-    "filename": "report.html",
-    "created_at": "2025-10-25 07:39:31",
-    "episode_count": 19
-  },
-  {
-    "report_type": "channel",
     "channel": "The Diary Of A CEO",
     "channel_dir": "the-diary-of-a-ceo",
     "filename": "report.html",
-    "created_at": "2025-10-25 07:40:28",
+    "created_at": "2025-10-25 07:42:32",
     "episode_count": 4
-  },
-  {
-    "report_type": "channel",
-    "channel": "Transformational Journeys",
-    "channel_dir": "transformational-journeys",
-    "filename": "report.html",
-    "created_at": "2025-10-25 07:40:32",
-    "episode_count": 7
   },
   {
     "report_type": "channel",
     "channel": "Unknown Uploader",
     "channel_dir": "unknown-uploader",
     "filename": "report.html",
-    "created_at": "2025-10-25 07:40:53",
+    "created_at": "2025-10-25 07:42:52",
     "episode_count": 4
   }
 ]
