@@ -1,5 +1,41 @@
 [
   {
+    "title": "Insulin Doctor: The Fastest Way To Burn Dangerous Visceral Fat! I'm Finding Mould In My Patients!",
+    "uploader": "The Diary Of A CEO",
+    "job_id": "6c5da421-c621-4819-8542-b9d7bcbe58a1",
+    "filename": "Insulin-Doctor-The-Fastest-Way-To-Burn-Dangerous-V_6c5da421.html",
+    "channel_dir": "the-diary-of-a-ceo",
+    "created_at": "2025-10-25 15:47:12",
+    "youtube_url": "https://www.youtube.com/watch?v=gryta3KZKU4"
+  },
+  {
+    "title": "Secret Agent: Authenticity Is Quietly Sabotaging You! Do This & They'll Stop Respecting You!",
+    "uploader": "The Diary Of A CEO",
+    "job_id": "0f7fc988-7733-4bdd-93ae-1fcde5d184a9",
+    "filename": "Secret-Agent-Authenticity-Is-Quietly-Sabotaging-Yo_0f7fc988.html",
+    "channel_dir": "the-diary-of-a-ceo",
+    "created_at": "2025-10-25 15:47:03",
+    "youtube_url": "https://www.youtube.com/watch?v=DazRYdqZRDI"
+  },
+  {
+    "title": "No. 1 Sugar Expert: You've Been Sold A Lie About \"Healthy\" Food!",
+    "uploader": "The Diary Of A CEO",
+    "job_id": "dc3cd140-86e9-4664-9fed-ff270e876d50",
+    "filename": "No-1-Sugar-Expert-Youve-Been-Sold-A-Lie-About-Heal_dc3cd140.html",
+    "channel_dir": "the-diary-of-a-ceo",
+    "created_at": "2025-10-25 15:46:42",
+    "youtube_url": "https://www.youtube.com/watch?v=ZE_H7rijrVk"
+  },
+  {
+    "title": "The Savings Expert: Passive Income Is A Scam! Post-Traumatic Broke Syndrome Is Controlling Millions!",
+    "uploader": "The Diary Of A CEO",
+    "job_id": "d16989be-7fae-471e-8e65-5137e558fa3a",
+    "filename": "The-Savings-Expert-Passive-Income-Is-A-Scam-Post-T_d16989be.html",
+    "channel_dir": "the-diary-of-a-ceo",
+    "created_at": "2025-10-25 15:46:33",
+    "youtube_url": "https://www.youtube.com/watch?v=jFlnRBO8mcg"
+  },
+  {
     "title": "Hormone & Fertility Experts: We've Been Lied To About Women's Health! If This Happens, Call A Doctor",
     "uploader": "The Diary Of A CEO",
     "job_id": "30339618-1541-4b77-a773-45f17453abf5",
@@ -514,50 +550,50 @@
   },
   {
     "report_type": "channel",
-    "channel": "MorningMood Podcast",
-    "channel_dir": "morningmood",
+    "channel": "Transformational Journeys",
+    "channel_dir": "transformational-journeys",
     "filename": "report.html",
-    "created_at": "2025-10-25 07:43:33",
-    "episode_count": 20
+    "created_at": "2025-10-25 08:56:01",
+    "episode_count": 7
   },
   {
     "report_type": "channel",
     "channel": "Ayush Prakash Podcast",
     "channel_dir": "ayush-prakash",
     "filename": "report.html",
-    "created_at": "2025-10-25 07:44:32",
+    "created_at": "2025-10-25 08:56:05",
     "episode_count": 19
   },
   {
     "report_type": "channel",
-    "channel": "Transformational Journeys",
-    "channel_dir": "transformational-journeys",
+    "channel": "MorningMood Podcast",
+    "channel_dir": "morningmood",
     "filename": "report.html",
-    "created_at": "2025-10-25 07:45:32",
-    "episode_count": 7
-  },
-  {
-    "report_type": "channel",
-    "channel": "I:AM Podcast",
-    "channel_dir": "iam",
-    "filename": "report.html",
-    "created_at": "2025-10-25 07:46:23",
-    "episode_count": 5
+    "created_at": "2025-10-25 08:56:27",
+    "episode_count": 20
   },
   {
     "report_type": "channel",
     "channel": "The Diary Of A CEO",
     "channel_dir": "the-diary-of-a-ceo",
     "filename": "report.html",
-    "created_at": "2025-10-25 07:47:26",
-    "episode_count": 4
+    "created_at": "2025-10-25 08:56:28",
+    "episode_count": 9
+  },
+  {
+    "report_type": "channel",
+    "channel": "I:AM Podcast",
+    "channel_dir": "iam",
+    "filename": "report.html",
+    "created_at": "2025-10-25 08:56:30",
+    "episode_count": 5
   },
   {
     "report_type": "channel",
     "channel": "Unknown Uploader",
     "channel_dir": "unknown-uploader",
     "filename": "report.html",
-    "created_at": "2025-10-25 07:47:46",
+    "created_at": "2025-10-25 08:56:48",
     "episode_count": 4
   }
 ]
