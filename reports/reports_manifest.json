@@ -1,5 +1,50 @@
 [
   {
+    "title": "Neil deGrasse Tyson: The Harsh Truth About Horoscopes (sorry but it\u2019s true)",
+    "uploader": "The Diary Of A CEO",
+    "job_id": "1c4d5ffe-8266-48d0-b688-f95d386c4372",
+    "filename": "Neil-deGrasse-Tyson-The-Harsh-Truth-About-Horoscop_1c4d5ffe.html",
+    "channel_dir": "the-diary-of-a-ceo",
+    "created_at": "2025-10-25 14:30:22",
+    "youtube_url": "https://www.youtube.com/watch?v=gW3vVIFRVhw"
+  },
+  {
+    "title": "Hormone & Fertility Experts: We've Been Lied To About Women's Health! If This Happens, Call A Doctor",
+    "uploader": "The Diary Of A CEO",
+    "job_id": "4c9eacda-2990-4d50-a663-46426aea3f2b",
+    "filename": "Hormone--Fertility-Experts-Weve-Been-Lied-To-About_4c9eacda.html",
+    "channel_dir": "the-diary-of-a-ceo",
+    "created_at": "2025-10-25 14:30:12",
+    "youtube_url": "https://www.youtube.com/watch?v=kizDk8idpT8"
+  },
+  {
+    "title": "J\u00fcrgen Klopp: Would You Go Back To Manage LFC...? The Real Reason I Fell In Love With Liverpool!",
+    "uploader": "The Diary Of A CEO",
+    "job_id": "0f3a9139-12f5-4f08-beb6-ad5c57e2ee03",
+    "filename": "J\u00fcrgen-Klopp-Would-You-Go-Back-To-Manage-LFC-The-R_0f3a9139.html",
+    "channel_dir": "the-diary-of-a-ceo",
+    "created_at": "2025-10-25 14:30:02",
+    "youtube_url": "https://www.youtube.com/watch?v=UMy6GESNkDc"
+  },
+  {
+    "title": "Oz Pearlman (Mentalist): This Small Mistake Makes People Dislike You! They Do This, They\u2019re Lying!",
+    "uploader": "The Diary Of A CEO",
+    "job_id": "0559d738-f03a-4e9d-b983-55910ad61439",
+    "filename": "Oz-Pearlman-Mentalist-This-Small-Mistake-Makes-Peo_0559d738.html",
+    "channel_dir": "the-diary-of-a-ceo",
+    "created_at": "2025-10-25 14:29:54",
+    "youtube_url": "https://www.youtube.com/watch?v=4qfxHfBJ3Mw"
+  },
+  {
+    "title": "The Fifth Time's the Charm: How We Built Amazon's 'Impossible' Global Shipping Engine",
+    "uploader": "MorningMood",
+    "job_id": "20dcffec-1bd4-48de-8de6-a52a118fd239",
+    "filename": "The-Fifth-Times-the-Charm-How-We-Built-Amazons-Imp_20dcffec.html",
+    "channel_dir": "morningmood",
+    "created_at": "2025-10-10 23:34:26",
+    "youtube_url": "https://www.youtube.com/watch?v=9byQczaGj2o"
+  },
+  {
     "title": "Three Types of Feedback (And Why Two Suck)",
     "uploader": "MorningMood",
     "job_id": "bc3bdbf2-0b48-40a6-8960-6ec5681d8945",
@@ -460,58 +505,50 @@
   },
   {
     "report_type": "channel",
-    "channel": "Demo Channel 123",
-    "channel_dir": "demo-channel-123",
-    "filename": "report.html",
-    "created_at": "2025-09-23 09:12:40",
-    "episode_count": 0
-  },
-  {
-    "report_type": "channel",
     "channel": "Ayush Prakash Podcast",
     "channel_dir": "ayush-prakash",
     "filename": "report.html",
-    "created_at": "2025-10-10 16:35:22",
+    "created_at": "2025-10-25 07:37:20",
     "episode_count": 19
+  },
+  {
+    "report_type": "channel",
+    "channel": "iam",
+    "channel_dir": "iam",
+    "filename": "report.html",
+    "created_at": "2025-10-25 07:37:30",
+    "episode_count": 5
   },
   {
     "report_type": "channel",
     "channel": "Transformational Journeys",
     "channel_dir": "transformational-journeys",
     "filename": "report.html",
-    "created_at": "2025-10-10 16:36:26",
-    "episode_count": 13
-  },
-  {
-    "report_type": "channel",
-    "channel": "I:AM Podcast",
-    "channel_dir": "iam",
-    "filename": "report.html",
-    "created_at": "2025-10-10 16:36:08",
-    "episode_count": 5
+    "created_at": "2025-10-25 07:38:22",
+    "episode_count": 7
   },
   {
     "report_type": "channel",
     "channel": "MorningMood Podcast",
     "channel_dir": "morningmood",
     "filename": "report.html",
-    "created_at": "2025-10-12 10:01:17",
+    "created_at": "2025-10-25 07:38:26",
     "episode_count": 20
   },
   {
     "report_type": "channel",
-    "channel": "Test Publish Channel",
-    "channel_dir": "test-publish-channel",
+    "channel": "The Diary Of A CEO",
+    "channel_dir": "the-diary-of-a-ceo",
     "filename": "report.html",
-    "created_at": "2025-09-23 07:37:14",
-    "episode_count": 0
+    "created_at": "2025-10-25 07:38:30",
+    "episode_count": 4
   },
   {
     "report_type": "channel",
     "channel": "Unknown Uploader",
     "channel_dir": "unknown-uploader",
     "filename": "report.html",
-    "created_at": "2025-10-10 16:36:33",
+    "created_at": "2025-10-25 07:38:49",
     "episode_count": 4
   }
 ]
